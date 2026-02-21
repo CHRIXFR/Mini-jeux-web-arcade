@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Minimaliste - Jeux Web</title>
+    <meta name="description" content="Une collection de mini-jeux élégants et gratuits : Sudoku, Mots Mêlés et plus.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="dark-mode">
+    <header>
+        <div class="header-content">
+            <h1 id="main-title">Arcade Minimaliste</h1>
+            <div class="user-stats">
+                <button id="theme-btn" class="theme-toggle" onclick="window.arcade.toggleTheme()"
+                    title="Changer de thème">☀️</button>
+                <div class="stats-divider"></div>
+                <span class="xp-label">XP Total:</span>
+                <span id="total-xp" class="xp-value">0</span>
+                <div class="level-badge" id="level-display">Niv. 1</div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-container">
+        <!-- Contenu injecté dynamiquement -->
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Arcade Minimaliste | Projet Open-Source</p>
+    </footer>
+
+    <!-- Scripts chargés classiquement (non-module pour test local) -->
+    <script>
+        // Définition d'un store global simple pour remplacer Zustand/Imports
+        window.arcade = {
+            state: {
+                xp: parseInt(localStorage.getItem('arcade_xp')) || 0,
+                theme: localStorage.getItem('arcade_theme') || 'dark',
+                currentView: 'home',
+                testMode: new URLSearchParams(window.location.search).has('test')
+            },
+            games: [
+                { id: 'sudoku', name: 'Sudoku', xp: 0, icon: '🧩', difficulty: 'Facile - Difficile' },
+                { id: 'mots-meles', name: 'Mots Mêlés', xp: 200, icon: '🔍', difficulty: 'Niveaux multiples' },
+                { id: 'jewel-blitz', name: 'Jewel Blitz', xp: 500, icon: '💎', difficulty: 'Match-3' }
+            ],
+            addXP: function (amount) {
+                this.state.xp += amount;
+                localStorage.setItem('arcade_xp', this.state.xp);
+                this.updateUI();
+                this.showToast(`+${amount} XP !`);
+                if (this.state.currentView === 'home') this.renderHome(); // Refresh home to unlock cards
+            },
+            toggleTheme: function () {
+                this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('arcade_theme', this.state.theme);
+                this.applyTheme();
+            },
+            applyTheme: function () {
+                if (this.state.theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    document.getElementById('theme-btn').textContent = '🌙';
+                } else {
+                    document.body.classList.remove('light-mode');
+                    document.getElementById('theme-btn').textContent = '☀️';
+                }
+            },
+            updateUI: function () {
+                const xpEl = document.getElementById('total-xp');
+                const lvlEl = document.getElementById('level-display');
+                if (xpEl) xpEl.textContent = this.state.xp;
+                if (lvlEl) lvlEl.textContent = `Niv. ${Math.floor(this.state.xp / 100) + 1}`;
+            },
+            showToast: function (msg) {
+                const t = document.createElement('div');
+                t.className = 'toast';
+                t.textContent = msg;
+                document.body.appendChild(t);
+                setTimeout(() => { t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2000); }, 100);
+            },
+            renderHome: function () {
+                this.state.currentView = 'home';
+                const gridHtml = this.games.map(game => {
+                    const isLocked = !this.state.testMode && this.state.xp < game.xp;
+                    const clickAction = isLocked ? '' : `onclick="window.arcade.loadGame('${game.id}')"`;
+
+                    return `
+                        <div class="game-card ${isLocked ? 'locked' : ''}" ${clickAction}>
+                            ${isLocked ? `
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="lock-badge">${game.xp} XP Requis</div>
+                                </div>
+                            ` : ''}
+                            <div class="game-icon">${game.icon}</div>
+                            <h3>${game.name}</h3>
+                            <p>${this.getGameDescription(game.id)}</p>
+                            <span class="difficulty">${game.difficulty}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                document.getElementById('app-container').innerHTML = `
+                    <section id="home-page" class="view">
+                        <div class="hero"><p class="subtitle">Cumulez de l'XP pour débloquer de nouveaux défis.</p></div>
+                        <div class="games-grid">${gridHtml}</div>
+                    </section>
+                `;
+            },
+            getGameDescription: function (id) {
+                const descriptions = {
+                    'sudoku': 'Le classique jeu de chiffres avec fonctions avancées.',
+                    'mots-meles': 'Trouvez tous les mots cachés dans la grille.',
+                    'jewel-blitz': 'Alignez les gemmes pour exploser les scores.'
+                };
+                return descriptions[id] || '';
+            },
+            loadGame: function (id) {
+                this.state.currentView = id;
+                document.getElementById('app-container').innerHTML = `
+                    <div class="game-view">
+                        <button onclick="window.arcade.renderHome()" class="btn-secondary">← Retour</button>
+                        <div id="game-mount"></div>
+                    </div>
+                `;
+
+                if (id === 'sudoku' && window.initSudoku) window.initSudoku(document.getElementById('game-mount'));
+                if (id === 'mots-meles' && window.initMotsMeles) window.initMotsMeles(document.getElementById('game-mount'));
+                if (id === 'jewel-blitz' && window.initJewelBlitz) window.initJewelBlitz(document.getElementById('game-mount'));
+            }
+        };
+
+        window.onload = () => {
+            window.arcade.applyTheme();
+            window.arcade.updateUI();
+            window.arcade.renderHome();
+        };
+    </script>
+    <!-- Chargement des composants de jeux -->
+    <script src="games/sudoku.js"></script>
+    <script src="games/mots-meles.js"></script>
+    <script src="games/jewel-blitz.js"></script>
+</body>
+
+</html>

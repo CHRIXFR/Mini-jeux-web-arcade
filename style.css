@@ -1,0 +1,893 @@
+:root {
+    /* Dark Mode (Default) */
+    --bg-color: #0c0c0e;
+    --card-bg: #16161a;
+    --header-bg: rgba(12, 12, 14, 0.8);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0ab;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.2);
+    --border: #27272a;
+    --success: #22c55e;
+    --radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --cell-alt: rgba(255, 255, 255, 0.02);
+}
+
+body.light-mode {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --header-bg: rgba(248, 250, 252, 0.8);
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --cell-alt: rgba(0, 0, 0, 0.02);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header & Stats */
+header {
+    padding: 2rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--header-bg);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.user-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+}
+
+.stats-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 0.5rem;
+}
+
+.xp-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.xp-value {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.level-badge {
+    background: var(--accent);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    width: 100%;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+/* Games Grid */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.game-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px -10px var(--accent-glow);
+}
+
+.game-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.game-card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.game-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.difficulty {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.game-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.game-card.disabled:hover {
+    transform: none;
+    border-color: var(--border);
+    box-shadow: none;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Game View & Buttons */
+.game-view {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+}
+
+.game-view>.btn-secondary {
+    margin-bottom: 2rem;
+}
+
+.btn-secondary:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.loading-state {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+/* Sudoku Specific Styles */
+.sudoku-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.sudoku-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#sudoku-timer {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+#diff-select,
+.diff-select {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 0 0.8rem;
+    border-radius: 6px;
+    font-family: inherit;
+    cursor: pointer;
+    height: 38px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+#diff-select:hover,
+.diff-select:hover {
+    border-color: var(--accent);
+}
+
+.grid-9x9 {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    background: var(--border);
+    gap: 1px;
+    border: 2px solid var(--border);
+    margin-bottom: 2rem;
+    aspect-ratio: 1;
+}
+
+.grid-cell {
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    font-weight: 400;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+    position: relative;
+}
+
+.grid-cell.alt-block {
+    background: var(--cell-alt);
+}
+
+.grid-cell:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.grid-cell.selected {
+    background: var(--accent);
+    color: white;
+}
+
+.grid-cell.highlight {
+    background: var(--cell-alt);
+    /* Plus clair */
+}
+
+.grid-cell.same-num {
+    background: rgba(99, 102, 241, 0.2);
+}
+
+.grid-cell.fixed {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.grid-cell.error {
+    color: #ef4444;
+}
+
+.grid-cell.selected.error {
+    color: white;
+    background: #ef4444;
+}
+
+/* Notes Grid inside cell */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    padding: 2px;
+}
+
+.notes-grid span {
+    font-size: 0.5rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* Controls & Pad */
+.sudoku-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.control-btn {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.control-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.number-pad {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0.5rem;
+}
+
+.num-btn {
+    aspect-ratio: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.num-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.num-btn.completed {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+    border-color: var(--border);
+}
+
+/* Modale de fin de jeu */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 3rem;
+    border-radius: var(--radius);
+    text-align: center;
+    border: 1px solid var(--border);
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.xp-bonus {
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+/* Mots Mêlés Styles */
+.ws-game-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ws-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.ws-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.ws-grid {
+    display: grid;
+    gap: 4px;
+    background: var(--border);
+    border: 4px solid var(--border);
+    margin-bottom: 2rem;
+    aspect-ratio: 1;
+    touch-action: none;
+    /* Empêche le scroll pendant la sélection */
+}
+
+.ws-cell {
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.ws-cell.selected {
+    background: var(--accent);
+    color: white;
+}
+
+.ws-cell.permanently-found {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--accent);
+}
+
+.ws-words-container {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.ws-words-container h3 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.ws-word-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.ws-word {
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.ws-word.found {
+    text-decoration: line-through;
+    opacity: 0.3;
+    border-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .hero {
+        margin-bottom: 2rem;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .number-pad {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .sudoku-controls {
+        flex-direction: column;
+    }
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.1rem;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+}
+
+/* Locked Games */
+.game-card.locked {
+    cursor: not-allowed;
+    position: relative;
+}
+
+.game-card.locked .game-icon,
+.game-card.locked h3,
+.game-card.locked p {
+    filter: blur(2px);
+    opacity: 0.5;
+}
+
+.lock-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 5;
+    transition: var(--transition);
+}
+
+.lock-badge {
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.lock-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Jewel Blitz Styles */
+.jb-game-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.jb-header {
+    margin-bottom: 2rem;
+}
+
+.jb-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.jb-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.jb-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+.jb-stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.jb-grid {
+    display: grid;
+    gap: 4px;
+    background: var(--border);
+    border: 4px solid var(--border);
+    margin: 0 auto 2rem auto;
+    width: 100%;
+    max-width: min(480px, 70vh);
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.jb-cell {
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.jb-cell:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.jb-cell.selected {
+    background: var(--accent-glow);
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.jb-gem {
+    font-size: clamp(1.2rem, 6vw, 2.2rem);
+    line-height: 1;
+    display: block;
+    animation: gemSpawn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes gemSpawn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.jb-gem.is-horizontal,
+.jb-gem.is-vertical {
+    filter: drop-shadow(0 0 8px var(--accent));
+}
+
+.jb-gem.is-cross {
+    filter: drop-shadow(0 0 12px #f59e0b);
+}
+
+.jb-gem.is-color {
+    animation: rainbowPulse 1.5s infinite linear;
+}
+
+@keyframes rainbowPulse {
+    0% {
+        filter: drop-shadow(0 0 5px red);
+    }
+
+    25% {
+        filter: drop-shadow(0 0 8px yellow);
+    }
+
+    50% {
+        filter: drop-shadow(0 0 10px lime);
+    }
+
+    75% {
+        filter: drop-shadow(0 0 8px cyan);
+    }
+
+    100% {
+        filter: drop-shadow(0 0 5px red);
+    }
+}
+
+/* Special Effects Markers - Subtler than lines */
+.special-fx {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-size: 0.7rem;
+    background: rgba(0, 0, 0, 0.5);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.h-line::after {
+    content: '↔️';
+}
+
+.v-line::after {
+    content: '↕️';
+}
+
+.cross-fx {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.2);
+}
+
+.cross-fx::after {
+    content: '✴️';
+}
+
+.color-fx {
+    background: linear-gradient(45deg, red, blue);
+}
+
+.color-fx::after {
+    content: '🌈';
+}
+
+/* Legend & Shake */
+
+.shake {
+    animation: jbShake 0.3s ease-in-out;
+}
+
+@keyframes jbShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-4px, 2px);
+    }
+
+    50% {
+        transform: translate(4px, -2px);
+    }
+
+    75% {
+        transform: translate(-2px, -4px);
+    }
+}
+
+.jb-combos-mini {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.combo-count {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.combo-count span {
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.jb-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
