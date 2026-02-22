@@ -47,8 +47,9 @@
             },
             games: [
                 { id: 'sudoku', name: 'Sudoku', xp: 0, icon: '🧩', difficulty: 'Facile - Difficile' },
-                { id: 'mots-meles', name: 'Mots Mêlés', xp: 200, icon: '🔍', difficulty: 'Niveaux multiples' },
-                { id: 'jewel-blitz', name: 'Jewel Blitz', xp: 500, icon: '💎', difficulty: 'Match-3' }
+                { id: 'mots-meles', name: 'Mots Mêlés', xp: 200, icon: '🔍', difficulty: 'Normal' },
+                { id: 'jewel-blitz', name: 'Jewel Blitz', xp: 500, icon: '💎', difficulty: 'Puzzle' },
+                { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' }
             ],
             addXP: function (amount) {
                 this.state.xp += amount;
@@ -117,7 +118,8 @@
                 const descriptions = {
                     'sudoku': 'Le classique jeu de chiffres avec fonctions avancées.',
                     'mots-meles': 'Trouvez tous les mots cachés dans la grille.',
-                    'jewel-blitz': 'Alignez les gemmes pour exploser les scores.'
+                    'jewel-blitz': 'Alignez les gemmes pour exploser les scores.',
+                    'scrabble': 'Placez vos mots stratégiquement sur le plateau.'
                 };
                 return descriptions[id] || '';
             },
@@ -133,6 +135,7 @@
                 if (id === 'sudoku' && window.initSudoku) window.initSudoku(document.getElementById('game-mount'));
                 if (id === 'mots-meles' && window.initMotsMeles) window.initMotsMeles(document.getElementById('game-mount'));
                 if (id === 'jewel-blitz' && window.initJewelBlitz) window.initJewelBlitz(document.getElementById('game-mount'));
+                if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
             }
         };
 
@@ -146,6 +149,7 @@
     <script src="games/sudoku.js"></script>
     <script src="games/mots-meles.js"></script>
     <script src="games/jewel-blitz.js"></script>
+    <script src="games/scrabble.js"></script>
 </body>
 
 </html>

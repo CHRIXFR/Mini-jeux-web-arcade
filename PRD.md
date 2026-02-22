@@ -47,6 +47,15 @@ Conformément aux standards de haute qualité :
     - **Double Arc-en-ciel** : Nettoyage total de la grille.
 - **Interface** : Compteurs de combos en temps réel dans le header.
 
+### 4.5 Jeu : Scrabble Solo
+- **Déblocage** : Coût de **1000 XP**.
+- **Gameplay** : Placer des lettres sur un plateau 15x15 pour former des mots.
+- **Fonctionnalités** :
+    - Mode solo contre une IA simple.
+    - Vérification via un dictionnaire français intégré.
+    - Bonus de cases (Lettre Triple, Mot Double, etc.).
+    - Système de pioche de lettres réaliste.
+
 ## 5. Choix Techniques & Outils de Développement
 - **Langage** : **Vanilla JavaScript** (ES6+).
 - **Styling** : **Vanilla CSS** avec variables CSS pour le thème (système de design robuste).
@@ -60,4 +69,5 @@ Conformément aux standards de haute qualité :
 4. **Phase 4** : Sélecteur de thème manuel et déblocage XP (Terminé).
 5. **Phase 5** : Niveaux de difficulté au Mots Mêlés (Terminé).
 6. **Phase 6** : Développement complet de Jewel Blitz avec combos et effets (Terminé).
+7. **Phase 7** : Implémentation du Scrabble Solo (En cours).
 
