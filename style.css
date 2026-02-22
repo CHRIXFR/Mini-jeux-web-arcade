@@ -1069,6 +1069,174 @@ footer {
     color: var(--accent);
 }
 
+/* Hangman Styles */
+.hg-game-container {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hg-drawing-container {
+    width: 200px;
+    height: 250px;
+    margin-bottom: 2rem;
+    position: relative;
+    border-bottom: 4px solid var(--text-secondary);
+}
+
+.hg-part {
+    position: absolute;
+    background: var(--text-primary);
+    display: none;
+    transition: var(--transition);
+}
+
+.hg-part.visible {
+    display: block;
+}
+
+.hg-gallows-v {
+    width: 4px;
+    height: 100%;
+    left: 40px;
+}
+
+.hg-gallows-h {
+    width: 100px;
+    height: 4px;
+    left: 40px;
+    top: 0;
+}
+
+.hg-rope {
+    width: 2px;
+    height: 30px;
+    left: 140px;
+    top: 0;
+}
+
+.hg-head {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--text-primary);
+    border-radius: 50%;
+    left: 121px;
+    top: 30px;
+    background: none;
+}
+
+.hg-body {
+    width: 4px;
+    height: 80px;
+    left: 139px;
+    top: 68px;
+}
+
+.hg-arm-l {
+    width: 50px;
+    height: 4px;
+    left: 90px;
+    top: 90px;
+    transform: rotate(-30deg);
+}
+
+.hg-arm-r {
+    width: 50px;
+    height: 4px;
+    left: 142px;
+    top: 90px;
+    transform: rotate(30deg);
+}
+
+.hg-leg-l {
+    width: 50px;
+    height: 4px;
+    left: 95px;
+    top: 175px;
+    transform: rotate(-45deg);
+}
+
+.hg-leg-r {
+    width: 50px;
+    height: 4px;
+    left: 137px;
+    top: 175px;
+    transform: rotate(45deg);
+}
+
+.hg-word-display {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hg-letter-slot {
+    width: 30px;
+    border-bottom: 3px solid var(--accent);
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    height: 40px;
+    text-transform: uppercase;
+}
+
+.hg-keyboard {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.hg-key {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.8rem 0;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+}
+
+.hg-key:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.hg-key:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.hg-key.correct {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+.hg-key.wrong {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+}
+
+@media (max-width: 480px) {
+    .hg-keyboard {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .hg-letter-slot {
+        width: 20px;
+        font-size: 1.5rem;
+    }
+}
+
 @media (max-width: 600px) {
     .scr-cell {
         font-size: 0.4rem;

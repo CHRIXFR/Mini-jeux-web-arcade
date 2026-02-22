@@ -56,6 +56,14 @@ Conformément aux standards de haute qualité :
     - Bonus de cases (Lettre Triple, Mot Double, etc.).
     - Système de pioche de lettres réaliste.
 
+### 4.6 Jeu : Le Pendu (Hangman)
+- **Déblocage** : Coût de **100 XP**.
+- **Gameplay** : Deviner un mot caché lettre par lettre avant que le pendu ne soit complet.
+- **Fonctionnalités** :
+    - Thèmes de mots variés (Animaux, Pays, Objets, etc.).
+    - Interface visuelle avec dessin progressif du pendu.
+    - Clavier virtuel pour une utilisation mobile facilitée.
+
 ## 5. Choix Techniques & Outils de Développement
 - **Langage** : **Vanilla JavaScript** (ES6+).
 - **Styling** : **Vanilla CSS** avec variables CSS pour le thème (système de design robuste).
@@ -69,5 +77,6 @@ Conformément aux standards de haute qualité :
 4. **Phase 4** : Sélecteur de thème manuel et déblocage XP (Terminé).
 5. **Phase 5** : Niveaux de difficulté au Mots Mêlés (Terminé).
 6. **Phase 6** : Développement complet de Jewel Blitz avec combos et effets (Terminé).
-7. **Phase 7** : Implémentation du Scrabble Solo (En cours).
+7. **Phase 7** : Implémentation du Scrabble Solo (Terminé).
+8. **Phase 8** : Développement du jeu Le Pendu.
 
