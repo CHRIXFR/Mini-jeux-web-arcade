@@ -90,7 +90,10 @@ class ScrabbleGame {
                 }
             }
             this.isDictionaryLoaded = true;
-            if (btn) btn.textContent = "Valider";
+            if (btn) {
+                btn.textContent = "Valider";
+                btn.removeAttribute('disabled');
+            }
             console.log(`Dictionnaire chargé : ${this.dictionary.size} mots.`);
         } catch (error) {
             console.error("Erreur chargement dico:", error);
