@@ -162,7 +162,7 @@ class ScrabbleGame {
                 <div id="scr-rack" class="scr-rack"></div>
 
                 <div class="scr-controls">
-                    <select id="scr-difficulty" class="btn-secondary" style="margin-right: 10px; max-width: 130px;">
+                    <select id="scr-difficulty" class="btn-secondary diff-select" style="margin-right: 10px; max-width: 130px;">
                         <option value="beginner">Débutant</option>
                         <option value="intermediate">Intermédiaire</option>
                         <option value="confirmed">Confirmé</option>
@@ -611,7 +611,7 @@ class ScrabbleGame {
             }
 
             this.tempMoves = chosenMove.placements;
-            const { turnScore } = this.evaluateBoardState();
+            let finalScore = chosenMove.score;
 
             // Commit AI Move
             for (const m of this.tempMoves) {
@@ -622,7 +622,6 @@ class ScrabbleGame {
             }
             this.firstMove = false;
 
-            let finalScore = turnScore;
             if (this.tempMoves.length === 7) finalScore += 50;
 
             this.aiScore += finalScore;

@@ -234,6 +234,11 @@ footer {
     background: rgba(255, 255, 255, 0.05);
 }
 
+select option {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
 /* Toast Notification */
 .toast {
     position: fixed;
