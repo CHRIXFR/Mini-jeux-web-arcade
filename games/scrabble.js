@@ -729,10 +729,10 @@ class ScrabbleGame {
 
         const startTime = performance.now();
         let timeLimit = 500; // ms Default
-        if (this.difficulty === 'beginner') timeLimit = 500;
-        else if (this.difficulty === 'intermediate') timeLimit = 1000;
-        else if (this.difficulty === 'confirmed') timeLimit = 2000;
-        else if (this.difficulty === 'pro') timeLimit = 3000;
+        if (this.difficulty === 'beginner') timeLimit = 1000;
+        else if (this.difficulty === 'intermediate') timeLimit = 2000;
+        else if (this.difficulty === 'confirmed') timeLimit = 4000;
+        else if (this.difficulty === 'pro') timeLimit = 6000;
 
         let timeExceeded = false;
 
@@ -787,7 +787,8 @@ class ScrabbleGame {
 
                         if (isValidPlacement) {
                             const { isValid, turnScore } = this.evaluateBoardState();
-                            if (isValid) {
+                            // Must be entirely valid and score > 0
+                            if (isValid && turnScore > 0) {
                                 // To avoid duplicate identical words, we stringify tempMoves
                                 const wordId = this.tempMoves.map(m => `${m.r},${m.c}=${m.letter}`).join('|');
                                 if (!validMoves.find(v => v.id === wordId)) {
