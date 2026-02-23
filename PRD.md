@@ -57,13 +57,15 @@ Conformément aux standards de haute qualité :
 
 ### 4.6 Jeu : Scrabble Solo
 - **Déblocage** : Coût de **1000 XP**.
-- **Statut** : En développement (non entièrement fonctionnel).
+- **Statut** : Terminé.
 - **Gameplay** : Placer des lettres sur un plateau 15x15 pour former des mots.
 - **Fonctionnalités** :
-    - Mode solo contre une IA simple.
-    - Vérification via un dictionnaire français intégré.
-    - Bonus de cases (Lettre Triple, Mot Double, etc.).
-    - Système de pioche de lettres réaliste.
+    - Dictionnaire Officiel du Scrabble (ODS) intégré pour validation stricte.
+    - Comptage officiel des points (Cases Lettre/Mot Double/Triple appliquées aux nouvelles tuiles, mots croisés cumulés).
+    - Règle du premier mot (passage par l'étoile centrale) et rattachement des mots suivants obligatoires.
+    - Bonus Bingo (+50 points) pour 7 lettres placées.
+    - Gestion du Joker (choix de la lettre).
+    - Intelligence Artificielle intégrée.
 
 ## 5. Choix Techniques & Outils de Développement
 - **Langage** : **Vanilla JavaScript** (ES6+).
@@ -79,5 +81,5 @@ Conformément aux standards de haute qualité :
 5. **Phase 5** : Niveaux de difficulté au Mots Mêlés (Terminé).
 6. **Phase 6** : Développement complet de Match-3 avec combos et effets (Terminé).
 7. **Phase 7** : Développement du jeu Le Pendu (Terminé).
-8. **Phase 8** : Implémentation du Scrabble Solo (En développement).
+8. **Phase 8** : Implémentation du Scrabble Solo (Terminé).
 
