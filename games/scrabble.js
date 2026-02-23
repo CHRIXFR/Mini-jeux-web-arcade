@@ -306,12 +306,18 @@ class ScrabbleGame {
     }
 
     validateMove() {
+        console.log("=== BEGIN validateMove ===");
+        console.log("tempMoves:", JSON.parse(JSON.stringify(this.tempMoves)));
+        console.log("firstMove:", this.firstMove);
+
         if (this.tempMoves.length === 0) {
+            console.log("ERROR: tempMoves empty");
             window.arcade.showToast('Placez au moins une lettre !');
             return;
         }
 
         if (!this.isDictionaryLoaded) {
+            console.log("ERROR: dictionary not loaded");
             window.arcade.showToast('Dictionnaire en cours de chargement...');
             return;
         }
@@ -320,13 +326,43 @@ class ScrabbleGame {
         const isHorizontal = this.tempMoves.every(m => m.r === this.tempMoves[0].r);
         const isVertical = this.tempMoves.every(m => m.c === this.tempMoves[0].c);
 
+        console.log("Alignment check: isHorizontal=", isHorizontal, "isVertical=", isVertical);
+
         if (!isHorizontal && !isVertical && this.tempMoves.length > 1) {
+            console.log("ERROR: Not aligned horizontally or vertically");
             window.arcade.showToast('Les lettres doivent être alignées !');
             return;
         }
 
         // Sort moves
         this.tempMoves.sort((a, b) => isHorizontal ? a.c - b.c : a.r - b.r);
+
+        // Gap check
+        if (this.tempMoves.length > 1) {
+            const first = this.tempMoves[0];
+            const last = this.tempMoves[this.tempMoves.length - 1];
+            if (isHorizontal) {
+                for (let c = first.c; c <= last.c; c++) {
+                    const inTemp = this.tempMoves.find(m => m.r === first.r && m.c === c);
+                    const onBoard = this.board[first.r][c];
+                    if (!inTemp && !onBoard) {
+                        console.log(`ERROR: Gap at ${first.r},${c}`);
+                        window.arcade.showToast('Le mot ne doit pas contenir de trous.');
+                        return;
+                    }
+                }
+            } else {
+                for (let r = first.r; r <= last.r; r++) {
+                    const inTemp = this.tempMoves.find(m => m.r === r && m.c === first.c);
+                    const onBoard = this.board[r][first.c];
+                    if (!inTemp && !onBoard) {
+                        console.log(`ERROR: Gap at ${r},${first.c}`);
+                        window.arcade.showToast('Le mot ne doit pas contenir de trous.');
+                        return;
+                    }
+                }
+            }
+        }
 
         // 2. Constraints Check (Center OR Attached)
         let passingCenter = false;
@@ -342,28 +378,37 @@ class ScrabbleGame {
             }
         }
 
+        console.log("passingCenter=", passingCenter, "isAttached=", isAttached);
+
         if (this.firstMove && !passingCenter) {
+            console.log("ERROR: First move doesn't pass center");
             window.arcade.showToast('Le premier mot doit passer par l\'étoile au centre');
             return;
         }
         if (!this.firstMove && !isAttached) {
+            console.log("ERROR: Move is not attached to existing pieces");
             window.arcade.showToast('Le mot doit être rattaché aux lettres existantes');
             return;
         }
 
         // 3. Find and Validate Words, Calculate Score
         // To accurately calculate, we temporarily place tiles
+        console.log("Placing tiles temporarily on board");
         for (const m of this.tempMoves) this.board[m.r][m.c] = { letter: m.letter, isJoker: m.isJoker, temp: true };
 
         const { isValid, turnScore, invalidWords } = this.evaluateBoardState();
 
+        console.log("evaluateBoardState results:", { isValid, turnScore, invalidWords });
+
         if (!isValid) {
+            console.log("ERROR: Invalid words found");
             for (const m of this.tempMoves) this.board[m.r][m.c] = null; // Revert
             window.arcade.showToast(`Mots invalides : ${invalidWords.join(', ')}`);
             return;
         }
 
         // 4. Commit Move
+        console.log("=== Move is VALID ===");
         this.firstMove = false;
         for (const m of this.tempMoves) {
             this.board[m.r][m.c].temp = false;
@@ -388,6 +433,7 @@ class ScrabbleGame {
     }
 
     evaluateBoardState() {
+        console.log("=== BEGIN evaluateBoardState ===");
         let turnScore = 0;
         let invalidWords = [];
         let wordsFormed = 0;
@@ -397,6 +443,7 @@ class ScrabbleGame {
 
         // Check horizontal and vertical words formed by newly placed tiles
         for (const m of this.tempMoves) {
+            console.log(`Checking temp tile at ${m.r},${m.c} (${m.letter})`);
             // Horizontal sweep
             let hc = m.c; while (hc > 0 && getTileNode(m.r, hc - 1)) hc--;
             const hOrigin = `${m.r},${hc},H`;
@@ -424,8 +471,14 @@ class ScrabbleGame {
                     currC++;
                 }
 
+                console.log(`Horizontal sweep at ${hOrigin}: word='${wordStr}', length=${length}`);
                 if (length > 1) {
-                    if (!this.dictionary.has(wordStr)) invalidWords.push(wordStr);
+                    if (!this.dictionary.has(wordStr)) {
+                        console.log(`Word '${wordStr}' NOT in dictionary.`);
+                        invalidWords.push(wordStr);
+                    } else {
+                        console.log(`Word '${wordStr}' OK. Score +${wordBaseScore * wordMultiplier}`);
+                    }
                     turnScore += (wordBaseScore * wordMultiplier);
                     wordsFormed++;
                     processedOrigins.add(hOrigin);
@@ -459,8 +512,14 @@ class ScrabbleGame {
                     currR++;
                 }
 
+                console.log(`Vertical sweep at ${vOrigin}: word='${wordStr}', length=${length}`);
                 if (length > 1) {
-                    if (!this.dictionary.has(wordStr)) invalidWords.push(wordStr);
+                    if (!this.dictionary.has(wordStr)) {
+                        console.log(`Word '${wordStr}' NOT in dictionary.`);
+                        invalidWords.push(wordStr);
+                    } else {
+                        console.log(`Word '${wordStr}' OK. Score +${wordBaseScore * wordMultiplier}`);
+                    }
                     turnScore += (wordBaseScore * wordMultiplier);
                     wordsFormed++;
                     processedOrigins.add(vOrigin);
@@ -470,11 +529,13 @@ class ScrabbleGame {
 
         // Disconnected tiles check (holes in placement)
         if (wordsFormed === 0 && this.tempMoves.length > 0) {
+            console.log("No valid words formed (length>1). Isolated/too short placement.");
             // Can happen if placing 1 tile that creates no words (meaning length 1 in both dirs)
             // But if it's first move, len > 1 is required
             invalidWords.push("[Mot trop court / Isolé]");
         }
 
+        console.log("=== END evaluateBoardState ===");
         return { isValid: invalidWords.length === 0, turnScore, invalidWords };
     }
 
