@@ -46,11 +46,11 @@
                 testMode: new URLSearchParams(window.location.search).has('test')
             },
             games: [
-                { id: 'sudoku', name: 'Sudoku', xp: 0, icon: '🧩', difficulty: 'Facile - Difficile' },
-                { id: 'hangman', name: 'Le Pendu', xp: 100, icon: '😵', difficulty: 'Normal' },
-                { id: 'mots-meles', name: 'Mots Mêlés', xp: 200, icon: '🔍', difficulty: 'Normal' },
-                { id: 'jewel-blitz', name: 'Jewel Blitz', xp: 500, icon: '💎', difficulty: 'Puzzle' },
-                { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' }
+                { id: 'hangman', name: 'Le Pendu', xp: 0, icon: '😵', difficulty: 'Normal' },
+                { id: 'mots-meles', name: 'Mots Mêlés', xp: 100, icon: '🔍', difficulty: 'Normal' },
+                { id: 'sudoku', name: 'Sudoku', xp: 250, icon: '🧩', difficulty: 'Facile - Difficile' },
+                { id: 'jewel-blitz', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
+                { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'En développement' }
             ],
             addXP: function (amount) {
                 this.state.xp += amount;

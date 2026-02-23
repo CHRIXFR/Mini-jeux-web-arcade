@@ -27,17 +27,25 @@ Conformément aux standards de haute qualité :
 - **Déblocage de Contenu** : Les nouveaux jeux se débloquent automatiquement ou manuellement une fois le palier d'XP atteint.
 - **Barre de Progression** : Affichage du niveau actuel et du total d'XP en haut de l'écran.
 
-### 4.2 Jeu : Sudoku
+### 4.2 Jeu : Le Pendu (Hangman)
 - **Déblocage** : Disponible par défaut (**0 XP**).
-- **Niveaux de difficulté** : Facile, Moyen, Difficile.
-- **Fonctions** : Notes, surbrillance, erreurs en temps réel, chrono.
+- **Gameplay** : Deviner un mot caché lettre par lettre avant que le pendu ne soit complet.
+- **Fonctionnalités** :
+    - Thèmes de mots variés (Animaux, Pays, Objets, etc.).
+    - Interface visuelle avec dessin progressif du pendu.
+    - Clavier virtuel pour une utilisation mobile facilitée.
 
 ### 4.3 Jeu : Mots Mêlés (Word Search)
-- **Déblocage** : Coût de **200 XP**.
+- **Déblocage** : Coût de **100 XP**.
 - **Niveaux de difficulté** : Ajout de niveaux (ex: Taille de grille, temps limité).
 - **Génération** : Grilles dynamiques en français.
 
-### 4.4 Jeu : Jewel Blitz (Match-3)
+### 4.4 Jeu : Sudoku
+- **Déblocage** : Coût de **250 XP**.
+- **Niveaux de difficulté** : Facile, Moyen, Difficile.
+- **Fonctions** : Notes, surbrillance, erreurs en temps réel, chrono.
+
+### 4.5 Jeu : Match-3 (anciennement Jewel Blitz)
 - **Déblocage** : Coût de **500 XP**.
 - **Gameplay** : Aligner des gemmes identiques.
 - **Combos Spéciaux** : 
@@ -47,22 +55,15 @@ Conformément aux standards de haute qualité :
     - **Double Arc-en-ciel** : Nettoyage total de la grille.
 - **Interface** : Compteurs de combos en temps réel dans le header.
 
-### 4.5 Jeu : Scrabble Solo
+### 4.6 Jeu : Scrabble Solo
 - **Déblocage** : Coût de **1000 XP**.
+- **Statut** : En développement (non entièrement fonctionnel).
 - **Gameplay** : Placer des lettres sur un plateau 15x15 pour former des mots.
 - **Fonctionnalités** :
     - Mode solo contre une IA simple.
     - Vérification via un dictionnaire français intégré.
     - Bonus de cases (Lettre Triple, Mot Double, etc.).
     - Système de pioche de lettres réaliste.
-
-### 4.6 Jeu : Le Pendu (Hangman)
-- **Déblocage** : Coût de **100 XP**.
-- **Gameplay** : Deviner un mot caché lettre par lettre avant que le pendu ne soit complet.
-- **Fonctionnalités** :
-    - Thèmes de mots variés (Animaux, Pays, Objets, etc.).
-    - Interface visuelle avec dessin progressif du pendu.
-    - Clavier virtuel pour une utilisation mobile facilitée.
 
 ## 5. Choix Techniques & Outils de Développement
 - **Langage** : **Vanilla JavaScript** (ES6+).
@@ -76,7 +77,7 @@ Conformément aux standards de haute qualité :
 3. **Phase 3** : Développement du Mots Mêlés (Terminé).
 4. **Phase 4** : Sélecteur de thème manuel et déblocage XP (Terminé).
 5. **Phase 5** : Niveaux de difficulté au Mots Mêlés (Terminé).
-6. **Phase 6** : Développement complet de Jewel Blitz avec combos et effets (Terminé).
-7. **Phase 7** : Implémentation du Scrabble Solo (Terminé).
-8. **Phase 8** : Développement du jeu Le Pendu.
+6. **Phase 6** : Développement complet de Match-3 avec combos et effets (Terminé).
+7. **Phase 7** : Développement du jeu Le Pendu (Terminé).
+8. **Phase 8** : Implémentation du Scrabble Solo (En développement).
 
