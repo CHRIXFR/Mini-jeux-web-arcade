@@ -17,6 +17,8 @@ class HangmanGame {
             "PAPILLON", "QUARTIER", "REQUIN", "SOLEIL", "TORTUE",
             "UNIVERS", "VOITURE", "WAGON", "XYLOPHONE", "YAOURT", "ZEBRE"
         ];
+        this.fullDictionary = [];
+        this.isDictionaryLoaded = false;
         this.word = "";
         this.guessedLetters = new Set();
         this.wrongGuesses = 0;
@@ -24,14 +26,58 @@ class HangmanGame {
         this.isGameOver = false;
     }
 
-    start() {
-        this.word = this.words[Math.floor(Math.random() * this.words.length)];
+    async start() {
         this.guessedLetters.clear();
         this.wrongGuesses = 0;
         this.isGameOver = false;
+
         this.renderLayout();
+
+        // Disable keyboard and reset button while loading
+        const btnReset = document.getElementById('hg-btn-reset');
+        if (btnReset) btnReset.disabled = true;
+        document.querySelectorAll('.hg-key').forEach(k => k.disabled = true);
+
+        await this.loadDictionary();
+
+        const dict = (this.isDictionaryLoaded && this.fullDictionary.length > 0) ? this.fullDictionary : this.words;
+        this.word = dict[Math.floor(Math.random() * dict.length)];
+
+        this.renderKeyboard();
+        if (btnReset) btnReset.disabled = false;
+
         this.updateWordDisplay();
         this.updateDrawing();
+    }
+
+    async loadDictionary() {
+        if (this.isDictionaryLoaded) return;
+        try {
+            const btn = document.getElementById('hg-btn-reset');
+            if (btn) btn.textContent = "Chargement dico...";
+
+            const response = await fetch('games/dictionary/French ODS dictionary.txt');
+            if (!response.ok) throw new Error('Dictionnaire introuvable');
+
+            const text = await response.text();
+            const words = text.split(/\r?\n/);
+
+            this.fullDictionary = [];
+            for (let word of words) {
+                word = word.trim().toUpperCase();
+                // Filter words for hangman: length between 5 and 10 and A-Z only
+                if (word.length >= 5 && word.length <= 10 && /^[A-Z]+$/.test(word)) {
+                    this.fullDictionary.push(word);
+                }
+            }
+            this.isDictionaryLoaded = true;
+            if (btn) btn.textContent = "Nouveau Mot";
+            console.log(`Dictionnaire Pendu chargé : ${this.fullDictionary.length} mots.`);
+        } catch (error) {
+            console.error("Erreur chargement dico:", error);
+            const btn = document.getElementById('hg-btn-reset');
+            if (btn) btn.textContent = "Nouveau Mot";
+        }
     }
 
     renderLayout() {

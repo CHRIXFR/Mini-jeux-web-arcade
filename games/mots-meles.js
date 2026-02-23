@@ -30,11 +30,13 @@ class WordSearchGame {
             "HIVER", "ETE", "AUTOMNE", "PRINTEMPS", "NEIGE", "PLUIE", "SOLEIL", "NUAGE",
             "GATEAU", "CHOCOLAT", "CUISINE", "TABLE", "CHAISE", "FENÊTRE", "PORTE", "MAISON"
         ];
+        this.fullDictionary = [];
+        this.isDictionaryLoaded = false;
     }
 
-    start() {
+    async start() {
         this.renderLayout();
-        this.newGame();
+        await this.newGame();
     }
 
     applyDifficulty() {
@@ -54,17 +56,85 @@ class WordSearchGame {
         }
     }
 
-    newGame() {
+    async newGame() {
         this.applyDifficulty();
         this.foundWords.clear();
+
+        const wsGrid = document.getElementById('ws-grid');
+        if (wsGrid) {
+            wsGrid.style.gridTemplateColumns = '1fr';
+            wsGrid.innerHTML = '<div class="loading-state">Génération en cours...</div>';
+        }
+
+        await this.loadDictionary();
+
         this.generateGrid();
         this.renderGrid();
         this.renderWordList();
     }
 
+    async loadDictionary() {
+        if (this.isDictionaryLoaded) return;
+        try {
+            const btn = document.getElementById('ws-btn-new');
+            const select = document.getElementById('ws-diff-select');
+            if (btn) {
+                btn.textContent = "Chargement...";
+                btn.disabled = true;
+            }
+            if (select) select.disabled = true;
+
+            const response = await fetch('games/dictionary/French ODS dictionary.txt');
+            if (!response.ok) throw new Error('Dictionnaire introuvable');
+
+            const text = await response.text();
+            const words = text.split(/\r?\n/);
+
+            this.fullDictionary = [];
+            for (let word of words) {
+                word = word.trim().toUpperCase();
+                if (word.length >= 3 && word.length <= 12 && /^[A-Z]+$/.test(word)) {
+                    this.fullDictionary.push(word);
+                }
+            }
+            this.isDictionaryLoaded = true;
+
+            if (btn) {
+                btn.textContent = "Nouveau";
+                btn.disabled = false;
+            }
+            if (select) select.disabled = false;
+            console.log(`Dictionnaire Mots Mêlés chargé : ${this.fullDictionary.length} mots.`);
+        } catch (error) {
+            console.error("Erreur chargement dico:", error);
+            const btn = document.getElementById('ws-btn-new');
+            const select = document.getElementById('ws-diff-select');
+            if (btn) {
+                btn.textContent = "Nouveau";
+                btn.disabled = false;
+            }
+            if (select) select.disabled = false;
+        }
+    }
+
     generateGrid() {
         // Sélectionner les mots aléatoires
-        this.wordsToFind = this.shuffle([...this.wordList]).slice(0, this.wordCount);
+        let pool = this.wordList;
+        if (this.isDictionaryLoaded) {
+            pool = this.fullDictionary.filter(w => w.length >= 4 && w.length <= this.gridSize);
+        }
+
+        this.wordsToFind = [];
+        if (pool.length > 0) {
+            const pickedIndices = new Set();
+            while (this.wordsToFind.length < this.wordCount && pickedIndices.size < pool.length) {
+                const idx = Math.floor(Math.random() * pool.length);
+                if (!pickedIndices.has(idx)) {
+                    pickedIndices.add(idx);
+                    this.wordsToFind.push(pool[idx]);
+                }
+            }
+        }
 
         // Initialiser grille vide
         this.grid = Array(this.gridSize).fill().map(() => Array(this.gridSize).fill(''));
