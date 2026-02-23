@@ -665,37 +665,137 @@ class ScrabbleGame {
         // Extremely simplified AI approach: Try to place single letters or short words adjacent to existing
         // This is a placeholder to keep browser from freezing while providing a functional opponent.
 
-        for (const anchor of anchors.slice(0, 10)) { // Limit anchors checked for perf
+        const aiLetters = this.aiRack.map(l => l === '?' ? '' : l).join(''); // simple heuristic: use only real letters for word check
+        const hasJoker = this.aiRack.includes('?');
+
+        // Iterate through anchors checking what words we could form
+        // We will scan dictionary words that contain at least one letter we can place on an anchor
+        // For performance, we'll limit the search drastically. A real Scrabble AI uses a GADDAG or Trie generation.
+        // We have a Trie! We can do a recursive search from anchors.
+
+        // AI Logic:
+        // 1. Find all "anchors" (empty squares adjacent to filled squares, plus the center if first move).
+        // 2. For each anchor, try extending horizontally and vertically.
+        // Due to browser performance constraints, we'll do a simpler heuristic:
+        // Find existing letters on the board. Try to prepend or append rack letters to them.
+
+        const tryPlacements = (r, c, dRow, dCol, availableRack, currentWord, placements, isPrefix) => {
+            // simplified naive back-tracking for browser
+        };
+
+        // Simplified better Brute-force for browser:
+        // 1. Identify all sequences of letters currently on the board (rows and cols).
+        //    (e.g., if "HELLO" is on the board).
+        // 2. Try to add 1 to 5 letters from the rack to the beginning or end of these sequences.
+
+        const MAX_AI_CHECKS = 1000;
+        let checks = 0;
+
+        for (const anchor of anchors) {
+            if (checks > MAX_AI_CHECKS) break;
+
             for (let dir = 0; dir < 2; dir++) { // 0: Horiz, 1: Vert
-                let maxLen = Math.min(this.aiRack.length, 5); // Max 5 letters for speed
+                const dr = dir === 1 ? 1 : 0;
+                const dc = dir === 0 ? 1 : 0;
 
-                for (let i = 0; i < this.aiRack.length; i++) {
-                    const l = this.aiRack[i];
-                    const letter = l === '?' ? 'E' : l; // Naive joker assumption
-                    const isJoker = l === '?';
+                // Try placing 1 to AI rack length letters starting at this anchor
+                for (let len = 1; len <= this.aiRack.length; len++) {
+                    // Get permutations of rack of length `len`
+                    const perms = this.getRackPermutations(len);
+                    for (const perm of perms) {
+                        checks++;
+                        if (checks > MAX_AI_CHECKS) break;
 
-                    this.tempMoves = [{ r: anchor.r, c: anchor.c, letter, isJoker }];
-                    // Temporarily place
-                    this.board[anchor.r][anchor.c] = { letter, isJoker, temp: true };
+                        this.tempMoves = [];
+                        let isValidPlacement = true;
+                        let pr = anchor.r;
+                        let pc = anchor.c;
 
-                    const { isValid, turnScore } = this.evaluateBoardState();
+                        for (let i = 0; i < len; i++) {
+                            // Skip over already placed tiles
+                            while (pr >= 0 && pr < 15 && pc >= 0 && pc < 15 && this.board[pr][pc] !== null) {
+                                pr += dr;
+                                pc += dc;
+                            }
 
-                    if (isValid) {
-                        validMoves.push({
-                            word: letter,
-                            placements: [...this.tempMoves],
-                            score: turnScore
-                        });
+                            if (pr >= 15 || pc >= 15) {
+                                isValidPlacement = false;
+                                break;
+                            }
+
+                            const l = perm[i];
+                            const letter = l === '?' ? 'E' : l;
+                            const isJoker = l === '?';
+
+                            this.tempMoves.push({ r: pr, c: pc, letter, isJoker });
+                            this.board[pr][pc] = { letter, isJoker, temp: true };
+
+                            pr += dr;
+                            pc += dc;
+                        }
+
+                        if (isValidPlacement) {
+                            const { isValid, turnScore } = this.evaluateBoardState();
+                            if (isValid) {
+                                // To avoid duplicate identical words, we stringify tempMoves
+                                const wordId = this.tempMoves.map(m => `${m.r},${m.c}=${m.letter}`).join('|');
+                                if (!validMoves.find(v => v.id === wordId)) {
+                                    validMoves.push({
+                                        id: wordId,
+                                        word: this.tempMoves.map(m => m.letter).join(''),
+                                        placements: [...this.tempMoves],
+                                        score: turnScore
+                                    });
+                                }
+                            }
+                        }
+
+                        // Revert
+                        for (const m of this.tempMoves) {
+                            this.board[m.r][m.c] = null;
+                        }
                     }
-
-                    // Revert
-                    this.board[anchor.r][anchor.c] = null;
-                    this.tempMoves = [];
                 }
             }
         }
 
+        // Disable console logs temporarily
+        const origLog = console.log;
+        console.log = () => { };
+
+        // Restore logs after
+        // console.log = origLog;
+
         return validMoves;
+    }
+
+    getRackPermutations(len) {
+        const results = [];
+        const used = Array(this.aiRack.length).fill(false);
+
+        const permute = (current) => {
+            if (current.length === len) {
+                results.push([...current]);
+                return;
+            }
+            // Use a Set to avoid duplicate permutations at this depth
+            const seen = new Set();
+            for (let i = 0; i < this.aiRack.length; i++) {
+                if (used[i]) continue;
+                const letter = this.aiRack[i];
+                if (seen.has(letter)) continue;
+
+                seen.add(letter);
+                used[i] = true;
+                current.push(letter);
+                permute(current);
+                current.pop();
+                used[i] = false;
+            }
+        };
+
+        permute([]);
+        return results;
     }
 
     checkEndGame() {
