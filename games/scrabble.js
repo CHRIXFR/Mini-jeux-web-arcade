@@ -24,6 +24,7 @@ class ScrabbleGame {
         this.trie = new TrieNode();
         this.isDictionaryLoaded = false;
         this.firstMove = true;
+        this.difficulty = 'beginner'; // default difficulty
 
         this.letterData = {
             'A': { v: 1, c: 9 }, 'B': { v: 3, c: 2 }, 'C': { v: 3, c: 2 }, 'D': { v: 2, c: 3 },
@@ -161,6 +162,12 @@ class ScrabbleGame {
                 <div id="scr-rack" class="scr-rack"></div>
 
                 <div class="scr-controls">
+                    <select id="scr-difficulty" class="btn-secondary" style="margin-right: 10px; max-width: 130px;">
+                        <option value="beginner">Débutant</option>
+                        <option value="intermediate">Intermédiaire</option>
+                        <option value="confirmed">Confirmé</option>
+                        <option value="pro">Pro</option>
+                    </select>
                     <button id="scr-btn-play" class="btn-primary" disabled>Chargement...</button>
                     <button id="scr-btn-cancel" class="btn-secondary">Annuler</button>
                     <button id="scr-btn-shuffle" class="btn-secondary">Mélanger</button>
@@ -182,6 +189,10 @@ class ScrabbleGame {
         document.getElementById('scr-btn-cancel').onclick = () => this.cancelTempMove();
         document.getElementById('scr-btn-shuffle').onclick = () => this.shuffleRack();
         document.getElementById('scr-btn-pass').onclick = () => this.passTurn();
+
+        const diffSelect = document.getElementById('scr-difficulty');
+        diffSelect.value = this.difficulty;
+        diffSelect.onchange = (e) => this.difficulty = e.target.value;
     }
 
     renderBoard() {
@@ -559,15 +570,45 @@ class ScrabbleGame {
     }
 
     aiPlay() {
-        // Find all possible words the AI can form
+        // Find all possible words the AI can form within the allowed time
         const possibleMoves = this.findAllValidAiMoves();
 
         if (possibleMoves.length > 0) {
-            // Sort by score descending
-            possibleMoves.sort((a, b) => b.score - a.score);
+            let chosenMove;
 
-            // Difficulty logic (MVP: always take the best move)
-            const chosenMove = possibleMoves[0];
+            if (this.difficulty === 'beginner') {
+                // Prefers short words and low score
+                possibleMoves.sort((a, b) => {
+                    if (a.word.length !== b.word.length) return a.word.length - b.word.length;
+                    return a.score - b.score;
+                });
+                chosenMove = possibleMoves[0];
+            } else if (this.difficulty === 'intermediate') {
+                // Prefers 4 letter words
+                const fourLetters = possibleMoves.filter(m => m.word.length === 4);
+                if (fourLetters.length > 0) {
+                    fourLetters.sort((a, b) => b.score - a.score);
+                    chosenMove = fourLetters[0];
+                } else {
+                    possibleMoves.sort((a, b) => b.score - a.score);
+                    // Take a decent move but not the absolute best
+                    chosenMove = possibleMoves[Math.min(possibleMoves.length - 1, 2)];
+                }
+            } else if (this.difficulty === 'confirmed') {
+                // Prefers 5-6 letter words
+                const midWords = possibleMoves.filter(m => m.word.length >= 5 && m.word.length <= 6);
+                if (midWords.length > 0) {
+                    midWords.sort((a, b) => b.score - a.score);
+                    chosenMove = midWords[0];
+                } else {
+                    possibleMoves.sort((a, b) => b.score - a.score);
+                    chosenMove = possibleMoves[0];
+                }
+            } else {
+                // Pro: take the absolute best move
+                possibleMoves.sort((a, b) => b.score - a.score);
+                chosenMove = possibleMoves[0];
+            }
 
             this.tempMoves = chosenMove.placements;
             const { turnScore } = this.evaluateBoardState();
@@ -684,27 +725,37 @@ class ScrabbleGame {
         };
 
         // Simplified better Brute-force for browser:
-        // 1. Identify all sequences of letters currently on the board (rows and cols).
-        //    (e.g., if "HELLO" is on the board).
-        // 2. Try to add 1 to 5 letters from the rack to the beginning or end of these sequences.
+        // Try to add 1 to N letters from the rack to existing letters.
 
-        const MAX_AI_CHECKS = 1000;
-        let checks = 0;
+        const startTime = performance.now();
+        let timeLimit = 500; // ms Default
+        if (this.difficulty === 'beginner') timeLimit = 500;
+        else if (this.difficulty === 'intermediate') timeLimit = 1000;
+        else if (this.difficulty === 'confirmed') timeLimit = 2000;
+        else if (this.difficulty === 'pro') timeLimit = 3000;
+
+        let timeExceeded = false;
 
         for (const anchor of anchors) {
-            if (checks > MAX_AI_CHECKS) break;
+            if (timeExceeded) break;
 
             for (let dir = 0; dir < 2; dir++) { // 0: Horiz, 1: Vert
+                if (timeExceeded) break;
                 const dr = dir === 1 ? 1 : 0;
                 const dc = dir === 0 ? 1 : 0;
 
                 // Try placing 1 to AI rack length letters starting at this anchor
                 for (let len = 1; len <= this.aiRack.length; len++) {
+                    if (timeExceeded) break;
+
                     // Get permutations of rack of length `len`
                     const perms = this.getRackPermutations(len);
                     for (const perm of perms) {
-                        checks++;
-                        if (checks > MAX_AI_CHECKS) break;
+                        // Check time constraint
+                        if (performance.now() - startTime > timeLimit) {
+                            timeExceeded = true;
+                            break;
+                        }
 
                         this.tempMoves = [];
                         let isValidPlacement = true;
