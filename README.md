@@ -1,0 +1,43 @@
+# 🎮 Arcade Minimaliste
+
+Une collection de mini-jeux classiques, élégants et entièrement gratuits — jouable directement dans le navigateur, sans installation.
+
+**[▶ Jouer maintenant](https://chrixfr.github.io/Mini-jeux-web-arcade/)**
+
+---
+
+## Jeux disponibles
+
+| Jeu | Déblocage | Description |
+|---|---|---|
+| 😵 **Le Pendu** | Gratuit | Devinez le mot avant que le pendu soit complet |
+| 🔍 **Mots Mêlés** | 100 XP | Trouvez les mots cachés dans la grille |
+| 🧩 **Sudoku** | 250 XP | Le classique avec notes, indices et chronomètre |
+| 💎 **Match-3** | 500 XP | Alignez des gemmes et déclenchez des combos spéciaux |
+| 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
+
+## Système de progression
+
+Chaque partie rapporte de l'**XP** qui permet de débloquer les jeux suivants. L'XP est sauvegardé localement dans votre navigateur.
+
+> 💡 Astuce développeur : ajoutez `?test=true` à l'URL pour débloquer tous les jeux immédiatement.
+
+## Stack technique
+
+- **Vanilla JavaScript** (ES6+) — aucune dépendance, aucune librairie
+- **Vanilla CSS** — variables CSS, thème sombre/clair, responsive
+- **Dictionnaire ODS** (Officiel du Scrabble) intégré via un cache partagé
+
+## Lancer en local
+
+```bash
+git clone https://github.com/CHRIXFR/Mini-jeux-web-arcade.git
+cd Mini-jeux-web-arcade
+# Ouvrir index.html dans votre navigateur
+# (un serveur local est recommandé pour le chargement du dictionnaire)
+npx serve .
+```
+
+## Licence
+
+Projet open-source — libre d'utilisation et de modification.
