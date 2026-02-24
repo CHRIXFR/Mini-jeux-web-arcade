@@ -56,10 +56,7 @@ class HangmanGame {
             const btn = document.getElementById('hg-btn-reset');
             if (btn) btn.textContent = "Chargement dico...";
 
-            const response = await fetch('games/dictionary/French ODS dictionary.txt');
-            if (!response.ok) throw new Error('Dictionnaire introuvable');
-
-            const text = await response.text();
+            const text = await window.arcade.dictionaryCache.getRaw();
             const words = text.split(/\r?\n/);
 
             this.fullDictionary = [];
@@ -72,7 +69,6 @@ class HangmanGame {
             }
             this.isDictionaryLoaded = true;
             if (btn) btn.textContent = "Nouveau Mot";
-            console.log(`Dictionnaire Pendu chargé : ${this.fullDictionary.length} mots.`);
         } catch (error) {
             console.error("Erreur chargement dico:", error);
             const btn = document.getElementById('hg-btn-reset');
@@ -85,7 +81,6 @@ class HangmanGame {
             <div class="hg-game-container">
                 <div class="hg-drawing-container">
                     <div class="hg-part hg-gallows-v" data-step="1"></div>
-                    <div class="hg-part hg-gallows-v" style="left: 140px; height: 10px; top: 0; display: none;" data-step="10"></div> <!-- Rope extension if needed -->
                     <div class="hg-part hg-gallows-h" data-step="2"></div>
                     <div class="hg-part hg-rope" data-step="3"></div>
                     <div class="hg-part hg-head" data-step="4"></div>

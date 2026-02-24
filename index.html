@@ -49,7 +49,7 @@
                 { id: 'hangman', name: 'Le Pendu', xp: 0, icon: '😵', difficulty: 'Normal' },
                 { id: 'mots-meles', name: 'Mots Mêlés', xp: 100, icon: '🔍', difficulty: 'Normal' },
                 { id: 'sudoku', name: 'Sudoku', xp: 250, icon: '🧩', difficulty: 'Facile - Difficile' },
-                { id: 'jewel-blitz', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
+                { id: 'match-3', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
                 { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' }
             ],
             addXP: function (amount) {
@@ -120,10 +120,21 @@
                     'sudoku': 'Le classique jeu de chiffres avec fonctions avancées.',
                     'hangman': 'Devinez le mot secret avant qu\'il ne soit trop tard.',
                     'mots-meles': 'Trouvez tous les mots cachés dans la grille.',
-                    'jewel-blitz': 'Alignez les gemmes pour exploser les scores.',
+                    'match-3': 'Alignez les gemmes pour exploser les scores.',
                     'scrabble': 'Placez vos mots stratégiquement sur le plateau.'
                 };
                 return descriptions[id] || '';
+            },
+            dictionaryCache: {
+                raw: null,
+                async getRaw() {
+                    if (!this.raw) {
+                        const r = await fetch('games/dictionary/French ODS dictionary.txt');
+                        if (!r.ok) throw new Error('Dictionnaire introuvable');
+                        this.raw = await r.text();
+                    }
+                    return this.raw;
+                }
             },
             loadGame: function (id) {
                 this.state.currentView = id;
@@ -137,7 +148,7 @@
                 if (id === 'sudoku' && window.initSudoku) window.initSudoku(document.getElementById('game-mount'));
                 if (id === 'hangman' && window.initHangman) window.initHangman(document.getElementById('game-mount'));
                 if (id === 'mots-meles' && window.initMotsMeles) window.initMotsMeles(document.getElementById('game-mount'));
-                if (id === 'jewel-blitz' && window.initJewelBlitz) window.initJewelBlitz(document.getElementById('game-mount'));
+                if (id === 'match-3' && window.initMatch3) window.initMatch3(document.getElementById('game-mount'));
                 if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
             }
         };
@@ -152,7 +163,7 @@
     <script src="games/sudoku.js"></script>
     <script src="games/hangman.js"></script>
     <script src="games/mots-meles.js"></script>
-    <script src="games/jewel-blitz.js"></script>
+    <script src="games/match-3.js"></script>
     <script src="games/scrabble.js"></script>
 </body>
 

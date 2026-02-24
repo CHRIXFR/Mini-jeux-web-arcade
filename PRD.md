@@ -45,7 +45,7 @@ Conformément aux standards de haute qualité :
 - **Niveaux de difficulté** : Facile, Moyen, Difficile.
 - **Fonctions** : Notes, surbrillance, erreurs en temps réel, chrono.
 
-### 4.5 Jeu : Match-3 (anciennement Jewel Blitz)
+### 4.5 Jeu : Match-3
 - **Déblocage** : Coût de **500 XP**.
 - **Gameplay** : Aligner des gemmes identiques.
 - **Combos Spéciaux** : 

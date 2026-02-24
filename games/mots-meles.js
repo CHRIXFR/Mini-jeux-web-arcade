@@ -84,10 +84,7 @@ class WordSearchGame {
             }
             if (select) select.disabled = true;
 
-            const response = await fetch('games/dictionary/French ODS dictionary.txt');
-            if (!response.ok) throw new Error('Dictionnaire introuvable');
-
-            const text = await response.text();
+            const text = await window.arcade.dictionaryCache.getRaw();
             const words = text.split(/\r?\n/);
 
             this.fullDictionary = [];
@@ -104,7 +101,6 @@ class WordSearchGame {
                 btn.disabled = false;
             }
             if (select) select.disabled = false;
-            console.log(`Dictionnaire Mots Mêlés chargé : ${this.fullDictionary.length} mots.`);
         } catch (error) {
             console.error("Erreur chargement dico:", error);
             const btn = document.getElementById('ws-btn-new');
@@ -194,9 +190,6 @@ class WordSearchGame {
         }
     }
 
-    shuffle(array) {
-        return array.sort(() => Math.random() - 0.5);
-    }
 
     renderLayout() {
         this.container.innerHTML = `

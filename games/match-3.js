@@ -1,14 +1,14 @@
 /**
- * Jewel Blitz - Match-3 Game
+ * Match-3 Game
  * Logic with Special Gems and Combos
  */
 
-window.initJewelBlitz = function (container) {
-    const game = new JewelBlitzGame(container);
+window.initMatch3 = function (container) {
+    const game = new Match3Game(container);
     game.start();
 };
 
-class JewelBlitzGame {
+class Match3Game {
     constructor(container) {
         this.container = container;
         this.gridSize = 8;
