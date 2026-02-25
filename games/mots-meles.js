@@ -114,10 +114,20 @@ class WordSearchGame {
     }
 
     generateGrid() {
+        // Longueurs min/max selon la difficulté
+        let minLen, maxLen;
+        if (this.difficulty === 'easy') {
+            minLen = 3; maxLen = 6;
+        } else if (this.difficulty === 'medium') {
+            minLen = 4; maxLen = 8;
+        } else {
+            minLen = 5; maxLen = 10;
+        }
+
         // Sélectionner les mots aléatoires
-        let pool = this.wordList;
+        let pool = this.wordList.filter(w => w.length >= minLen && w.length <= maxLen);
         if (this.isDictionaryLoaded) {
-            pool = this.fullDictionary.filter(w => w.length >= 4 && w.length <= this.gridSize);
+            pool = this.fullDictionary.filter(w => w.length >= minLen && w.length <= maxLen);
         }
 
         this.wordsToFind = [];
@@ -135,11 +145,12 @@ class WordSearchGame {
         // Initialiser grille vide
         this.grid = Array(this.gridSize).fill().map(() => Array(this.gridSize).fill(''));
 
-        // Placer les mots
+        // Placer les mots — retirer ceux qui ne peuvent pas être placés
+        const placedWords = [];
         for (let word of this.wordsToFind) {
             let placed = false;
             let attempts = 0;
-            while (!placed && attempts < 100) {
+            while (!placed && attempts < 200) {
                 const direction = Math.floor(Math.random() * 3); // 0: H, 1: V, 2: D
                 const row = Math.floor(Math.random() * this.gridSize);
                 const col = Math.floor(Math.random() * this.gridSize);
@@ -150,7 +161,13 @@ class WordSearchGame {
                 }
                 attempts++;
             }
+            if (placed) {
+                placedWords.push(word);
+            } else {
+                console.warn(`Mot non placé (ignoré) : ${word}`);
+            }
         }
+        this.wordsToFind = placedWords;
 
         // Remplir le reste avec des lettres aléatoires
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
