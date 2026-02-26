@@ -33,7 +33,7 @@ class HangmanGame {
 
         this.renderLayout();
 
-        // Disable keyboard and reset button while loading
+        // Désactiver le clavier et le bouton de réinitialisation pendant le chargement
         const btnReset = document.getElementById('hg-btn-reset');
         if (btnReset) btnReset.disabled = true;
         document.querySelectorAll('.hg-key').forEach(k => k.disabled = true);
@@ -62,7 +62,7 @@ class HangmanGame {
             this.fullDictionary = [];
             for (let word of words) {
                 word = word.trim().toUpperCase();
-                // Filter words for hangman: length between 5 and 10 and A-Z only
+                // Filtrer les mots : longueur entre 5 et 10, caractères A-Z uniquement
                 if (word.length >= 5 && word.length <= 10 && /^[A-Z]+$/.test(word)) {
                     this.fullDictionary.push(word);
                 }

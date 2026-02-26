@@ -57,7 +57,7 @@
                 localStorage.setItem('arcade_xp', this.state.xp);
                 this.updateUI();
                 this.showToast(`+${amount} XP !`);
-                if (this.state.currentView === 'home') this.renderHome(); // Refresh home to unlock cards
+                if (this.state.currentView === 'home') this.renderHome(); // Rafraîchir l'accueil pour débloquer les cartes
             },
             toggleTheme: function () {
                 this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';

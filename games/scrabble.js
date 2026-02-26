@@ -19,12 +19,12 @@ class ScrabbleGame {
         this.aiScore = 0;
         this.selectedTileIndex = null;
         this.currentTurn = 'player';
-        this.tempMoves = []; // Tiles placed during current turn {r, c, letter, isJoker}
+        this.tempMoves = []; // Tuiles placées pendant le tour actuel {r, c, letter, isJoker}
         this.dictionary = new Set();
         this.trie = new TrieNode();
         this.isDictionaryLoaded = false;
         this.firstMove = true;
-        this.difficulty = 'beginner'; // default difficulty
+        this.difficulty = 'beginner'; // Difficulté par défaut
 
         this.letterData = {
             'A': { v: 1, c: 9 }, 'B': { v: 3, c: 2 }, 'C': { v: 3, c: 2 }, 'D': { v: 2, c: 3 },
@@ -200,7 +200,7 @@ class ScrabbleGame {
                 const bonus = this.bonuses[`${r},${c}`];
                 cell.className = 'scr-cell' + (bonus ? ` ${bonus}` : '');
 
-                // Content priority: Logic Board > Temp Move > Bonus Text
+                // Priorité du contenu : Plateau logique > Coup temporaire > Texte bonus
                 const placedTile = this.board[r][c];
                 const tempTile = this.tempMoves.find(m => m.r === r && m.c === c);
 
@@ -250,7 +250,7 @@ class ScrabbleGame {
     handleCellClick(r, c) {
         if (this.currentTurn !== 'player') return;
 
-        // If clicking a cell where we just placed a temp tile, take it back
+        // Si clic sur une cellule où une tuile a été placée ce tour, on la reprend
         const tempIdx = this.tempMoves.findIndex(m => m.r === r && m.c === c);
         if (tempIdx !== -1) {
             const moved = this.tempMoves.splice(tempIdx, 1)[0];
@@ -260,7 +260,7 @@ class ScrabbleGame {
             return;
         }
 
-        // Place selected tile
+        // Placer la tuile sélectionnée
         if (this.selectedTileIndex !== null && !this.board[r][c]) {
             const letter = this.playerRack[this.selectedTileIndex];
 
@@ -326,7 +326,7 @@ class ScrabbleGame {
             return;
         }
 
-        // 1. Check Alignment
+        // 1. Vérification de l'alignement
         const isHorizontal = this.tempMoves.every(m => m.r === this.tempMoves[0].r);
         const isVertical = this.tempMoves.every(m => m.c === this.tempMoves[0].c);
 
@@ -335,10 +335,10 @@ class ScrabbleGame {
             return;
         }
 
-        // Sort moves
+        // Trier les coups
         this.tempMoves.sort((a, b) => isHorizontal ? a.c - b.c : a.r - b.r);
 
-        // Gap check
+        // Vérification des trous
         if (this.tempMoves.length > 1) {
             const first = this.tempMoves[0];
             const last = this.tempMoves[this.tempMoves.length - 1];
@@ -363,7 +363,7 @@ class ScrabbleGame {
             }
         }
 
-        // 2. Constraints Check (Center OR Attached)
+        // 2. Vérification des contraintes (Centre OU Attachement)
         let passingCenter = false;
         let isAttached = false;
 
@@ -386,8 +386,8 @@ class ScrabbleGame {
             return;
         }
 
-        // 3. Find and Validate Words, Calculate Score
-        // To accurately calculate, we temporarily place tiles
+        // 3. Identification des mots et calcul du score
+        // Placement temporaire pour l'évaluation
         for (const m of this.tempMoves) this.board[m.r][m.c] = { letter: m.letter, isJoker: m.isJoker, temp: true };
 
         const { isValid, turnScore, invalidWords } = this.evaluateBoardState();
@@ -398,7 +398,7 @@ class ScrabbleGame {
             return;
         }
 
-        // 4. Commit Move
+        // 4. Validation finale du coup
         this.firstMove = false;
         for (const m of this.tempMoves) {
             this.board[m.r][m.c].temp = false;
@@ -428,11 +428,11 @@ class ScrabbleGame {
         let wordsFormed = 0;
 
         const getTileNode = (r, c) => this.board[r][c];
-        const processedOrigins = new Set(); // Prevent double counting words
+        const processedOrigins = new Set(); // Évite de compter deux fois le même mot
 
-        // Check horizontal and vertical words formed by newly placed tiles
+        // Vérification des mots horizontaux et verticaux formés par les nouvelles tuiles
         for (const m of this.tempMoves) {
-            // Horizontal sweep
+            // Balayage horizontal
             let hc = m.c; while (hc > 0 && getTileNode(m.r, hc - 1)) hc--;
             const hOrigin = `${m.r},${hc},H`;
             if (!processedOrigins.has(hOrigin)) {
@@ -448,7 +448,7 @@ class ScrabbleGame {
                     length++;
 
                     let letterVal = tile.isJoker ? 0 : this.letterData[tile.letter].v;
-                    if (tile.temp) { // Apply bonuses only on new tiles
+                    if (tile.temp) { // Appliquer les bonus uniquement sur les nouvelles tuiles
                         const bonus = this.bonuses[`${m.r},${currC}`];
                         if (bonus === 'dl') letterVal *= 2;
                         if (bonus === 'tl') letterVal *= 3;
@@ -469,7 +469,7 @@ class ScrabbleGame {
                 }
             }
 
-            // Vertical sweep
+            // Balayage vertical
             let vr = m.r; while (vr > 0 && getTileNode(vr - 1, m.c)) vr--;
             const vOrigin = `${vr},${m.c},V`;
             if (!processedOrigins.has(vOrigin)) {
@@ -507,7 +507,7 @@ class ScrabbleGame {
             }
         }
 
-        // Disconnected tiles check (holes in placement)
+        // Vérification des tuiles déconnectées (trous dans le placement)
         if (wordsFormed === 0 && this.tempMoves.length > 0) {
             invalidWords.push("[Mot trop court / Isolé]");
         }
@@ -532,28 +532,28 @@ class ScrabbleGame {
     }
 
     aiPlay() {
-        // Find all possible words the AI can form within the allowed time
+        // Recherche tous les coups possibles pour l'IA dans le temps imparti
         const possibleMoves = this.findAllValidAiMoves();
 
         if (possibleMoves.length > 0) {
             let chosenMove;
 
             if (this.difficulty === 'beginner') {
-                // Prefers short words and low score
+                // Préfère les mots courts et les scores faibles
                 possibleMoves.sort((a, b) => {
                     if (a.word.length !== b.word.length) return a.word.length - b.word.length;
                     return a.score - b.score;
                 });
                 chosenMove = possibleMoves[0];
             } else if (this.difficulty === 'intermediate') {
-                // Prefers 4 letter words
+                // Préfère les mots de 4 lettres
                 const fourLetters = possibleMoves.filter(m => m.word.length === 4);
                 if (fourLetters.length > 0) {
                     fourLetters.sort((a, b) => b.score - a.score);
                     chosenMove = fourLetters[0];
                 } else {
                     possibleMoves.sort((a, b) => b.score - a.score);
-                    // Take a decent move but not the absolute best
+                    // Prend un coup correct mais pas forcément le meilleur
                     chosenMove = possibleMoves[Math.min(possibleMoves.length - 1, 2)];
                 }
             } else if (this.difficulty === 'confirmed') {
@@ -567,7 +567,7 @@ class ScrabbleGame {
                     chosenMove = possibleMoves[0];
                 }
             } else {
-                // Pro: take the absolute best move
+                // Pro : prend le meilleur coup absolu
                 possibleMoves.sort((a, b) => b.score - a.score);
                 chosenMove = possibleMoves[0];
             }
@@ -575,10 +575,10 @@ class ScrabbleGame {
             this.tempMoves = chosenMove.placements;
             let finalScore = chosenMove.score;
 
-            // Commit AI Move
+            // Validation du coup de l'IA
             for (const m of this.tempMoves) {
                 this.board[m.r][m.c] = { letter: m.letter, isJoker: m.isJoker, temp: false };
-                // Remove used letters from AI rack
+                // Retirer les lettres utilisées du chevalet de l'IA
                 const rackIdx = this.aiRack.indexOf(m.isJoker ? '?' : m.letter);
                 if (rackIdx > -1) this.aiRack.splice(rackIdx, 1);
             }
@@ -593,7 +593,7 @@ class ScrabbleGame {
             this.renderBoard();
             window.arcade.showToast(`L'IA joue "${chosenMove.word}" pour ${finalScore} pts`);
         } else {
-            // Swap tiles if bag has enough, else pass
+            // Échanger les lettres si le sac en contient assez, sinon passer
             if (this.bag.length >= 7) {
                 this.bag.push(...this.aiRack);
                 this.shuffle(this.bag);
@@ -610,15 +610,12 @@ class ScrabbleGame {
     }
 
     findAllValidAiMoves() {
-        // Simplified Brute-force for MVP: Try putting words from the rack on open anchors
-        // A full GADDAG/Trie traversal is complex to implement fully here.
-        // We will scan each row/col, find contiguous empty spaces crossing at least one existing letter (or center).
+        // Brute-force simplifiée : tente de placer les mots du chevalet sur les points d'ancrage
         const validMoves = [];
         const isRackEmpty = this.aiRack.length === 0;
         if (isRackEmpty) return validMoves;
 
-        // Generate all permutations of rack to form words (limited length to avoid hanging)
-        // For browser perf, we will instead iterate the dictionary and see if we can form it.
+        // Pour des raisons de performance, on limite la recherche drastiquement.
         const rackCounts = {};
         let jokerCount = 0;
         for (const l of this.aiRack) {
@@ -639,13 +636,13 @@ class ScrabbleGame {
                     j--;
                     usedLetters.push({ letter: char, isJoker: true });
                 } else {
-                    return null; // Cannot form
+                    return null; // Impossible à former
                 }
             }
             return usedLetters;
         };
 
-        // If first move, only 7,7 is anchor
+        // Si premier coup, seule l'étoile centrale (7,7) est un point d'ancrage
         const anchors = [];
         if (this.firstMove) {
             anchors.push({ r: 7, c: 7 });
@@ -653,7 +650,7 @@ class ScrabbleGame {
             for (let r = 0; r < 15; r++) {
                 for (let c = 0; c < 15; c++) {
                     if (this.board[r][c]) {
-                        // Add adjacent empty spaces as anchors
+                        // Ajouter les espaces vides adjacents comme ancres
                         [[r + 1, c], [r - 1, c], [r, c + 1], [r, c - 1]].forEach(([nr, nc]) => {
                             if (nr >= 0 && nr < 15 && nc >= 0 && nc < 15 && !this.board[nr][nc]) {
                                 anchors.push({ r: nr, c: nc });
@@ -685,7 +682,7 @@ class ScrabbleGame {
         // Try to add 1 to N letters from the rack to existing letters.
 
         const startTime = performance.now();
-        let timeLimit = 500; // ms Default
+        let timeLimit = 500; // ms par défaut
         if (this.difficulty === 'beginner') timeLimit = 1000;
         else if (this.difficulty === 'intermediate') timeLimit = 2000;
         else if (this.difficulty === 'confirmed') timeLimit = 4000;
@@ -701,11 +698,11 @@ class ScrabbleGame {
                 const dr = dir === 1 ? 1 : 0;
                 const dc = dir === 0 ? 1 : 0;
 
-                // Try placing 1 to AI rack length letters starting at this anchor
+                // Tente de placer de 1 à 7 lettres du chevalet à partir de cette ancre
                 for (let len = 1; len <= this.aiRack.length; len++) {
                     if (timeExceeded) break;
 
-                    // Get permutations of rack of length `len`
+                    // Obtient les permutations du chevalet de longueur `len`
                     const perms = this.getRackPermutations(len);
                     for (const perm of perms) {
                         // Check time constraint
@@ -720,7 +717,7 @@ class ScrabbleGame {
                         let pc = anchor.c;
 
                         for (let i = 0; i < len; i++) {
-                            // Skip over already placed tiles
+                            // Saute les tuiles déjà placées
                             while (pr >= 0 && pr < 15 && pc >= 0 && pc < 15 && this.board[pr][pc] !== null) {
                                 pr += dr;
                                 pc += dc;
@@ -744,9 +741,9 @@ class ScrabbleGame {
 
                         if (isValidPlacement) {
                             const { isValid, turnScore } = this.evaluateBoardState();
-                            // Must be entirely valid and score > 0
+                            // Doit être entièrement valide et score > 0
                             if (isValid && turnScore > 0) {
-                                // To avoid duplicate identical words, we stringify tempMoves
+                                // Pour éviter les mots identiques en double
                                 const wordId = this.tempMoves.map(m => `${m.r},${m.c}=${m.letter}`).join('|');
                                 if (!validMoves.find(v => v.id === wordId)) {
                                     validMoves.push({
@@ -759,7 +756,7 @@ class ScrabbleGame {
                             }
                         }
 
-                        // Revert
+                        // Annulation pour le test suivant
                         for (const m of this.tempMoves) {
                             this.board[m.r][m.c] = null;
                         }
@@ -780,7 +777,7 @@ class ScrabbleGame {
                 results.push([...current]);
                 return;
             }
-            // Use a Set to avoid duplicate permutations at this depth
+            // Utilise un Set pour éviter les permutations en double
             const seen = new Set();
             for (let i = 0; i < this.aiRack.length; i++) {
                 if (used[i]) continue;

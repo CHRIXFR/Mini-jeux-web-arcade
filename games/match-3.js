@@ -1,6 +1,6 @@
 /**
- * Match-3 Game
- * Logic with Special Gems and Combos
+ * Jeu Match-3
+ * Logique avec Joyaux Spéciaux et Combos
  */
 
 window.initMatch3 = function (container) {
@@ -20,20 +20,20 @@ class Match3Game {
             { id: 4, icon: '🔥' },
             { id: 5, icon: '❄️' }
         ];
-        this.grid = []; // Stores { typeId, specialType }
+        this.grid = []; // Stocke { typeId, specialType }
         this.score = 0;
         this.moves = 20;
         this.selectedCell = null; // {r, c}
         this.isAnimating = false;
         this.comboStats = { line: 0, cross: 0, color: 0 };
 
-        // Special Types:
-        // null: normal
-        // 'horizontal': clears row (combo 4)
-        // 'vertical': clears column (combo 4)
-        // 'cross': clears row & col (combo 5)
-        // 'color': clears all of same color (combo 6)
-        // 'omega': clears whole grid (combine 2 color gems)
+        // Types Spéciaux :
+        // null : normal
+        // 'horizontal' : nettoie la ligne (combo 4)
+        // 'vertical' : nettoie la colonne (combo 4)
+        // 'cross' : nettoie ligne & colonne (combo 5)
+        // 'color' : nettoie tous les joyaux de la même couleur (combo 6)
+        // 'omega' : nettoie toute la grille (combinaison de 2 joyaux couleur)
     }
 
     start() {
@@ -172,7 +172,7 @@ class Match3Game {
         const g1 = this.grid[r1][c1];
         const g2 = this.grid[r2][c2];
 
-        // Omega Combo: Rainbow + Rainbow
+        // Combo Omega : Arc-en-ciel + Arc-en-ciel
         if (g1.special === 'color' && g2.special === 'color') {
             this.moves--;
             this.updateStats();
@@ -181,7 +181,7 @@ class Match3Game {
             return;
         }
 
-        // Color Clear: Rainbow + Anything
+        // Nettoyage de couleur : Arc-en-ciel + N'importe quoi
         if (g1.special === 'color' || g2.special === 'color') {
             this.moves--;
             this.updateStats();
@@ -192,7 +192,7 @@ class Match3Game {
             return;
         }
 
-        // Normal Swap
+        // Échange normal
         this.grid[r1][c1] = g2;
         this.grid[r2][c2] = g1;
         this.renderGrid();
@@ -204,7 +204,7 @@ class Match3Game {
             this.updateStats();
             await this.handleMatches(matches);
         } else {
-            // Swap back
+            // Annuler l'échange
             this.grid[r1][c1] = g1;
             this.grid[r2][c2] = g2;
             this.renderGrid();
@@ -219,7 +219,7 @@ class Match3Game {
         const horizontalMatches = [];
         const verticalMatches = [];
 
-        // Find horizontal sequences
+        // Trouver les séquences horizontales
         for (let r = 0; r < this.gridSize; r++) {
             let count = 1;
             for (let c = 1; c <= this.gridSize; c++) {
@@ -234,7 +234,7 @@ class Match3Game {
             }
         }
 
-        // Find vertical sequences
+        // Trouver les séquences verticales
         for (let c = 0; c < this.gridSize; c++) {
             let count = 1;
             for (let r = 1; r <= this.gridSize; r++) {
@@ -249,7 +249,7 @@ class Match3Game {
             }
         }
 
-        // Map to coordinates and identify special gem creation
+        // Mappage des coordonnées et identification de la création de joyaux spéciaux
         horizontalMatches.forEach(m => {
             const cells = [];
             for (let i = 0; i < m.count; i++) cells.push({ r: m.r, c: m.cStart + i });
@@ -289,14 +289,14 @@ class Match3Game {
                 }
             });
 
-            // Handle special gems destruction effects
+            // Gérer les effets de destruction des joyaux spéciaux
             const finalBlast = this.calculateBlasts(cellsToClear);
 
-            // Animation: Shake grid
+            // Animation : Secouer la grille
             document.getElementById('jb-grid').classList.add('shake');
             setTimeout(() => document.getElementById('jb-grid').classList.remove('shake'), 300);
 
-            // Execute destruction
+            // Exécuter la destruction
             finalBlast.forEach(posKey => {
                 const [r, c] = posKey.split(',').map(Number);
                 if (this.grid[r][c]) {
@@ -305,7 +305,7 @@ class Match3Game {
                 }
             });
 
-            // Create new special gems
+            // Créer de nouveaux joyaux spéciaux
             specialsToCreate.forEach(s => {
                 this.grid[s.pos.r][s.pos.c] = { typeId: s.typeId, special: s.special };
                 this.score += 50;
@@ -377,7 +377,7 @@ class Match3Game {
         this.updateStats();
         this.renderGrid();
         await new Promise(res => setTimeout(res, 400));
-        await this.handleMatches([]); // Triggers refilling
+        await this.handleMatches([]); // Déclenche le remplissage
     }
 
     async clearGridOmega() {
