@@ -214,6 +214,7 @@ class WordSearchGame {
                 <div class="ws-header">
                     <h2>Mots Mêlés</h2>
                     <div class="ws-controls">
+                        <label for="ws-diff-select" class="sr-only">Choisir la difficulté</label>
                         <select id="ws-diff-select" class="diff-select">
                             <option value="easy">Facile</option>
                             <option value="medium" selected>Moyen</option>

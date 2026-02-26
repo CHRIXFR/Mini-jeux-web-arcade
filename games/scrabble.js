@@ -158,6 +158,7 @@ class ScrabbleGame {
                 <div id="scr-rack" class="scr-rack"></div>
 
                 <div class="scr-controls">
+                    <label for="scr-difficulty" class="sr-only">Niveau de l'IA</label>
                     <select id="scr-difficulty" class="btn-secondary diff-select" style="margin-right: 10px; max-width: 130px;">
                         <option value="beginner">Débutant</option>
                         <option value="intermediate">Intermédiaire</option>

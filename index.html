@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -100,7 +102,7 @@
                                     <div class="lock-badge">${game.xp} XP Requis</div>
                                 </div>
                             ` : ''}
-                            <div class="game-icon">${game.icon}</div>
+                            <div class="game-icon" role="img" aria-label="Icône de ${game.name}">${game.icon}</div>
                             <h3>${game.name}</h3>
                             <p>${this.getGameDescription(game.id)}</p>
                             <span class="difficulty">${game.difficulty}</span>

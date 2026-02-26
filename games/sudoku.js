@@ -119,6 +119,7 @@ class SudokuGame {
                 <div class="sudoku-header">
                     <div id="sudoku-timer">00:00</div>
                     <div class="difficulty-picker">
+                        <label for="diff-select" class="sr-only">Difficulté</label>
                         <select id="diff-select">
                             <option value="easy">Facile</option>
                             <option value="medium" selected>Moyen</option>
@@ -165,12 +166,19 @@ class SudokuGame {
             for (let c = 0; c < 9; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'grid-cell';
-                if (this.initial[r][c]) cell.classList.add('fixed');
+                cell.tabIndex = 0;
+                cell.setAttribute('role', 'gridcell');
+                cell.setAttribute('aria-label', `Case ligne ${r + 1} colonne ${c + 1}`);
+                if (this.initial[r][c]) {
+                    cell.classList.add('fixed');
+                    cell.setAttribute('aria-readonly', 'true');
+                }
                 if ((Math.floor(r / 3) + Math.floor(c / 3)) % 2 === 0) cell.classList.add('alt-block');
                 cell.dataset.row = r;
                 cell.dataset.col = c;
                 this.updateCellDisplay(cell, r, c);
                 cell.addEventListener('click', () => this.selectCell(cell, r, c));
+                cell.addEventListener('keydown', (e) => this.handleKeyDown(e, r, c));
                 gridEl.appendChild(cell);
             }
         }
@@ -198,6 +206,28 @@ class SudokuGame {
                 }
                 cellEl.appendChild(notesGrid);
             }
+        }
+    }
+
+    handleKeyDown(e, r, c) {
+        let nr = r, nc = c;
+        if (e.key === 'ArrowUp') nr = Math.max(0, r - 1);
+        else if (e.key === 'ArrowDown') nr = Math.min(8, r + 1);
+        else if (e.key === 'ArrowLeft') nc = Math.max(0, c - 1);
+        else if (e.key === 'ArrowRight') nc = Math.min(8, c + 1);
+        else if (e.key >= '1' && e.key <= '9') {
+            this.handleNumberInput(parseInt(e.key));
+            return;
+        } else if (e.key === 'Backspace' || e.key === 'Delete') {
+            this.handleNumberInput(0);
+            return;
+        } else return;
+
+        e.preventDefault();
+        const nextCell = document.querySelector(`.grid-cell[data-row="${nr}"][data-col="${nc}"]`);
+        if (nextCell) {
+            nextCell.focus();
+            this.selectCell(nextCell, nr, nc);
         }
     }
 

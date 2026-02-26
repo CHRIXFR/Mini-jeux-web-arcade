@@ -19,15 +19,29 @@ body.light-mode {
     --card-bg: #ffffff;
     --header-bg: rgba(248, 250, 252, 0.8);
     --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --border: #e2e8f0;
-    --cell-alt: rgba(0, 0, 0, 0.02);
+    --text-secondary: #334155;
+    /* Renforcé de #64748b à #334155 */
+    --border: #cbd5e1;
+    /* Renforcé de #e2e8f0 à #cbd5e1 */
+    --cell-alt: rgba(0, 0, 0, 0.05);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
 body {
@@ -1181,7 +1195,7 @@ select option {
 
 .hg-letter-slot {
     width: 30px;
-    border-bottom: 3px solid var(--accent);
+    border-bottom: 4px solid var(--accent);
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
