@@ -36,16 +36,21 @@ Conformément aux standards de haute qualité :
     - Clavier virtuel pour une utilisation mobile facilitée.
 
 ### 4.3 Jeu : Mots Mêlés (Word Search)
-- **Déblocage** : Coût de **100 XP**.
+- **Déblocage** : Coût de **50 XP**.
 - **Niveaux de difficulté** : Ajout de niveaux (ex: Taille de grille, temps limité).
 - **Génération** : Grilles dynamiques en français.
 
-### 4.4 Jeu : Sudoku
+### 4.4 Jeu : Jeu de Paires (Memory)
+- **Déblocage** : Coût de **100 XP**.
+- **Niveaux de difficulté** : Facile (12 cartes), Moyen (16 cartes), Difficile (36 cartes).
+- **Fonctionnalités** : Minuteur, suivi des essais, thèmes d'emojis.
+
+### 4.5 Jeu : Sudoku
 - **Déblocage** : Coût de **250 XP**.
 - **Niveaux de difficulté** : Facile, Moyen, Difficile.
 - **Fonctions** : Notes, surbrillance, erreurs en temps réel, chrono.
 
-### 4.5 Jeu : Match-3
+### 4.6 Jeu : Match-3
 - **Déblocage** : Coût de **500 XP**.
 - **Gameplay** : Aligner des gemmes identiques.
 - **Combos Spéciaux** : 
@@ -55,7 +60,7 @@ Conformément aux standards de haute qualité :
     - **Double Arc-en-ciel** : Nettoyage total de la grille.
 - **Interface** : Compteurs de combos en temps réel dans le header.
 
-### 4.6 Jeu : Scrabble Solo
+### 4.7 Jeu : Scrabble Solo
 - **Déblocage** : Coût de **1000 XP**.
 - **Statut** : Terminé.
 - **Gameplay** : Placer des lettres sur un plateau 15x15 pour former des mots.
@@ -82,4 +87,5 @@ Conformément aux standards de haute qualité :
 6. **Phase 6** : Développement complet de Match-3 avec combos et effets (Terminé).
 7. **Phase 7** : Développement du jeu Le Pendu (Terminé).
 8. **Phase 8** : Implémentation du Scrabble Solo (Terminé).
+9. **Phase 9** : Développement du Jeu de Paires (En cours).
 

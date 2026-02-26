@@ -1270,3 +1270,107 @@ select option {
         height: 35px;
     }
 }
+
+/* Jeu de Paires Styles */
+.pa-game-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.pa-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.pa-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.pa-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pa-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.pa-stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.pa-grid {
+    display: grid;
+    gap: 12px;
+    perspective: 1000px;
+    margin-bottom: 2rem;
+}
+
+.pa-card {
+    aspect-ratio: 1;
+    cursor: pointer;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pa-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.pa-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.pa-card-front,
+.pa-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.pa-card-front {
+    background: var(--card-bg);
+    color: var(--text-secondary);
+}
+
+.pa-card-back {
+    background: var(--accent);
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.pa-card.matched .pa-card-back {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.pa-card-small .pa-card-front,
+.pa-card-small .pa-card-back {
+    font-size: 1.25rem;
+}
+
+.pa-controls {
+    display: flex;
+    gap: 0.8rem;
+}

@@ -49,7 +49,8 @@
             },
             games: [
                 { id: 'hangman', name: 'Le Pendu', xp: 0, icon: '😵', difficulty: 'Normal' },
-                { id: 'mots-meles', name: 'Mots Mêlés', xp: 100, icon: '🔍', difficulty: 'Normal' },
+                { id: 'mots-meles', name: 'Mots Mêlés', xp: 50, icon: '🔍', difficulty: 'Normal' },
+                { id: 'paires', name: 'Paires', xp: 100, icon: '🃏', difficulty: 'Variable' },
                 { id: 'sudoku', name: 'Sudoku', xp: 250, icon: '🧩', difficulty: 'Facile - Difficile' },
                 { id: 'match-3', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
                 { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' }
@@ -122,6 +123,7 @@
                     'sudoku': 'Le classique jeu de chiffres avec fonctions avancées.',
                     'hangman': 'Devinez le mot secret avant qu\'il ne soit trop tard.',
                     'mots-meles': 'Trouvez tous les mots cachés dans la grille.',
+                    'paires': 'Exercez votre mémoire en trouvant toutes les paires d\'emojis.',
                     'match-3': 'Alignez les gemmes pour exploser les scores.',
                     'scrabble': 'Placez vos mots stratégiquement sur le plateau.'
                 };
@@ -147,9 +149,10 @@
                     </div>
                 `;
 
-                if (id === 'sudoku' && window.initSudoku) window.initSudoku(document.getElementById('game-mount'));
                 if (id === 'hangman' && window.initHangman) window.initHangman(document.getElementById('game-mount'));
                 if (id === 'mots-meles' && window.initMotsMeles) window.initMotsMeles(document.getElementById('game-mount'));
+                if (id === 'paires' && window.initPaires) window.initPaires(document.getElementById('game-mount'));
+                if (id === 'sudoku' && window.initSudoku) window.initSudoku(document.getElementById('game-mount'));
                 if (id === 'match-3' && window.initMatch3) window.initMatch3(document.getElementById('game-mount'));
                 if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
             }
@@ -165,6 +168,7 @@
     <script src="games/sudoku.js"></script>
     <script src="games/hangman.js"></script>
     <script src="games/mots-meles.js"></script>
+    <script src="games/paires.js"></script>
     <script src="games/match-3.js"></script>
     <script src="games/scrabble.js"></script>
 </body>
