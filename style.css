@@ -125,6 +125,13 @@ main {
     width: 100%;
 }
 
+@media (min-width: 1400px) {
+    main {
+        max-width: 1600px;
+    }
+}
+
+
 .hero {
     text-align: center;
     margin-bottom: 4rem;
@@ -1087,6 +1094,264 @@ select option {
     font-weight: bold;
     color: var(--accent);
 }
+
+/* Wide Layout for Scrabble (1920x1080) */
+@media (min-width: 1200px) {
+    .scr-game-container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 200px 1fr 280px;
+        grid-template-areas: "side-left board side-right";
+        gap: 3rem;
+        align-items: center;
+    }
+
+    .scr-header {
+        grid-area: side-left;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        background: var(--card-bg);
+        padding: 2rem 1rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        height: min-content;
+    }
+
+    .scr-board {
+        grid-area: board;
+        max-width: 82vh;
+        margin: 0 auto;
+    }
+
+    .scr-side-right {
+        grid-area: side-right;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .scr-rack {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 0;
+        padding: 1.5rem 1rem;
+    }
+
+    .scr-controls {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .scr-controls .btn-primary,
+    .scr-controls .btn-secondary,
+    .scr-controls .diff-select {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+}
+
+/* Wide Layout for Sudoku */
+@media (min-width: 1200px) {
+    .sudoku-container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 200px 1fr 280px;
+        grid-template-areas: "header grid side-right";
+        gap: 3rem;
+        align-items: center;
+    }
+
+    .sudoku-header {
+        grid-area: header;
+        flex-direction: column;
+        gap: 2rem;
+        background: var(--card-bg);
+        padding: 2rem 1rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+
+    .grid-9x9 {
+        grid-area: grid;
+        max-width: 80vh;
+        margin: 0 auto;
+    }
+
+    .sudoku-controls {
+        grid-area: side-right;
+        flex-direction: column;
+        align-self: start;
+        margin-bottom: 2rem;
+    }
+
+    .number-pad {
+        grid-area: side-right;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Wide Layout for Mots Mêlés */
+@media (min-width: 1200px) {
+    .ws-game-container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 250px 1fr 300px;
+        grid-template-areas: "header grid words";
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .ws-header {
+        grid-area: header;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+        background: var(--card-bg);
+        padding: 2rem 1rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+
+    .ws-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .ws-controls .diff-select,
+    .ws-controls button {
+        width: 100%;
+    }
+
+    .ws-grid {
+        grid-area: grid;
+        max-width: 80vh;
+        margin: 0 auto;
+    }
+
+    .ws-words-container {
+        grid-area: words;
+        height: min-content;
+        position: sticky;
+        top: 100px;
+    }
+}
+
+/* Wide Layout for Match-3 */
+@media (min-width: 1200px) {
+    .jb-game-container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 250px 1fr 250px;
+        grid-template-areas: "header grid controls";
+        gap: 3rem;
+        align-items: center;
+    }
+
+    .jb-header {
+        grid-area: header;
+        margin-bottom: 0;
+    }
+
+    .jb-stats {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem 1rem;
+    }
+
+    .jb-stats .stats-divider {
+        width: 80%;
+        height: 1px;
+        margin: 0.5rem 0;
+    }
+
+    .jb-grid {
+        grid-area: grid;
+        max-width: 80vh;
+    }
+
+    .jb-controls {
+        grid-area: controls;
+    }
+
+    .jb-controls button {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+/* Wide Layout for Hangman */
+@media (min-width: 1200px) {
+    .hg-game-container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        grid-template-areas: "draw content";
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .hg-drawing-container {
+        grid-area: draw;
+        margin-bottom: 0;
+        transform: scale(1.4);
+    }
+
+    .hg-content-wrap {
+        grid-area: content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+/* Wide Layout for Paires */
+@media (min-width: 1200px) {
+    .pa-game-container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        grid-template-areas: "header grid";
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .pa-header {
+        grid-area: header;
+        flex-direction: column;
+        gap: 2rem;
+        background: var(--card-bg);
+        padding: 2rem 1rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+
+    .pa-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .pa-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .pa-controls select,
+    .pa-controls button {
+        width: 100%;
+    }
+
+    .pa-grid {
+        grid-area: grid;
+        max-width: 75vh;
+        margin: 0 auto;
+    }
+}
+
+
 
 /* Hangman Styles */
 .hg-game-container {
