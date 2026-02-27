@@ -4,6 +4,10 @@ description: Comment pousser les modifications sur GitHub correctement sur ce sy
 
 Ce projet utilise PowerShell sur Windows. Voici les règles impératives à suivre pour les commandes Git :
 
+0. **Test et Validation OBLIGATOIRES AVANT Push** :
+   - L'agent n'a **JAMAIS LE DROIT** de lancer un `git push` sans preuve qu'un test a été effectué (ex: exécution de statuts, tests manuels ou `/test-lighthouse`).
+   - L'agent **DOIT IMPÉRATIVEMENT** demander la permission explicite de l'utilisateur : *"Avez-vous bien testé vos modifications avant que je n'envoie le code sur GitHub ?"*.
+
 1. **Syntaxe PowerShell** : Ne jamais utiliser `&&` pour enchaîner les commandes. Utiliser le point-virgule `;` à la place.
    - Exemple : `git add . ; git commit -m "Message" ; git push origin main`
 

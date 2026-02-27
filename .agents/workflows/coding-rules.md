@@ -4,6 +4,13 @@ description: Règles de codage et standards de qualité pour le projet Mini-jeux
 
 Ce document définit les standards que tout agent doit respecter lors de la modification ou de l'ajout de code dans ce projet.
 
+## 0. Utilisation des Modèles d'IA et Modes de Travail
+En tant qu'assistant IA, vous DEVEZ guider l'utilisateur sur la meilleure approche technique :
+- **Mode Planning (Gemini ou Claude)** : Toujours proposer ou utiliser ce mode pour démarrer une nouvelle fonctionnalité complexe, créer l'architecture ou rédiger les plans (PRD).
+- **Codage Principal (Claude 4.6 Sonnet recommandé)** : Conseiller à l'utilisateur de basculer sur un modèle performant en code pour le gros de l'implémentation.
+- **Mode Fast (Gemini)** : À privilégier pour les itérations très rapides, les petites corrections de bugs ciblées ou le lancement de tests isolés.
+*Note comportementale : Suggérer proactivement le changement de modèle ou de mode si la tâche demandée y est plus adaptée (ex: "Je vous conseille de passer en mode Fast avec Gemini pour ce petit correctif...").*
+
 ## 1. Langue et Commentaires
 - **Commentaires en Français** : Tous les commentaires dans le code (JSDoc, commentaires de ligne) doivent être rédigés exclusivement en français.
 - **Code Explicite > Commentaires** : Ne pas commenter ce que fait le code si celui-ci est déjà explicite par son nommage.
