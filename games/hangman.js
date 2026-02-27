@@ -90,14 +90,13 @@ class HangmanGame {
                     <div class="hg-part hg-leg-l" data-step="8"></div>
                     <div class="hg-part hg-leg-r" data-step="9"></div>
                 </div>
- 
-                <div class="hg-content-wrap">
-                    <div id="hg-word" class="hg-word-display"></div>
-                    <div id="hg-keyboard" class="hg-keyboard"></div>
 
-                    <div class="scr-controls" style="margin-top: 2rem;">
-                        <button id="hg-btn-reset" class="btn-secondary">Nouveau Mot</button>
-                    </div>
+                <div id="hg-word" class="hg-word-display"></div>
+
+                <div id="hg-keyboard" class="hg-keyboard"></div>
+
+                <div class="scr-controls" style="margin-top: 2rem;">
+                    <button id="hg-btn-reset" class="btn-secondary">Nouveau Mot</button>
                 </div>
             </div>
         `;

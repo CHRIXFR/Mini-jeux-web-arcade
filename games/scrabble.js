@@ -155,22 +155,20 @@ class ScrabbleGame {
 
                 <div id="scr-board" class="scr-board"></div>
 
-                <div class="scr-side-right">
-                    <div id="scr-rack" class="scr-rack"></div>
+                <div id="scr-rack" class="scr-rack"></div>
 
-                    <div class="scr-controls">
-                        <label for="scr-difficulty" class="sr-only">Niveau de l'IA</label>
-                        <select id="scr-difficulty" class="btn-secondary diff-select" style="margin-bottom: 10px; width: 100%;">
-                            <option value="beginner">Débutant</option>
-                            <option value="intermediate">Intermédiaire</option>
-                            <option value="confirmed">Confirmé</option>
-                            <option value="pro">Pro</option>
-                        </select>
-                        <button id="scr-btn-play" class="btn-primary" disabled style="width: 100%;">Chargement...</button>
-                        <button id="scr-btn-cancel" class="btn-secondary" style="width: 100%;">Annuler</button>
-                        <button id="scr-btn-shuffle" class="btn-secondary" style="width: 100%;">Mélanger</button>
-                        <button id="scr-btn-pass" class="btn-secondary" style="width: 100%;">Passer</button>
-                    </div>
+                <div class="scr-controls">
+                    <label for="scr-difficulty" class="sr-only">Niveau de l'IA</label>
+                    <select id="scr-difficulty" class="btn-secondary diff-select" style="margin-right: 10px; max-width: 130px;">
+                        <option value="beginner">Débutant</option>
+                        <option value="intermediate">Intermédiaire</option>
+                        <option value="confirmed">Confirmé</option>
+                        <option value="pro">Pro</option>
+                    </select>
+                    <button id="scr-btn-play" class="btn-primary" disabled>Chargement...</button>
+                    <button id="scr-btn-cancel" class="btn-secondary">Annuler</button>
+                    <button id="scr-btn-shuffle" class="btn-secondary">Mélanger</button>
+                    <button id="scr-btn-pass" class="btn-secondary">Passer</button>
                 </div>
             </div>
             
