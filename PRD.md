@@ -66,17 +66,38 @@ Conformément aux standards de haute qualité :
 - **Gameplay** : Placer des lettres sur un plateau 15x15 pour former des mots.
 - **Fonctionnalités** :
     - Dictionnaire Officiel du Scrabble (ODS) intégré pour validation stricte.
-    - Comptage officiel des points (Cases Lettre/Mot Double/Triple appliquées aux nouvelles tuiles, mots croisés cumulés).
-    - Règle du premier mot (passage par l'étoile centrale) et rattachement des mots suivants obligatoires.
-    - Bonus Bingo (+50 points) pour 7 lettres placées.
-    - Gestion du Joker (choix de la lettre).
-    - Intelligence Artificielle intégrée.
+    - Comptage officiel des points (Cases Lettre/Mot Double/Triple appliquées aux nouvelles tuiles).
+    - Règle du premier mot (passage par l'étoile centrale) et rattachement obligatoire.
+    - **IA Intégrée** : 4 niveaux de difficulté (Débutant, Intermédiaire, Confirmé, Pro).
+    - **Feedback Visuel** : Surbrillance néon cyan des lettres posées par l'IA.
+    - **Interface localisée** : Labels du plateau en français (MT, MD, LT, LD).
+    - **Aide Intégrée** : Un bouton "Aide" (suggestion d'un mot valide via l'IA niveau Confirmé) avec pré-visualisation sur le plateau.
+    - **Fin de Partie** : Écran de fin stylisé avec score final, bonus de fin de sac et gestion des passes successifs.
+    - **Accessibilité** : Entièrement jouable sur mobile (clavier virtuel et adaptation du chevalet).
+
+#### Règles du Jeu (Standard)
+1. **Préparation** : Chaque joueur commence avec 7 lettres. Les jokers ("blancs") valent 0 point mais remplacent n'importe quelle lettre.
+    - L’ensemble de lettres comprend précisément 102 jetons lettres avec leur répartition officielle : 9 A, 2 B, 2 C, 3 D, 15 E, 2 F, 2 G, 2 H, 8 I, 1 J, 1 K, 5 L, 3 M, 6 N, 6 O, 2 P, 1 Q, 6 R, 6 S, 6 T, 6 U, 2 V, 1 W, 1 X, 1 Y, 1 Z et 2 jokers. 
+2. **Déroulement** : 
+   - Le premier mot doit couvrir la case centrale (étoile).
+   - Les mots suivants doivent être rattachés à des lettres déjà présentes.
+   - À chaque tour, on peut poser un mot, échanger des lettres, passer, ou demander de l'Aide.
+
+3. **Score** :
+   - Cases Bleu clair/foncé : Lettre compte double/triple.
+   - Cases Rose/Rouge : Mot compte double/triple.
+   - Bonus "Scrabble" : +50 points si les 7 lettres sont posées d'un coup.
+
+4. **Fin de partie** : Se termine quand le sac est vide et qu'un joueur n'a plus de lettres, ou après deux tours de passes consécutifs par tous les joueurs. Les points des lettres restantes sont déduits du score final.
 
 ## 5. Choix Techniques & Outils de Développement
 - **Langage** : **Vanilla JavaScript** (ES6+).
 - **Styling** : **Vanilla CSS** avec variables CSS pour le thème (système de design robuste).
 - **État** : Store global simple stocké dans `window.arcade` pour la persistance locale (`localStorage`).
-- **Mode Test (Dev Only)** : Possibilité de débloquer tous les contenus via le paramètre URL `?test=true` (utilisé pour le développement et la validation).
+- **Responsive Design** : Layout adaptatif (Grid/Flex) avec optimisation spécifique pour 1920x1080 (PC) et modes mobiles portrait/paysage.
+- **Tests** : Suite de tests de non-régression visuelle automatisée avec **Playwright**.
+- **Performance** : Code audité 100% via Lighthouse & Revue de Code stricte.
+- **Mode Test (Dev Only)** : Possibilité de débloquer tous les contenus via le paramètre URL `?test=true`.
 
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
@@ -87,5 +108,7 @@ Conformément aux standards de haute qualité :
 6. **Phase 6** : Développement complet de Match-3 avec combos et effets (Terminé).
 7. **Phase 7** : Développement du jeu Le Pendu (Terminé).
 8. **Phase 8** : Implémentation du Scrabble Solo (Terminé).
-9. **Phase 9** : Développement du Jeu de Paires (En cours).
+9. **Phase 9** : Développement du Jeu de Paires (Terminé).
+10. **Phase 10** : Optimisation Responsive (PC 1920x1080 / Mobile) et automatisation des tests visuels Playwright (Terminé).
+11. **Phase 11** : Améliorations Scrabble v2 (Bouton Aide, Traduction FR) et Lighthouse (Terminé).
 

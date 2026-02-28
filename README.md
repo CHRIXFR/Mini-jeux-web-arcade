@@ -29,6 +29,7 @@ Chaque partie rapporte de l'**XP** qui permet de débloquer les jeux suivants. L
 - **Vanilla CSS** — variables CSS, thème sombre/clair, responsive
 - **Dictionnaire ODS** (Officiel du Scrabble) intégré via un cache partagé
 - **Accessibilité** — Navigation clavier (Sudoku) et labels ARIA
+- **Tests** — Tests automatisés (UI / Non-régression) avec **Playwright**
 
 ## Lancer en local
 

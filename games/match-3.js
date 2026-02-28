@@ -391,7 +391,7 @@ class Match3Game {
         this.updateStats();
         this.renderGrid();
         await new Promise(res => setTimeout(res, 600));
-        await this.handleMatches([]); // Triggers refilling
+        await this.handleMatches([]); // Déclenche le remplissage
     }
 
     dropGems() {

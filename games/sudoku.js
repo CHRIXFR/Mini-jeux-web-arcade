@@ -1,5 +1,5 @@
 /**
- * Sudoku Module - Version Avancée & Pauffinée
+ * Sudoku Module - Version Avancée & Peaufinée
  */
 
 window.initSudoku = function (container) {

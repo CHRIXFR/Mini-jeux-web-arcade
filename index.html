@@ -90,6 +90,7 @@
                 setTimeout(() => { t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2000); }, 100);
             },
             renderHome: function () {
+                document.body.classList.remove('in-game');
                 this.state.currentView = 'home';
                 const gridHtml = this.games.map(game => {
                     const isLocked = !this.state.testMode && this.state.xp < game.xp;
@@ -141,6 +142,7 @@
                 }
             },
             loadGame: function (id) {
+                document.body.classList.add('in-game');
                 this.state.currentView = id;
                 document.getElementById('app-container').innerHTML = `
                     <div class="game-view">

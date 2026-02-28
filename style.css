@@ -1,5 +1,5 @@
 :root {
-    /* Dark Mode (Default) */
+    /* Mode Sombre (Par défaut) */
     --bg-color: #0c0c0e;
     --card-bg: #16161a;
     --header-bg: rgba(12, 12, 14, 0.8);
@@ -55,7 +55,7 @@ body {
     flex-direction: column;
 }
 
-/* Header & Stats */
+/* En-tête & Statistiques */
 header {
     padding: 2rem 1rem;
     border-bottom: 1px solid var(--border);
@@ -116,7 +116,7 @@ h1 {
     font-weight: 600;
 }
 
-/* Main Content */
+/* Contenu Principal */
 main {
     flex: 1;
     max-width: 1000px;
@@ -136,7 +136,7 @@ main {
     font-weight: 300;
 }
 
-/* Games Grid */
+/* Grille des Jeux */
 .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -196,7 +196,7 @@ main {
     box-shadow: none;
 }
 
-/* Footer */
+/* Pied de page */
 footer {
     text-align: center;
     padding: 2rem;
@@ -205,7 +205,7 @@ footer {
     border-top: 1px solid var(--border);
 }
 
-/* Game View & Buttons */
+/* Vue de Jeu & Boutons */
 .game-view {
     animation: fadeIn 0.4s ease-out;
 }
@@ -253,7 +253,7 @@ select option {
     color: var(--text-primary);
 }
 
-/* Toast Notification */
+/* Notification Toast */
 .toast {
     position: fixed;
     bottom: 2rem;
@@ -282,7 +282,7 @@ select option {
     padding: 4rem 0;
 }
 
-/* Sudoku Specific Styles */
+/* Styles Sudoku */
 .sudoku-container {
     max-width: 500px;
     margin: 0 auto;
@@ -382,7 +382,7 @@ select option {
     background: #ef4444;
 }
 
-/* Notes Grid inside cell */
+/* Grille de notes dans la cellule */
 .notes-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -398,7 +398,7 @@ select option {
     color: var(--text-secondary);
 }
 
-/* Controls & Pad */
+/* Contrôles & Pavé numérique */
 .sudoku-controls {
     display: flex;
     gap: 1rem;
@@ -511,7 +511,7 @@ select option {
     transform: translateY(-2px);
 }
 
-/* Mots Mêlés Styles */
+/* Styles Mots Mêlés */
 .ws-game-container {
     max-width: 600px;
     margin: 0 auto;
@@ -621,7 +621,7 @@ select option {
     }
 }
 
-/* Theme Toggle */
+/* Basculement de Thème */
 .theme-toggle {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -642,7 +642,7 @@ select option {
     transform: scale(1.05);
 }
 
-/* Locked Games */
+/* Jeux Verrouillés */
 .game-card.locked {
     cursor: not-allowed;
     position: relative;
@@ -682,7 +682,7 @@ select option {
     margin-bottom: 0.5rem;
 }
 
-/* Jewel Blitz Styles */
+/* Styles Jewel Blitz */
 .jb-game-container {
     max-width: 500px;
     margin: 0 auto;
@@ -840,7 +840,7 @@ select option {
     }
 }
 
-/* Special Effects Markers - Subtler than lines */
+/* Marqueurs d'effets spéciaux */
 .special-fx {
     position: absolute;
     bottom: 2px;
@@ -883,7 +883,7 @@ select option {
     content: '🌈';
 }
 
-/* Legend & Shake */
+/* Légende & Tremblement */
 
 .shake {
     animation: jbShake 0.3s ease-in-out;
@@ -938,7 +938,7 @@ select option {
     gap: 1rem;
 }
 
-/* Scrabble Styles */
+/* Styles Scrabble */
 .scr-game-container {
     max-width: 600px;
     margin: 0 auto;
@@ -946,8 +946,8 @@ select option {
 
 .scr-board {
     display: grid;
-    grid-template-columns: repeat(15, 1fr);
-    grid-template-rows: repeat(15, 1fr);
+    grid-template-columns: repeat(15, minmax(0, 1fr));
+    grid-template-rows: repeat(15, minmax(0, 1fr));
     gap: 2px;
     background: var(--border);
     border: 4px solid var(--border);
@@ -968,57 +968,61 @@ select option {
     cursor: pointer;
     user-select: none;
     transition: var(--transition);
+    overflow: hidden;
 }
 
 .scr-cell:hover {
     filter: brightness(1.2);
 }
 
-/* Scrabble Bonus Colors */
-.scr-cell.tw {
+/* Couleurs des bonus Scrabble */
+.scr-cell.mt {
     background: #ef4444;
     color: white;
 }
 
-/* Triple Word */
-.scr-cell.dw {
+/* Mot Triple */
+.scr-cell.md {
     background: #f87171;
     color: white;
 }
 
-/* Double Word */
-.scr-cell.tl {
+/* Mot Double */
+.scr-cell.lt {
     background: #3b82f6;
     color: white;
 }
 
-/* Triple Letter */
-.scr-cell.dl {
+/* Lettre Triple */
+.scr-cell.ld {
     background: #93c5fd;
     color: white;
 }
 
-/* Double Letter */
+/* Lettre Double */
 .scr-cell.star {
     background: #fbbf24;
     color: white;
 }
 
-/* Center Star */
+/* Étoile Centrale */
 
 .scr-tile {
     width: 90%;
     height: 90%;
+    max-width: 100%;
+    max-height: 100%;
     background: #fef3c7;
     color: #1e293b;
     border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: clamp(0.7rem, 2.8vw, 1.1rem);
     font-weight: 800;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     position: relative;
+    overflow: hidden;
 }
 
 .scr-tile-val {
@@ -1088,7 +1092,7 @@ select option {
     color: var(--accent);
 }
 
-/* Hangman Styles */
+/* Styles Le Pendu */
 .hg-game-container {
     max-width: 500px;
     margin: 0 auto;
@@ -1373,4 +1377,331 @@ select option {
 .pa-controls {
     display: flex;
     gap: 0.8rem;
+}
+
+/* =========================================
+   Ajustements globaux de mise en page en jeu 
+   ========================================= */
+body.in-game header {
+    padding: 0.5rem 1rem;
+}
+
+body.in-game header h1 {
+    font-size: 1.2rem;
+}
+
+body.in-game footer {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+}
+
+body.in-game main {
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+}
+
+body.in-game .game-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+/* Extension de base */
+.scr-game-container,
+.ws-game-container,
+.sudoku-container,
+.jb-game-container,
+.hg-game-container,
+.pa-game-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.scr-board,
+.grid-9x9,
+.ws-grid,
+.jb-grid,
+.pa-grid,
+.hg-drawing-container {
+    width: 100%;
+}
+
+/* =========================================
+   Affichage PC (1920x1080 et plus)
+   ========================================= */
+@media (min-width: 1920px) {
+    body.in-game main {
+        max-width: 1800px;
+    }
+
+    body.in-game .game-view>.btn-secondary {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .scr-game-container,
+    .ws-game-container,
+    .sudoku-container,
+    .jb-game-container,
+    .hg-game-container,
+    .pa-game-container {
+        display: grid;
+        grid-template-columns: auto 350px;
+        grid-auto-flow: dense;
+        gap: 3rem;
+        align-items: start;
+        justify-content: center;
+        max-width: 1600px;
+    }
+
+    .scr-board,
+    .grid-9x9,
+    .ws-grid,
+    .jb-grid,
+    .pa-grid,
+    .hg-drawing-container {
+        grid-column: 1;
+        grid-row: 1 / 10;
+        height: min(85vh, 900px);
+        width: auto !important;
+        max-width: none;
+        margin: 0;
+    }
+
+    .scr-header,
+    .sudoku-header,
+    .ws-header,
+    .jb-header,
+    .pa-header {
+        grid-column: 2;
+        grid-row: 1;
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    .scr-rack,
+    .ws-words-container,
+    .jb-stats,
+    .pa-stats,
+    .hg-word-display {
+        grid-column: 2;
+        grid-row: 2;
+        width: 100%;
+    }
+
+    .scr-controls,
+    .sudoku-controls,
+    .ws-controls,
+    .jb-controls,
+    .pa-controls,
+    .hg-keyboard {
+        grid-column: 2;
+        grid-row: 3;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .number-pad {
+        grid-column: 2;
+        grid-row: 4;
+    }
+
+    .scr-rack {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* =========================================
+   Affichage Mobile Paysage
+   ========================================= */
+@media (max-width: 950px) and (orientation: landscape) {
+    body.in-game header {
+        padding: 0.2rem 1rem;
+    }
+
+    body.in-game header h1 {
+        font-size: 1rem;
+    }
+
+    body.in-game footer {
+        display: none;
+    }
+
+    body.in-game main {
+        padding: 0.5rem;
+    }
+
+    body.in-game .game-view>.btn-secondary {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .scr-game-container,
+    .ws-game-container,
+    .sudoku-container,
+    .jb-game-container,
+    .hg-game-container,
+    .pa-game-container {
+        display: grid;
+        grid-template-columns: auto 220px;
+        gap: 1rem;
+        align-items: start;
+        justify-content: center;
+        height: 100%;
+        margin-top: 5px;
+    }
+
+    .scr-board,
+    .grid-9x9,
+    .ws-grid,
+    .jb-grid,
+    .pa-grid,
+    .hg-drawing-container {
+        grid-column: 1;
+        grid-row: 1 / 10;
+        height: 85vh;
+        width: auto !important;
+        margin: 0;
+    }
+
+    .scr-header,
+    .sudoku-header,
+    .ws-header,
+    .jb-header,
+    .pa-header {
+        grid-column: 2;
+        grid-row: 1;
+        margin-bottom: 0;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .scr-rack,
+    .ws-words-container,
+    .jb-stats,
+    .pa-stats,
+    .hg-word-display {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .scr-controls,
+    .sudoku-controls,
+    .ws-controls,
+    .jb-controls,
+    .pa-controls,
+    .hg-keyboard {
+        grid-column: 2;
+        grid-row: 3;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .number-pad {
+        grid-column: 2;
+        grid-row: 4;
+    }
+
+    .scr-rack .scr-tile {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+        padding: 0.4rem;
+        font-size: 0.85rem;
+    }
+
+    .hg-keyboard {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* =========================================
+   Corrections Scrabble & Thème IA
+   ========================================= */
+@media (max-width: 450px) and (orientation: portrait) {
+    .scr-rack {
+        gap: 0.3rem;
+        padding: 0.5rem;
+    }
+
+    .scr-rack .scr-tile {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .scr-controls {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .scr-controls .btn-secondary,
+    .scr-controls .btn-primary {
+        flex: 1;
+        min-width: 100px;
+    }
+}
+
+.scr-tile-ai {
+    outline: 2px solid #06b6d4;
+    box-shadow: 0 0 10px #06b6d4, inset 0 0 5px rgba(6, 182, 212, 0.5);
+    animation: pulse-cyan 2.5s infinite alternate;
+}
+
+@keyframes pulse-cyan {
+    0% {
+        box-shadow: 0 0 5px #06b6d4, inset 0 0 2px rgba(6, 182, 212, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 20px #06b6d4, inset 0 0 8px rgba(6, 182, 212, 0.8);
+    }
+}
+
+.scr-tile-hint {
+    background: #fef08a !important;
+    color: #713f12 !important;
+    outline: 2px dashed #f59e0b;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+    animation: pulse-hint 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-hint {
+    0% {
+        box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 14px rgba(245, 158, 11, 0.9);
+    }
+}
+
+.scr-btn-hint {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    color: #1e293b !important;
+    border-color: #f59e0b !important;
+    font-weight: 700;
+}
+
+.scr-btn-hint:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
 }

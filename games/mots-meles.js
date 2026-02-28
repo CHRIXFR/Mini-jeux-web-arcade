@@ -164,7 +164,7 @@ class WordSearchGame {
             if (placed) {
                 placedWords.push(word);
             } else {
-                console.warn(`Mot non placé (ignoré) : ${word}`);
+                // Mot non plaçable, on l'ignore
             }
         }
         this.wordsToFind = placedWords;

@@ -41,15 +41,15 @@ class ScrabbleGame {
 
     initBonuses() {
         const b = {};
-        const tw = [[0, 0], [0, 7], [0, 14], [7, 0], [7, 14], [14, 0], [14, 7], [14, 14]];
-        const dw = [[1, 1], [2, 2], [3, 3], [4, 4], [1, 13], [2, 12], [3, 11], [4, 10], [13, 1], [12, 2], [11, 3], [10, 4], [13, 13], [12, 12], [11, 11], [10, 10], [7, 7]];
-        const tl = [[1, 5], [1, 9], [5, 1], [5, 5], [5, 9], [5, 13], [9, 1], [9, 5], [9, 9], [9, 13], [13, 5], [13, 9]];
-        const dl = [[0, 3], [0, 11], [2, 6], [2, 8], [3, 0], [3, 7], [3, 14], [6, 2], [6, 6], [6, 8], [6, 12], [7, 3], [7, 11], [8, 2], [8, 6], [8, 8], [8, 12], [11, 0], [11, 7], [11, 14], [12, 6], [12, 8], [14, 3], [14, 11]];
+        const mt = [[0, 0], [0, 7], [0, 14], [7, 0], [7, 14], [14, 0], [14, 7], [14, 14]];
+        const md = [[1, 1], [2, 2], [3, 3], [4, 4], [1, 13], [2, 12], [3, 11], [4, 10], [13, 1], [12, 2], [11, 3], [10, 4], [13, 13], [12, 12], [11, 11], [10, 10], [7, 7]];
+        const lt = [[1, 5], [1, 9], [5, 1], [5, 5], [5, 9], [5, 13], [9, 1], [9, 5], [9, 9], [9, 13], [13, 5], [13, 9]];
+        const ld = [[0, 3], [0, 11], [2, 6], [2, 8], [3, 0], [3, 7], [3, 14], [6, 2], [6, 6], [6, 8], [6, 12], [7, 3], [7, 11], [8, 2], [8, 6], [8, 8], [8, 12], [11, 0], [11, 7], [11, 14], [12, 6], [12, 8], [14, 3], [14, 11]];
 
-        tw.forEach(p => b[`${p[0]},${p[1]}`] = 'tw');
-        dw.forEach(p => b[`${p[0]},${p[1]}`] = 'dw');
-        tl.forEach(p => b[`${p[0]},${p[1]}`] = 'tl');
-        dl.forEach(p => b[`${p[0]},${p[1]}`] = 'dl');
+        mt.forEach(p => b[`${p[0]},${p[1]}`] = 'mt');
+        md.forEach(p => b[`${p[0]},${p[1]}`] = 'md');
+        lt.forEach(p => b[`${p[0]},${p[1]}`] = 'lt');
+        ld.forEach(p => b[`${p[0]},${p[1]}`] = 'ld');
         b['7,7'] = 'star';
         return b;
     }
@@ -58,18 +58,31 @@ class ScrabbleGame {
         this.score = 0;
         this.playerScore = 0;
         this.aiScore = 0;
+        this.consecutivePasses = 0;
         this.isGameOver = false;
+        this.firstMove = true;
         this.renderLayout();
         await this.loadDictionary();
 
         if (this.isDictionaryLoaded) {
-            this.initBag();
-            this.fillPlayerRack();
-            this.fillAiRack();
-            this.renderBoard();
-            this.renderRack();
-            window.arcade.showToast('Partie commencée !');
+            this.promptDifficulty();
         }
+    }
+
+    promptDifficulty() {
+        const modal = document.getElementById('scr-diff-modal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    startGameWithDifficulty(diff) {
+        this.difficulty = diff;
+        document.getElementById('scr-diff-modal').style.display = 'none';
+        this.initBag();
+        this.fillPlayerRack();
+        this.fillAiRack();
+        this.renderBoard();
+        this.renderRack();
+        window.arcade.showToast('Partie commencée !');
     }
 
     async loadDictionary() {
@@ -158,21 +171,16 @@ class ScrabbleGame {
                 <div id="scr-rack" class="scr-rack"></div>
 
                 <div class="scr-controls">
-                    <label for="scr-difficulty" class="sr-only">Niveau de l'IA</label>
-                    <select id="scr-difficulty" class="btn-secondary diff-select" style="margin-right: 10px; max-width: 130px;">
-                        <option value="beginner">Débutant</option>
-                        <option value="intermediate">Intermédiaire</option>
-                        <option value="confirmed">Confirmé</option>
-                        <option value="pro">Pro</option>
-                    </select>
                     <button id="scr-btn-play" class="btn-primary" disabled>Chargement...</button>
                     <button id="scr-btn-cancel" class="btn-secondary">Annuler</button>
                     <button id="scr-btn-shuffle" class="btn-secondary">Mélanger</button>
+                    <button id="scr-btn-exchange" class="btn-secondary" title="Échanger toutes vos lettres (passe votre tour)">Échanger</button>
                     <button id="scr-btn-pass" class="btn-secondary">Passer</button>
+                    <button id="scr-btn-hint" class="btn-secondary scr-btn-hint" title="Proposer un mot possible">Aide 💡</button>
                 </div>
             </div>
             
-            <!-- Joker Modal -->
+            <!-- Modale Joker -->
             <div id="scr-joker-modal" class="modal-overlay" style="display: none;">
                 <div class="modal-content">
                     <h3>Lettre du Joker ?</h3>
@@ -180,16 +188,51 @@ class ScrabbleGame {
                     <button id="scr-btn-joker" class="btn-primary">Confirmer</button>
                 </div>
             </div>
+
+            <!-- Modale Difficulté -->
+            <div id="scr-diff-modal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <h2>Niveau de l'IA</h2>
+                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">Choisissez la difficulté de votre adversaire avant de commencer.</p>
+                    <div class="modal-actions">
+                        <button class="btn-primary diff-btn" data-diff="beginner">Débutant</button>
+                        <button class="btn-primary diff-btn" data-diff="intermediate">Intermédiaire</button>
+                        <button class="btn-primary diff-btn" data-diff="confirmed">Confirmé</button>
+                        <button class="btn-primary diff-btn" data-diff="pro">Pro</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modale Fin de Partie -->
+            <div id="scr-end-modal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <h2 id="scr-end-title">Fin de partie</h2>
+                    <div class="xp-bonus" id="scr-end-score" style="font-size: 2rem; margin-bottom: 2rem;">0 - 0</div>
+                    <div class="modal-actions">
+                        <button id="scr-btn-replay" class="btn-primary">Rejouer la partie</button>
+                        <button onclick="window.arcade.renderHome()" class="btn-secondary">Retour au menu</button>
+                    </div>
+                </div>
+            </div>
         `;
 
         document.getElementById('scr-btn-play').onclick = () => this.validateMove();
         document.getElementById('scr-btn-cancel').onclick = () => this.cancelTempMove();
         document.getElementById('scr-btn-shuffle').onclick = () => this.shuffleRack();
+        document.getElementById('scr-btn-exchange').onclick = () => this.exchangePlayerLetters();
         document.getElementById('scr-btn-pass').onclick = () => this.passTurn();
+        document.getElementById('scr-btn-hint').onclick = () => this.hintMove();
 
-        const diffSelect = document.getElementById('scr-difficulty');
-        diffSelect.value = this.difficulty;
-        diffSelect.onchange = (e) => this.difficulty = e.target.value;
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.onclick = (e) => this.startGameWithDifficulty(e.target.getAttribute('data-diff'));
+        });
+        document.getElementById('scr-btn-replay').onclick = () => {
+            document.getElementById('scr-end-modal').style.display = 'none';
+            this.start();
+        };
+
+        // Expose jeu pour tests Playwright
+        window._scrabbleGame = this;
     }
 
     renderBoard() {
@@ -201,24 +244,33 @@ class ScrabbleGame {
                 const bonus = this.bonuses[`${r},${c}`];
                 cell.className = 'scr-cell' + (bonus ? ` ${bonus}` : '');
 
-                // Priorité du contenu : Plateau logique > Coup temporaire > Texte bonus
+                // Priorité du contenu : Plateau logique > Coup temporaire > Aide > Texte bonus
                 const placedTile = this.board[r][c];
                 const tempTile = this.tempMoves.find(m => m.r === r && m.c === c);
+                const hintTile = this.hintMoves && this.hintMoves.find(m => m.r === r && m.c === c);
 
                 if (placedTile || tempTile) {
                     const letter = placedTile ? placedTile.letter : tempTile.letter;
                     const isJoker = placedTile ? placedTile.isJoker : tempTile.isJoker;
                     const val = isJoker ? 0 : this.letterData[letter].v;
+                    const isAi = placedTile && placedTile.playedByAi;
 
                     cell.innerHTML = `
-                        <div class="scr-tile" style="${isJoker ? 'color: #b91c1c;' : ''}">
+                        <div class="scr-tile ${isAi ? 'scr-tile-ai' : ''}" style="${isJoker ? 'color: #b91c1c;' : ''}">
                             ${letter}
                             <span class="scr-tile-val">${val}</span>
                         </div>
                     `;
+                } else if (hintTile) {
+                    const val = hintTile.isJoker ? 0 : this.letterData[hintTile.letter].v;
+                    cell.innerHTML = `
+                        <div class="scr-tile scr-tile-hint">
+                            ${hintTile.letter}
+                            <span class="scr-tile-val">${val}</span>
+                        </div>
+                    `;
                 } else if (bonus) {
-                    cell.textContent = bonus.toUpperCase();
-                    if (bonus === 'star') cell.textContent = '★';
+                    cell.textContent = bonus === 'star' ? '★' : bonus.toUpperCase();
                 }
 
                 cell.onclick = () => this.handleCellClick(r, c);
@@ -255,7 +307,7 @@ class ScrabbleGame {
         const tempIdx = this.tempMoves.findIndex(m => m.r === r && m.c === c);
         if (tempIdx !== -1) {
             const moved = this.tempMoves.splice(tempIdx, 1)[0];
-            this.playerRack.push(moved.letter);
+            this.playerRack.push(moved.isJoker ? '?' : moved.letter);
             this.renderBoard();
             this.renderRack();
             return;
@@ -304,8 +356,34 @@ class ScrabbleGame {
         this.renderRack();
     }
 
+    exchangePlayerLetters() {
+        if (this.currentTurn !== 'player') return;
+        if (this.tempMoves.length > 0) this.cancelTempMove();
+
+        // Peut échanger seulement si le sac a au moins autant de lettres que le chevalet
+        if (this.bag.length < this.playerRack.length) {
+            const isTestMode = new URLSearchParams(window.location.search).get('test') === 'true';
+            if (isTestMode) {
+                // En mode test : fin de partie si impossible d'échanger (sac vide)
+                this.handleGameEnd();
+            } else {
+                window.arcade.showToast('Pas assez de lettres dans le sac pour échanger.');
+            }
+            return;
+        }
+
+        this.bag.push(...this.playerRack);
+        this.shuffle(this.bag);
+        this.playerRack = [];
+        this.fillPlayerRack();
+        this.renderRack();
+        this.consecutivePasses = 0;
+        window.arcade.showToast('Vous avez échangé toutes vos lettres.');
+        this.switchTurn();
+    }
+
     cancelTempMove() {
-        this.tempMoves.forEach(m => this.playerRack.push(m.letter));
+        this.tempMoves.forEach(m => this.playerRack.push(m.isJoker ? '?' : m.letter));
         this.tempMoves = [];
         this.renderBoard();
         this.renderRack();
@@ -313,8 +391,98 @@ class ScrabbleGame {
 
     passTurn() {
         if (this.tempMoves.length > 0) this.cancelTempMove();
+        this.hintMoves = null; // Effacer l'aide en cours
+        this.consecutivePasses = (this.consecutivePasses || 0) + 1;
+        if (this.consecutivePasses >= 2) {
+            this.handleGameEnd();
+            return;
+        }
         this.switchTurn();
     }
+
+    hintMove() {
+        if (this.currentTurn !== 'player') return;
+        if (this.tempMoves.length > 0) this.cancelTempMove();
+
+        // Utilise temporairement le rack joueur dans la mécanique IA niveau Confirmé
+        const savedAiRack = this.aiRack;
+        const savedDiff = this.difficulty;
+        this.aiRack = [...this.playerRack];
+        this.difficulty = 'confirmed';
+
+        const possibleMoves = this.findAllValidAiMoves();
+
+        // Restaurer l'état IA
+        this.aiRack = savedAiRack;
+        this.difficulty = savedDiff;
+
+        const isTestMode = new URLSearchParams(window.location.search).get('test') === 'true';
+
+        if (possibleMoves.length === 0) {
+            if (isTestMode) {
+                // En mode test : échange automatique des lettres si aucun mot trouvable
+                this.exchangePlayerLetters();
+            } else {
+                window.arcade.showToast('Aucun mot trouvé. Essayez d\'échanger vos lettres !');
+            }
+            return;
+        }
+
+        // Choisir un bon mot (comme la logique confirmée)
+        const midWords = possibleMoves.filter(m => m.word.length >= 5 && m.word.length <= 6);
+        const chosen = midWords.length > 0
+            ? midWords.sort((a, b) => b.score - a.score)[0]
+            : possibleMoves.sort((a, b) => b.score - a.score)[0];
+
+        if (isTestMode) {
+            // Mode test : placer ET valider automatiquement
+            const placements = chosen.placements.map(m => ({ ...m }));
+            const removedLetters = [];
+
+            for (const m of placements) {
+                const letterInRack = m.isJoker ? '?' : m.letter;
+                const idx = this.playerRack.indexOf(letterInRack);
+                if (idx > -1) {
+                    this.playerRack.splice(idx, 1);
+                    removedLetters.push(letterInRack);
+                }
+            }
+
+            this.tempMoves = placements;
+            this.hintMoves = null;
+            this.renderBoard();
+            this.renderRack();
+
+            const rackSize = this.playerRack.length + removedLetters.length;
+            this.validateMove();
+
+            // Si validateMove a échoué, remettre les lettres retirées
+            if (this.tempMoves.length > 0 || this.playerRack.length > rackSize) {
+                this.playerRack.push(...removedLetters);
+                this.tempMoves = [];
+                this.renderRack();
+            }
+        } else {
+            // Mode normal : placer les lettres en tempMoves (suggestion interactive)
+            // Le joueur peut Valider ou Annuler comme s'il les avait placées manuellement
+            const placements = chosen.placements.map(m => ({ ...m }));
+
+            for (const m of placements) {
+                const letterInRack = m.isJoker ? '?' : m.letter;
+                const idx = this.playerRack.indexOf(letterInRack);
+                if (idx > -1) {
+                    this.playerRack.splice(idx, 1);
+                }
+            }
+
+            this.tempMoves = placements;
+            this.hintMoves = null;
+            this.renderBoard();
+            this.renderRack();
+            window.arcade.showToast(`Suggestion : "${chosen.word}" (~${chosen.score} pts) — Validez ou Annulez`);
+        }
+    }
+
 
     validateMove() {
         if (this.tempMoves.length === 0) {
@@ -405,6 +573,17 @@ class ScrabbleGame {
             this.board[m.r][m.c].temp = false;
         }
 
+        // Nettoyer les highlights IA précédents lors d'un coup valide
+        for (let r = 0; r < 15; r++) {
+            for (let c = 0; c < 15; c++) {
+                if (this.board[r][c] && this.board[r][c].playedByAi) {
+                    this.board[r][c].playedByAi = false;
+                }
+            }
+        }
+
+        this.consecutivePasses = 0;
+
         let finalScore = turnScore;
         if (this.tempMoves.length === 7) {
             finalScore += 50; // BINGO!
@@ -451,10 +630,10 @@ class ScrabbleGame {
                     let letterVal = tile.isJoker ? 0 : this.letterData[tile.letter].v;
                     if (tile.temp) { // Appliquer les bonus uniquement sur les nouvelles tuiles
                         const bonus = this.bonuses[`${m.r},${currC}`];
-                        if (bonus === 'dl') letterVal *= 2;
-                        if (bonus === 'tl') letterVal *= 3;
-                        if (bonus === 'dw' || bonus === 'star') wordMultiplier *= 2;
-                        if (bonus === 'tw') wordMultiplier *= 3;
+                        if (bonus === 'ld') letterVal *= 2;
+                        if (bonus === 'lt') letterVal *= 3;
+                        if (bonus === 'md' || bonus === 'star') wordMultiplier *= 2;
+                        if (bonus === 'mt') wordMultiplier *= 3;
                     }
                     wordBaseScore += letterVal;
                     currC++;
@@ -488,10 +667,10 @@ class ScrabbleGame {
                     let letterVal = tile.isJoker ? 0 : this.letterData[tile.letter].v;
                     if (tile.temp) {
                         const bonus = this.bonuses[`${currR},${m.c}`];
-                        if (bonus === 'dl') letterVal *= 2;
-                        if (bonus === 'tl') letterVal *= 3;
-                        if (bonus === 'dw' || bonus === 'star') wordMultiplier *= 2;
-                        if (bonus === 'tw') wordMultiplier *= 3;
+                        if (bonus === 'ld') letterVal *= 2;
+                        if (bonus === 'lt') letterVal *= 3;
+                        if (bonus === 'md' || bonus === 'star') wordMultiplier *= 2;
+                        if (bonus === 'mt') wordMultiplier *= 3;
                     }
                     wordBaseScore += letterVal;
                     currR++;
@@ -558,7 +737,7 @@ class ScrabbleGame {
                     chosenMove = possibleMoves[Math.min(possibleMoves.length - 1, 2)];
                 }
             } else if (this.difficulty === 'confirmed') {
-                // Prefers 5-6 letter words
+                // Préfère les mots de 5 à 6 lettres
                 const midWords = possibleMoves.filter(m => m.word.length >= 5 && m.word.length <= 6);
                 if (midWords.length > 0) {
                     midWords.sort((a, b) => b.score - a.score);
@@ -578,7 +757,7 @@ class ScrabbleGame {
 
             // Validation du coup de l'IA
             for (const m of this.tempMoves) {
-                this.board[m.r][m.c] = { letter: m.letter, isJoker: m.isJoker, temp: false };
+                this.board[m.r][m.c] = { letter: m.letter, isJoker: m.isJoker, temp: false, playedByAi: true };
                 // Retirer les lettres utilisées du chevalet de l'IA
                 const rackIdx = this.aiRack.indexOf(m.isJoker ? '?' : m.letter);
                 if (rackIdx > -1) this.aiRack.splice(rackIdx, 1);
@@ -586,6 +765,7 @@ class ScrabbleGame {
             this.firstMove = false;
 
             if (this.tempMoves.length === 7) finalScore += 50;
+            this.consecutivePasses = 0;
 
             this.aiScore += finalScore;
             this.tempMoves = [];
@@ -601,8 +781,14 @@ class ScrabbleGame {
                 this.aiRack = [];
                 this.fillAiRack();
                 window.arcade.showToast(`L'IA a échangé ses lettres`);
+                this.consecutivePasses = 0;
             } else {
                 window.arcade.showToast(`L'IA a passé son tour`);
+                this.consecutivePasses = (this.consecutivePasses || 0) + 1;
+                if (this.consecutivePasses >= 2) {
+                    this.handleGameEnd();
+                    return;
+                }
             }
         }
 
@@ -637,7 +823,7 @@ class ScrabbleGame {
                     j--;
                     usedLetters.push({ letter: char, isJoker: true });
                 } else {
-                    return null; // Impossible à former
+                    return null;
                 }
             }
             return usedLetters;
@@ -662,25 +848,25 @@ class ScrabbleGame {
             }
         }
 
-        // Extremely simplified AI approach: Try to place single letters or short words adjacent to existing
-        // This is a placeholder to keep browser from freezing while providing a functional opponent.
+        // Approche IA simplifiée : tente de placer des lettres ou mots courts adjacents aux tuiles existantes.
+        // Heuristique conçue pour ne pas bloquer le navigateur tout en fournissant un adversaire fonctionnel.
 
-        const aiLetters = this.aiRack.map(l => l === '?' ? '' : l).join(''); // simple heuristic: use only real letters for word check
+        const aiLetters = this.aiRack.map(l => l === '?' ? '' : l).join(''); // Heuristique : n'utilise que les vraies lettres
         const hasJoker = this.aiRack.includes('?');
 
-        // Iterate through anchors checking what words we could form
-        // We will scan dictionary words that contain at least one letter we can place on an anchor
-        // For performance, we'll limit the search drastically. A real Scrabble AI uses a GADDAG or Trie generation.
-        // We have a Trie! We can do a recursive search from anchors.
+        // Parcourt les ancres pour trouver les mots formables.
+        // On scanne les mots du dictionnaire contenant au moins une lettre plaçable sur une ancre.
+        // Pour la performance, la recherche est fortement limitée. Une vraie IA Scrabble utilise un GADDAG ou un Trie.
+        // On dispose d'un Trie ! On peut faire une recherche récursive depuis les ancres.
 
-        // AI Logic:
-        // 1. Find all "anchors" (empty squares adjacent to filled squares, plus the center if first move).
-        // 2. For each anchor, try extending horizontally and vertically.
-        // Due to browser performance constraints, we'll do a simpler heuristic:
-        // Find existing letters on the board. Try to prepend or append rack letters to them.
+        // Logique IA :
+        // 1. Trouver toutes les "ancres" (cases vides adjacentes aux cases remplies, plus le centre au premier coup).
+        // 2. Pour chaque ancre, tenter une extension horizontale et verticale.
+        // Contrainte de performance navigateur : on utilise une heuristique plus simple :
+        // Trouver les lettres existantes sur le plateau et tenter d'ajouter des lettres du chevalet.
 
-        // Simplified better Brute-force for browser:
-        // Try to add 1 to N letters from the rack to existing letters.
+        // Force brute simplifiée pour le navigateur :
+        // Tente d'ajouter de 1 à N lettres du chevalet aux lettres existantes.
 
         const startTime = performance.now();
         let timeLimit = 500; // ms par défaut
@@ -706,7 +892,7 @@ class ScrabbleGame {
                     // Obtient les permutations du chevalet de longueur `len`
                     const perms = this.getRackPermutations(len);
                     for (const perm of perms) {
-                        // Check time constraint
+                        // Vérifier la contrainte de temps
                         if (performance.now() - startTime > timeLimit) {
                             timeExceeded = true;
                             break;
@@ -799,30 +985,48 @@ class ScrabbleGame {
     }
 
     checkEndGame() {
-        if (this.bag.length === 0 && (this.playerRack.length === 0 || this.aiRack.length === 0)) {
-            this.isGameOver = true;
-
-            // Deduct remaining tile values
-            let pPenalty = 0;
-            for (const l of this.playerRack) pPenalty += (l === '?' ? 0 : this.letterData[l].v);
-
-            let aPenalty = 0;
-            for (const l of this.aiRack) aPenalty += (l === '?' ? 0 : this.letterData[l].v);
-
-            this.playerScore -= pPenalty;
-            this.aiScore -= aPenalty;
-
-            // Bonus to the one who finished first
-            if (this.playerRack.length === 0) this.playerScore += aPenalty;
-            if (this.aiRack.length === 0) this.aiScore += pPenalty;
-
-            this.updateStats();
-
-            const pWon = this.playerScore > this.aiScore;
-            setTimeout(() => {
-                window.arcade.showToast(pWon ? 'Vous avez gagné !' : 'L\'IA a gagné...', 5000);
-            }, 1000);
+        if (!this.isGameOver && this.bag.length === 0 && (this.playerRack.length === 0 || this.aiRack.length === 0)) {
+            this.handleGameEnd();
         }
+    }
+
+    handleGameEnd() {
+        if (this.isGameOver) return;
+        this.isGameOver = true;
+
+        // Déduire la valeur des lettres restantes
+        let pPenalty = 0;
+        for (const l of this.playerRack) pPenalty += (l === '?' ? 0 : this.letterData[l].v);
+
+        let aPenalty = 0;
+        for (const l of this.aiRack) aPenalty += (l === '?' ? 0 : this.letterData[l].v);
+
+        this.playerScore -= pPenalty;
+        this.aiScore -= aPenalty;
+
+        // Bonus pour le joueur ayant terminé en premier
+        if (this.playerRack.length === 0 && this.aiRack.length !== 0) this.playerScore += aPenalty;
+        if (this.aiRack.length === 0 && this.playerRack.length !== 0) this.aiScore += pPenalty;
+
+        this.updateStats();
+
+        const pWon = this.playerScore > this.aiScore;
+        setTimeout(() => {
+            const modal = document.getElementById('scr-end-modal');
+            const title = document.getElementById('scr-end-title');
+            const score = document.getElementById('scr-end-score');
+
+            if (this.playerScore === this.aiScore) {
+                title.textContent = 'Égalité ! 🤝';
+                title.style.color = '#3b82f6';
+            } else {
+                title.textContent = pWon ? 'Vous avez gagné ! 🎉' : 'L\'IA a gagné... 🤖';
+                title.style.color = pWon ? 'var(--success)' : '#ef4444';
+            }
+            score.textContent = `${this.playerScore} - ${this.aiScore}`;
+
+            modal.style.display = 'flex';
+        }, 1000);
     }
 }
 
