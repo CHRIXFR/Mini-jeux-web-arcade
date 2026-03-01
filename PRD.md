@@ -99,6 +99,13 @@ Conformément aux standards de haute qualité :
 - **Performance** : Code audité 100% via Lighthouse & Revue de Code stricte.
 - **Mode Test (Dev Only)** : Possibilité de débloquer tous les contenus via le paramètre URL `?test=true`.
 
+### 4.8 Modale Changelog & Suggestions
+- **Rôle double** : La modale accessible via l'avatar flottant sert à la fois d'historique des versions et de canal de feedback direct.
+- **Onglet Nouveautés 🚀** : Liste chronologique des dernières mises à jour du projet.
+- **Onglet Suggérer 💡** : Formulaire de suggestion (prénom optionnel, type : Nouveau Jeu / Nouvelle Fonctionnalité, description) soumis via **Formspree** (`https://formspree.io/f/xqedogeo`).
+  - Soumission en **AJAX** (`fetch` + `try...catch`) sans rechargement de page.
+  - Affichage d'un message de confirmation visuel après envoi réussi.
+
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
 2. **Phase 2** : Système de points et Sudoku (Terminé).
@@ -111,4 +118,4 @@ Conformément aux standards de haute qualité :
 9. **Phase 9** : Développement du Jeu de Paires (Terminé).
 10. **Phase 10** : Optimisation Responsive (PC 1920x1080 / Mobile) et automatisation des tests visuels Playwright (Terminé).
 11. **Phase 11** : Améliorations Scrabble v2 (Bouton Aide, Traduction FR) et Lighthouse (Terminé).
-
+12. **Phase 12** : Formulaire de suggestions (jeux & fonctionnalités) intégré dans la modale Changelog via Formspree (Terminé).

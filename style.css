@@ -32,6 +32,33 @@ body.light-mode {
     box-sizing: border-box;
 }
 
+/* Scrollbar Personnalisée - Style Premium & Discret */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -480,6 +507,172 @@ select option {
 .modal-content h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
+}
+
+/* --- Modale Changelog & Suggestions --- */
+
+.changelog-modal-content {
+    text-align: left;
+    max-width: 460px;
+    padding: 2rem;
+}
+
+/* Onglets de navigation */
+.changelog-tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    padding: 0.6rem 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: -1px;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* Panneaux d'onglets */
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+    animation: fadeIn 0.25s ease-out;
+}
+
+/* Liste Changelog */
+.changelog-list ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 8px;
+    /* Espace pour la scrollbar */
+}
+
+/* Style spécifique pour la scrollbar du changelog si besoin d'encore plus de discrétion */
+.changelog-list ul::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.2);
+}
+
+.changelog-list ul::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+
+.changelog-list li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--accent);
+    line-height: 1.5;
+}
+
+.changelog-list li strong {
+    color: var(--text-primary);
+}
+
+/* Formulaire de suggestion */
+.suggestion-intro {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+}
+
+.suggestion-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.65rem 0.85rem;
+    transition: var(--transition);
+    outline: none;
+    resize: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Message de succès */
+.form-success {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 8px;
+    color: var(--success);
+    font-weight: 600;
+    font-size: 0.95rem;
+    animation: fadeIn 0.3s ease-out;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
+/* Bouton Fermer de la modale Changelog */
+.changelog-close-btn {
+    width: 100%;
+    margin-top: 1.25rem;
+    justify-content: center;
 }
 
 .xp-bonus {
