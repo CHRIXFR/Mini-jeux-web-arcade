@@ -106,6 +106,19 @@ Conformément aux standards de haute qualité :
   - Soumission en **AJAX** (`fetch` + `try...catch`) sans rechargement de page.
   - Affichage d'un message de confirmation visuel après envoi réussi.
 
+### 4.9 Jeu : Jeu des Capitales
+- **Déblocage** : Coût de **750 XP**.
+- **Gameplay** : Deviner le pays ou la capitale correspondant au drapeau affiché.
+- **Modes de jeu** :
+    - **Nommer le Pays** : Trouver le pays associé au drapeau parmi 5 propositions.
+    - **Nommer la Capitale** : Trouver la capitale associée au drapeau parmi 5 propositions.
+    - **Mode Mixte** : Mode aléatoire alternant questions sur les pays et sur les capitales.
+- **Fonctionnalités** :
+    - Utilisation des drapeaux ultra-rapides et responsives via le CDN `flagcdn.com`.
+    - Système de choix multiple (1 bonne réponse, 4 mauvaises réponses aléatoires).
+    - Feedback visuel avec animations premium (tremblement rouge en cas d'erreur, surbrillance verte en cas de succès).
+    - Gain d'XP en fonction des bonnes réponses à la fin d'une série de 10 questions.
+
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
 2. **Phase 2** : Système de points et Sudoku (Terminé).
@@ -119,3 +132,4 @@ Conformément aux standards de haute qualité :
 10. **Phase 10** : Optimisation Responsive (PC 1920x1080 / Mobile) et automatisation des tests visuels Playwright (Terminé).
 11. **Phase 11** : Améliorations Scrabble v2 (Bouton Aide, Traduction FR) et Lighthouse (Terminé).
 12. **Phase 12** : Formulaire de suggestions (jeux & fonctionnalités) intégré dans la modale Changelog via Formspree (Terminé).
+13. **Phase 13** : Création du Jeu des Capitales avec 3 modes et appel de flagcdn (Terminé).
