@@ -1627,9 +1627,10 @@ body.in-game .game-view {
 }
 
 /* =========================================
-   Affichage PC (1920x1080 et plus)
+   Affichage PC (Desktop & Grandes résolutions)
    ========================================= */
-@media (min-width: 1920px) {
+@media (min-width: 1200px) {
+
     body.in-game main {
         max-width: 1800px;
     }
@@ -1648,14 +1649,16 @@ body.in-game .game-view {
     .hg-game-container,
     .pa-game-container {
         display: grid;
-        grid-template-columns: auto 400px;
+        grid-template-columns: minmax(0, 1fr) 400px;
+        /* Force l'espace du menu à 400px */
         grid-auto-flow: dense;
-        gap: 4rem;
+        gap: 2.5rem;
         align-items: start;
         justify-content: center;
-        max-width: 1700px;
-        margin-top: 2rem;
+        max-width: 1600px;
+        margin-top: 1rem;
     }
+
 
     .scr-board,
     .grid-9x9,
@@ -1808,8 +1811,12 @@ body.in-game .game-view {
     .scr-rack {
         flex-wrap: wrap;
         justify-content: center;
+        grid-column: 2;
+        grid-row: auto;
+        margin-top: 0;
     }
 }
+
 
 /* =========================================
    Affichage Mobile Paysage
