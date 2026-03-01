@@ -16,6 +16,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🧩 **Sudoku** | 250 XP | Le classique avec notes, indices et chronomètre |
 | 💎 **Match-3** | 500 XP | Alignez des gemmes et déclenchez des combos spéciaux |
 | 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
+| 🌍 **Capitales** | 750 XP | Testez vos connaissances sur les drapeaux et les pays |
 
 ## Système de progression
 
