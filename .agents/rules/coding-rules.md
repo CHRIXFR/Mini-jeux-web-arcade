@@ -1,4 +1,5 @@
 ---
+trigger: always_on
 description: Règles de codage et standards de qualité pour le projet Mini-jeux-web
 ---
 
@@ -12,7 +13,6 @@ En tant qu'assistant IA, vous DEVEZ guider l'utilisateur sur la meilleure approc
 *Note comportementale : Suggérer proactivement le changement de modèle ou de mode si la tâche demandée y est plus adaptée (ex: "Je vous conseille de passer en mode Fast avec Gemini pour ce petit correctif...").*
 
 ## 1. Langue et Commentaires
-- **Commentaires en Français** : Tous les commentaires dans le code (JSDoc, commentaires de ligne) doivent être rédigés exclusivement en français.
 - **Code Explicite > Commentaires** : Ne pas commenter ce que fait le code si celui-ci est déjà explicite par son nommage.
   - *Mauvais* : `i++; // Incrémente i`
   - *Bon* : Favoriser des noms de variables clairs comme `tentativesRestantes` au lieu de `tr`.

@@ -15,3 +15,9 @@ ehthumbs_vista.db
 .vscode/
 
 # Note: .agents/workflows is not ignored as it's meant to be shared with contributors.
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+blob-report/

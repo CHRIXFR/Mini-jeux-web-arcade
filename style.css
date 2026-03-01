@@ -154,10 +154,10 @@ main {
     overflow: hidden;
 }
 
-.game-card:hover {
-    transform: translateY(-5px);
+.game-card:not(.locked):not(.disabled):hover {
+    transform: translateY(-5px) scale(1.02);
     border-color: var(--accent);
-    box-shadow: 0 10px 30px -10px var(--accent-glow);
+    box-shadow: 0 15px 40px -10px var(--accent-glow);
 }
 
 .game-icon {
@@ -1443,8 +1443,9 @@ body.in-game .game-view {
 
     body.in-game .game-view>.btn-secondary {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 1rem;
+        left: 1.5rem;
+        z-index: 100;
     }
 
     .scr-game-container,
@@ -1454,64 +1455,161 @@ body.in-game .game-view {
     .hg-game-container,
     .pa-game-container {
         display: grid;
-        grid-template-columns: auto 350px;
+        grid-template-columns: auto 400px;
         grid-auto-flow: dense;
-        gap: 3rem;
+        gap: 4rem;
         align-items: start;
         justify-content: center;
-        max-width: 1600px;
+        max-width: 1700px;
+        margin-top: 2rem;
     }
 
     .scr-board,
     .grid-9x9,
     .ws-grid,
     .jb-grid,
-    .pa-grid,
-    .hg-drawing-container {
+    .pa-grid {
         grid-column: 1;
-        grid-row: 1 / 10;
-        height: min(85vh, 900px);
+        grid-row: 1 / 20;
+        height: min(80vh, 900px);
         width: auto !important;
         max-width: none;
         margin: 0;
+    }
+
+    /* Spécifique Pendu 4K : dessin en haut de la colonne gauche */
+    .hg-drawing-container {
+        grid-column: 1;
+        grid-row: 1 / 20;
+        width: 400px !important;
+        height: 500px !important;
+        position: relative;
+        border-bottom: 8px solid var(--text-secondary);
+        transform: none;
+        margin: 0 auto;
+        align-self: start;
+    }
+
+    /* Redimensionner les parties du pendu pour la grande taille */
+    .hg-game-container .hg-gallows-v {
+        width: 8px;
+        height: 100%;
+        left: 80px;
+    }
+
+    .hg-game-container .hg-gallows-h {
+        width: 200px;
+        height: 8px;
+        left: 80px;
+        top: 0;
+    }
+
+    .hg-game-container .hg-rope {
+        width: 4px;
+        height: 60px;
+        left: 280px;
+        top: 0;
+    }
+
+    .hg-game-container .hg-head {
+        width: 80px;
+        height: 80px;
+        border: 8px solid var(--text-primary);
+        left: 242px;
+        top: 60px;
+    }
+
+    .hg-game-container .hg-body {
+        width: 8px;
+        height: 160px;
+        left: 279px;
+        top: 138px;
+    }
+
+    .hg-game-container .hg-arm-l {
+        width: 100px;
+        height: 8px;
+        left: 180px;
+        top: 178px;
+    }
+
+    .hg-game-container .hg-arm-r {
+        width: 100px;
+        height: 8px;
+        left: 284px;
+        top: 178px;
+    }
+
+    .hg-game-container .hg-leg-l {
+        width: 100px;
+        height: 8px;
+        left: 190px;
+        top: 350px;
+    }
+
+    .hg-game-container .hg-leg-r {
+        width: 100px;
+        height: 8px;
+        left: 274px;
+        top: 350px;
     }
 
     .scr-header,
     .sudoku-header,
     .ws-header,
     .jb-header,
-    .pa-header {
+    .pa-header,
+    .hg-word-display {
         grid-column: 2;
-        grid-row: 1;
-        margin-bottom: 0;
+        grid-row: auto;
+        margin-bottom: 2rem;
         width: 100%;
     }
 
     .scr-rack,
     .ws-words-container,
     .jb-stats,
-    .pa-stats,
-    .hg-word-display {
+    .pa-stats {
         grid-column: 2;
-        grid-row: 2;
+        grid-row: auto;
         width: 100%;
+        margin-bottom: 2rem;
     }
 
     .scr-controls,
     .sudoku-controls,
     .ws-controls,
     .jb-controls,
-    .pa-controls,
+    .pa-controls {
+        grid-column: 2;
+        grid-row: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    /* Spécifique Pendu pour restaurer la grille du clavier en sidebar */
     .hg-keyboard {
         grid-column: 2;
         grid-row: 3;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        /* Plus compact pour la sidebar */
+        gap: 0.5rem;
         width: 100%;
+    }
+
+    .hg-game-container .scr-controls {
+        grid-column: 2;
+        grid-row: 4;
+        margin-top: 1rem;
     }
 
     .number-pad {
         grid-column: 2;
-        grid-row: 4;
+        grid-row: auto;
+        margin-top: 2rem;
     }
 
     .scr-rack {
@@ -1704,4 +1802,81 @@ body.in-game .game-view {
 .scr-btn-hint:hover {
     transform: scale(1.05);
     box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+}
+
+/* --- Styles Avatar & Changelog --- */
+#avatar-changelog {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    cursor: pointer;
+    z-index: 90;
+    transition: var(--transition);
+    background: transparent;
+    border: none;
+    outline: none;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    animation: bounce 2s infinite ease-in-out alternate;
+}
+
+#avatar-changelog:hover {
+    transform: scale(1.1) translateY(-10px);
+    filter: drop-shadow(0 10px 20px var(--accent-glow));
+    animation-play-state: paused;
+}
+
+#avatar-changelog img {
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+    object-fit: cover;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-8px);
+    }
+}
+
+.changelog-list {
+    text-align: left;
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+    padding-right: 1rem;
+}
+
+.changelog-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.changelog-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.changelog-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.changelog-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.changelog-list li:last-child {
+    border-bottom: none;
+}
+
+.changelog-list li strong {
+    color: var(--accent);
+    display: inline-block;
+    margin-bottom: 0.3rem;
 }

@@ -33,6 +33,32 @@
         <!-- Contenu injecté dynamiquement -->
     </main>
 
+    <!-- Modale Changelog -->
+    <div id="changelog-modal" class="modal-overlay" style="display: none;" aria-hidden="true" role="dialog"
+        aria-labelledby="changelog-title">
+        <div class="modal-content">
+            <h2 id="changelog-title">Dernières Nouveautés 🚀</h2>
+            <div class="changelog-list">
+                <ul>
+                    <li><strong>01/03/2026</strong> : Ajout de l'avatar et de la section des nouveautés.</li>
+                    <li><strong>28/02/2026</strong> : Déploiement complet du jeu Scrabble.</li>
+                    <li><strong>20/02/2026</strong> : Lancement de l'Arcade Minimaliste avec Sudoku, Match-3 et d'autres
+                        classiques.</li>
+                </ul>
+            </div>
+            <button
+                onclick="document.getElementById('changelog-modal').style.display='none'; document.getElementById('changelog-modal').setAttribute('aria-hidden', 'true');"
+                class="btn-primary" style="width: 100%;">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Avatar Changelog -->
+    <button id="avatar-changelog"
+        onclick="document.getElementById('changelog-modal').style.display='flex'; document.getElementById('changelog-modal').setAttribute('aria-hidden', 'false');"
+        title="Voir les nouveautés" aria-label="Voir les nouveautés">
+        <img src="images/Anime_lavatar_qui_salut.gif" alt="Avatar qui salut" width="70" height="70">
+    </button>
+
     <footer>
         <p>&copy; 2026 Arcade Minimaliste | Projet Open-Source</p>
     </footer>
@@ -89,22 +115,29 @@
                 document.body.appendChild(t);
                 setTimeout(() => { t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2000); }, 100);
             },
+            showLockedMessage: function (requiredXp) {
+                const missingXp = requiredXp - this.state.xp;
+                this.showToast(`Désolé, il vous manque ${missingXp} XP pour débloquer ce jeu ! 🎮`);
+            },
             renderHome: function () {
                 document.body.classList.remove('in-game');
                 this.state.currentView = 'home';
+                const avatar = document.getElementById('avatar-changelog');
+                if (avatar) avatar.style.display = 'flex';
                 const gridHtml = this.games.map(game => {
                     const isLocked = !this.state.testMode && this.state.xp < game.xp;
-                    const clickAction = isLocked ? '' : `onclick="window.arcade.loadGame('${game.id}')"`;
+                    const clickAction = isLocked ? `onclick="window.arcade.showLockedMessage(${game.xp})"` : `onclick="window.arcade.loadGame('${game.id}')"`;
+                    const accessibilityProps = isLocked ? 'aria-disabled="true"' : 'role="button" tabindex="0"';
 
                     return `
-                        <div class="game-card ${isLocked ? 'locked' : ''}" ${clickAction}>
+                        <div class="game-card ${isLocked ? 'locked' : ''}" ${clickAction} ${accessibilityProps}>
                             ${isLocked ? `
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="lock-badge">${game.xp} XP Requis</div>
                                 </div>
                             ` : ''}
-                            <div class="game-icon" role="img" aria-label="Icône de ${game.name}">${game.icon}</div>
+                            <div class="game-icon" role="img" aria-label="Icône du jeu ${game.name}">${game.icon}</div>
                             <h3>${game.name}</h3>
                             <p>${this.getGameDescription(game.id)}</p>
                             <span class="difficulty">${game.difficulty}</span>
@@ -144,6 +177,8 @@
             loadGame: function (id) {
                 document.body.classList.add('in-game');
                 this.state.currentView = id;
+                const avatar = document.getElementById('avatar-changelog');
+                if (avatar) avatar.style.display = 'none';
                 document.getElementById('app-container').innerHTML = `
                     <div class="game-view">
                         <button onclick="window.arcade.renderHome()" class="btn-secondary">← Retour</button>

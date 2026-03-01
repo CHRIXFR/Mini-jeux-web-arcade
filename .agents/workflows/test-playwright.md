@@ -4,7 +4,7 @@ description: Exécuter les tests visuels Playwright pour les différentes résol
 
 # Lancer les tests Playwright pour le projet Mini-jeux-web
 
-Ce document explique comment exécuter les tests Playwright qui valident le rendu visuel et la non-régression de l'affichage sur PC (1920x1080), Mobile Portrait et Mobile Paysage.
+Ce document explique comment exécuter les tests Playwright qui valident le rendu visuel et la non-régression de l'affichage sur différentes résolutions (PC plein écran, PC fenêtré, Tablettes et Mobiles).
 
 ## 1. Prérequis
 Assurez-vous que les packages sont installés. Si Playwright n'a pas été exécuté depuis longtemps :
@@ -35,11 +35,31 @@ npx playwright test --ui
 npx playwright show-report
 ```
 
-## 5. Captures d'écran (Screenshots)
-Si les tests se terminent avec succès, les captures d'écran mises à jour se trouveront directement dans le répertoire suivant de votre projet :
-`tests/screenshots/`
+## 5. Mettre à jour les captures de référence
+Si vous avez intentionnellement modifié le design ou l'interface d'un jeu, il faut mettre à jour les captures de référence (snapshots), sinon les tests échoueront :
+```cmd
+npx playwright test --update-snapshots
+```
 
-Vous pourrez y comparer le rendu sur les 3 configurations générées :
-- `Desktop PC (1920x1080)`
-- `Mobile Portrait (Galaxy S9+)`
-- `Mobile Landscape (Galaxy S9+)`
+## 6. Exécuter des tests ciblés
+Pour gagner du temps, particulièrement en phase de développement, vous pouvez lancer uniquement les tests dont vous avez besoin :
+```cmd
+# Lancer les tests d'un fichier spécifique
+npx playwright test tests/arcade.spec.js
+
+# Lancer un test par son nom (ex: rendu du thème sombre)
+npx playwright test -g "Thème Sombre"
+
+# Lancer les tests sur une résolution précise
+npx playwright test --project="Desktop PC Plein Écran"
+```
+
+## 7. Résolutions et Composants Testés
+Les tests sont configurés (avec 1 worker local pour la stabilité) pour capturer spécifiquement le Header (`.header-content`) et la grille de jeux (`.game-wrapper`), à la fois en thème Sombre (défaut) et en thème Clair.
+
+Les 7 résolutions couvertes sont :
+- **Desktop PC Plein Écran** (1920x1080)
+- **Desktop PC Fenêtré large** (1366x768)
+- **Desktop PC Fenêtré standard** (1280x720)
+- **Tablette iPad** (Portrait / Paysage : 768x1024 / 1024x768)
+- **Mobile Galaxy S9+** (Portrait / Paysage : 414x896 / 896x414)
