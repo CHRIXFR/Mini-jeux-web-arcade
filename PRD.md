@@ -72,8 +72,13 @@ Conformément aux standards de haute qualité :
     - **Feedback Visuel** : Surbrillance néon cyan des lettres posées par l'IA.
     - **Interface localisée** : Labels du plateau en français (MT, MD, LT, LD).
     - **Aide Intégrée** : Un bouton "Aide" (suggestion d'un mot valide via l'IA niveau Confirmé) avec pré-visualisation sur le plateau.
-    - **Fin de Partie** : Écran de fin stylisé avec score final, bonus de fin de sac et gestion des passes successifs.
-    - **Accessibilité** : Entièrement jouable sur mobile (clavier virtuel et adaptation du chevalet).
+    - **Fin de Partie** : Écran de fin stylisé avec score final, bonus de fin de sac.
+    - **Optimisations Techniques (Phase 15)** : 
+        - Conversion du dictionnaire en **JSON** pour un chargement instantané.
+        - **Compteur de jetons** restants dans le sac intégré à l'interface.
+        - Correction du biais de placement de l'IA (donne des coups équilibrés sur tout le plateau).
+        - Isolation complète des simulations IA pour éviter les fuites de lettres au chevalet.
+    - **Accessibilité** : Entièrement jouable sur mobile.
 
 #### Règles du Jeu (Standard)
 1. **Préparation** : Chaque joueur commence avec 7 lettres. Les jokers ("blancs") valent 0 point mais remplacent n'importe quelle lettre.
@@ -134,7 +139,7 @@ Conformément aux standards de haute qualité :
 12. **Phase 12** : Formulaire de suggestions (jeux & fonctionnalités) intégré dans la modale Changelog via Formspree (Terminé).
 13. **Phase 13** : Création du Jeu des Capitales avec 3 modes et appel de flagcdn (Terminé).
 14. **Phase 14** : Optimisation de l'avatar flottant (passage du GIF au format MP4/JPEG) (Terminé).
-15. **Phase 15** : Debugage et Amélioration du Scrabble (Fuite de lettres, compteur, placement IA, format JSON du dictionnaire) (En projet).
+15. **Phase 15** : Debugage et Amélioration du Scrabble (Fuite de lettres, compteur, placement IA, format JSON du dictionnaire) (Terminé).
 16. **Phase 16** : Optimisation de l'Architecture CSS (Découpage et minification) (En projet).
 17. **Phase 17** : Refonte UI/UX Premium (Utilisation de ui-ux-pro-max) (En projet).
 18. **Phase 18** : Exploration de nouveaux jeux (Puissance 4, Jeux de Cartes, Objets Cachés, Mahjong, Tetris) (En projet).

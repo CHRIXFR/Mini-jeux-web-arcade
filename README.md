@@ -15,8 +15,8 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🃏 **Paires** | 100 XP | Trouvez toutes les paires d'emojis contre la montre |
 | 🧩 **Sudoku** | 250 XP | Le classique avec notes, indices et chronomètre |
 | 💎 **Match-3** | 500 XP | Alignez des gemmes et déclenchez des combos spéciaux |
-| 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
 | 🌍 **Capitales** | 750 XP | Testez vos connaissances sur les drapeaux et les pays |
+| 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
 
 ## Système de progression
 
@@ -28,7 +28,7 @@ Chaque partie rapporte de l'**XP** qui permet de débloquer les jeux suivants. L
 
 - **Vanilla JavaScript** (ES6+) — aucune dépendance, aucune librairie
 - **Vanilla CSS** — variables CSS, thème sombre/clair, responsive
-- **Dictionnaire ODS** (Officiel du Scrabble) intégré via un cache partagé
+- **Dictionnaire ODS** (Officiel du Scrabble) intégré au format JSON haute-performance
 - **Accessibilité** — Navigation clavier (Sudoku) et labels ARIA
 - **Tests** — Tests automatisés (UI / Non-régression) avec **Playwright**
 
