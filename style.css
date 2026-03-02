@@ -1285,6 +1285,24 @@ select option {
     color: var(--accent);
 }
 
+.scr-turn-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.scr-bag-info {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+#scr-bag-count {
+    font-weight: 700;
+    color: var(--accent);
+}
+
 /* Styles Le Pendu */
 .hg-game-container {
     max-width: 500px;

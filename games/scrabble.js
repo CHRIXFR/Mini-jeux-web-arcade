@@ -82,6 +82,9 @@ class ScrabbleGame {
         this.fillAiRack();
         this.renderBoard();
         this.renderRack();
+        // Mise à jour initiale du compteur du sac
+        const bagEl = document.getElementById('scr-bag-count');
+        if (bagEl) bagEl.textContent = this.bag.length;
         window.arcade.showToast('Partie commencée !');
     }
 
@@ -90,15 +93,11 @@ class ScrabbleGame {
             const btn = document.getElementById('scr-btn-play');
             if (btn) btn.textContent = "Chargement dico...";
 
-            const text = await window.arcade.dictionaryCache.getRaw();
-            const words = text.split(/\r?\n/);
+            const words = await window.arcade.dictionaryCache.getWords();
 
-            for (let word of words) {
-                word = word.trim().toUpperCase();
-                if (word.length >= 2 && word.length <= 15) {
-                    this.dictionary.add(word);
-                    this.insertIntoTrie(word);
-                }
+            for (const word of words) {
+                this.dictionary.add(word);
+                this.insertIntoTrie(word);
             }
             this.isDictionaryLoaded = true;
             if (btn) {
@@ -159,6 +158,7 @@ class ScrabbleGame {
                     </div>
                     <div class="scr-turn-info">
                         <span id="scr-turn-msg">Votre tour</span>
+                        <span class="scr-bag-info">🎟️ Sac : <span id="scr-bag-count">?</span></span>
                     </div>
                     <div class="scr-score-box">
                         <span class="scr-score-label">IA</span>
@@ -559,7 +559,7 @@ class ScrabbleGame {
         // Placement temporaire pour l'évaluation
         for (const m of this.tempMoves) this.board[m.r][m.c] = { letter: m.letter, isJoker: m.isJoker, temp: true };
 
-        const { isValid, turnScore, invalidWords } = this.evaluateBoardState();
+        const { isValid, turnScore, invalidWords } = this.evaluateBoardState(this.tempMoves);
 
         if (!isValid) {
             for (const m of this.tempMoves) this.board[m.r][m.c] = null; // Revert
@@ -602,7 +602,10 @@ class ScrabbleGame {
         if (!this.isGameOver) this.switchTurn();
     }
 
-    evaluateBoardState() {
+    // Paramètre optionnel `moves` : liste de tuiles tempéraires à évaluer.
+    // Si absent, utilise this.tempMoves (appel du joueur humain).
+    evaluateBoardState(moves) {
+        const activeMoves = moves || this.tempMoves;
         let turnScore = 0;
         let invalidWords = [];
         let wordsFormed = 0;
@@ -611,7 +614,7 @@ class ScrabbleGame {
         const processedOrigins = new Set(); // Évite de compter deux fois le même mot
 
         // Vérification des mots horizontaux et verticaux formés par les nouvelles tuiles
-        for (const m of this.tempMoves) {
+        for (const m of activeMoves) {
             // Balayage horizontal
             let hc = m.c; while (hc > 0 && getTileNode(m.r, hc - 1)) hc--;
             const hOrigin = `${m.r},${hc},H`;
@@ -688,7 +691,7 @@ class ScrabbleGame {
         }
 
         // Vérification des tuiles déconnectées (trous dans le placement)
-        if (wordsFormed === 0 && this.tempMoves.length > 0) {
+        if (wordsFormed === 0 && activeMoves.length > 0) {
             invalidWords.push("[Mot trop court / Isolé]");
         }
 
@@ -698,6 +701,8 @@ class ScrabbleGame {
     updateStats() {
         document.getElementById('scr-score-player').textContent = this.playerScore;
         document.getElementById('scr-score-ai').textContent = this.aiScore;
+        const bagEl = document.getElementById('scr-bag-count');
+        if (bagEl) bagEl.textContent = this.bag.length;
     }
 
     switchTurn() {
@@ -848,6 +853,9 @@ class ScrabbleGame {
             }
         }
 
+        // Bug 2 fix : Mélanger les ancres pour éliminer le biais de placement vers le bas-droite
+        this.shuffle(anchors);
+
         // Approche IA simplifiée : tente de placer des lettres ou mots courts adjacents aux tuiles existantes.
         // Heuristique conçue pour ne pas bloquer le navigateur tout en fournissant un adversaire fonctionnel.
 
@@ -898,7 +906,8 @@ class ScrabbleGame {
                             break;
                         }
 
-                        this.tempMoves = [];
+                        // Simulation locale : utilise des variables locales sans polluer this.tempMoves
+                        const localTemp = [];
                         let isValidPlacement = true;
                         let pr = anchor.r;
                         let pc = anchor.c;
@@ -919,7 +928,7 @@ class ScrabbleGame {
                             const letter = l === '?' ? 'E' : l;
                             const isJoker = l === '?';
 
-                            this.tempMoves.push({ r: pr, c: pc, letter, isJoker });
+                            localTemp.push({ r: pr, c: pc, letter, isJoker });
                             this.board[pr][pc] = { letter, isJoker, temp: true };
 
                             pr += dr;
@@ -927,24 +936,24 @@ class ScrabbleGame {
                         }
 
                         if (isValidPlacement) {
-                            const { isValid, turnScore } = this.evaluateBoardState();
+                            const { isValid, turnScore } = this.evaluateBoardState(localTemp);
                             // Doit être entièrement valide et score > 0
                             if (isValid && turnScore > 0) {
                                 // Pour éviter les mots identiques en double
-                                const wordId = this.tempMoves.map(m => `${m.r},${m.c}=${m.letter}`).join('|');
+                                const wordId = localTemp.map(m => `${m.r},${m.c}=${m.letter}`).join('|');
                                 if (!validMoves.find(v => v.id === wordId)) {
                                     validMoves.push({
                                         id: wordId,
-                                        word: this.tempMoves.map(m => m.letter).join(''),
-                                        placements: [...this.tempMoves],
+                                        word: localTemp.map(m => m.letter).join(''),
+                                        placements: [...localTemp],
                                         score: turnScore
                                     });
                                 }
                             }
                         }
 
-                        // Annulation pour le test suivant
-                        for (const m of this.tempMoves) {
+                        // Nettoyage des cases temporaires utilisées par la simulation
+                        for (const m of localTemp) {
                             this.board[m.r][m.c] = null;
                         }
                     }

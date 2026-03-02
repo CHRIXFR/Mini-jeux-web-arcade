@@ -268,14 +268,14 @@
                 return descriptions[id] || '';
             },
             dictionaryCache: {
-                raw: null,
-                async getRaw() {
-                    if (!this.raw) {
-                        const r = await fetch('games/dictionary/French ODS dictionary.txt');
+                words: null,
+                async getWords() {
+                    if (!this.words) {
+                        const r = await fetch('games/dictionary/French ODS dictionary.json');
                         if (!r.ok) throw new Error('Dictionnaire introuvable');
-                        this.raw = await r.text();
+                        this.words = await r.json();
                     }
-                    return this.raw;
+                    return this.words;
                 }
             },
             loadGame: function (id) {

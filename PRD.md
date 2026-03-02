@@ -134,3 +134,7 @@ Conformément aux standards de haute qualité :
 12. **Phase 12** : Formulaire de suggestions (jeux & fonctionnalités) intégré dans la modale Changelog via Formspree (Terminé).
 13. **Phase 13** : Création du Jeu des Capitales avec 3 modes et appel de flagcdn (Terminé).
 14. **Phase 14** : Optimisation de l'avatar flottant (passage du GIF au format MP4/JPEG) (Terminé).
+15. **Phase 15** : Debugage et Amélioration du Scrabble (Fuite de lettres, compteur, placement IA, format JSON du dictionnaire) (En projet).
+16. **Phase 16** : Optimisation de l'Architecture CSS (Découpage et minification) (En projet).
+17. **Phase 17** : Refonte UI/UX Premium (Utilisation de ui-ux-pro-max) (En projet).
+18. **Phase 18** : Exploration de nouveaux jeux (Puissance 4, Jeux de Cartes, Objets Cachés, Mahjong, Tetris) (En projet).
