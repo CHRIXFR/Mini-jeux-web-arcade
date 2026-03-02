@@ -2080,3 +2080,306 @@ body.in-game .game-view {
     display: inline-block;
     margin-bottom: 0.3rem;
 }
+
+/* =========================================================================
+   JEU DES CAPITALES
+   ========================================================================= */
+.capitales-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.capitales-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+}
+
+.capitales-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.score-board {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* Ajout d'une bordure subtile */
+}
+
+.light-mode .score-board {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--accent);
+}
+
+.cap-menu {
+    text-align: center;
+    background: #1e1e24;
+    /* Couleur un peu plus claire pour ressortir du fond */
+    padding: 40px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.light-mode .cap-menu {
+    background: var(--card-bg);
+}
+
+.cap-menu h3 {
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+}
+
+.mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.cap-mode-btn {
+    font-size: 1.2rem;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Zone de jeu */
+.cap-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+}
+
+.cap-flag-container {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    background: #1e1e24;
+    /* Plus clair en mode sombre */
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.light-mode .cap-flag-container {
+    background: var(--card-bg);
+}
+
+.cap-flag-img {
+    max-width: 100%;
+    height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cap-flag-img:hover {
+    transform: scale(1.05);
+}
+
+/* Animation lors de la réponse */
+#cap-flag-pic.answered .cap-flag-img {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+.cap-question {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+    margin: 10px 0;
+}
+
+.cap-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    width: 100%;
+}
+
+.cap-option-btn {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    color: var(--text-primary);
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    font-family: inherit;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+body:not(.light-mode) .cap-option-btn {
+    background: #1e1e24;
+    /* Un peu plus clair pour les boutons aussi */
+}
+
+.cap-option-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: white;
+    border-color: #818cf8;
+    /* Lighter version of accent */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+.cap-option-btn:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.cap-option-btn.correct {
+    background: #10B981 !important;
+    /* Vert émeraude */
+    border-color: #34D399 !important;
+    /* Bordure plus lumineuse */
+    color: white !important;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.7), 0 0 45px rgba(16, 185, 129, 0.3);
+    /* Effet néon intense */
+    transform: scale(1.05);
+    /* Légèrement plus grand */
+    z-index: 2;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.cap-option-btn.wrong {
+    background: #EF4444 !important;
+    /* Rouge vif */
+    border-color: #FCA5A5 !important;
+    /* Bordure plus lumineuse */
+    color: white !important;
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.7), 0 0 45px rgba(239, 68, 68, 0.3);
+    /* Effet néon intense */
+    animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Écran de fin */
+.cap-end {
+    text-align: center;
+    background: #1e1e24;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.light-mode .cap-end {
+    background: var(--card-bg);
+}
+
+.cap-end h3 {
+    font-size: 2rem;
+    color: var(--accent);
+    margin: 0;
+}
+
+.final-score {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin: 20px 0;
+}
+
+.xp-reward {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.cap-next {
+    font-size: 1.2rem;
+    height: 55px;
+    /* Hauteur fixe pour un alignement parfait */
+    padding: 0 35px;
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    line-height: 1;
+    /* Supprime l'espace par défaut */
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Reponsive */
+@media (max-width: 600px) {
+    .cap-options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cap-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

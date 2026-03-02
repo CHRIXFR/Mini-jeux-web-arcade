@@ -50,6 +50,8 @@
             <div id="tab-changelog" class="tab-panel active" role="tabpanel" aria-labelledby="tab-btn-changelog">
                 <div class="changelog-list">
                     <ul>
+                        <li><strong>02/03/2026</strong> : Nouveau jeu : <strong>Jeu des Capitales</strong> 🌍 (3 modes).
+                        </li>
                         <li><strong>01/03/2026</strong> : Formulaire de suggestions de jeux et de fonctionnalités.</li>
                         <li><strong>01/03/2026</strong> : Ajout de l'avatar et de la section des nouveautés.</li>
                         <li><strong>28/02/2026</strong> : Déploiement complet du jeu Scrabble.</li>
@@ -173,6 +175,7 @@
                 { id: 'paires', name: 'Paires', xp: 100, icon: '🃏', difficulty: 'Variable' },
                 { id: 'sudoku', name: 'Sudoku', xp: 250, icon: '🧩', difficulty: 'Facile - Difficile' },
                 { id: 'match-3', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
+                { id: 'capitales', name: 'Capitales', xp: 750, icon: '🌍', difficulty: 'Culture G' },
                 { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' }
             ],
             addXP: function (amount) {
@@ -253,6 +256,7 @@
                     'mots-meles': 'Trouvez tous les mots cachés dans la grille.',
                     'paires': 'Exercez votre mémoire en trouvant toutes les paires d\'emojis.',
                     'match-3': 'Alignez les gemmes pour exploser les scores.',
+                    'capitales': 'Testez vos connaissances sur les drapeaux et capitales du monde.',
                     'scrabble': 'Placez vos mots stratégiquement sur le plateau.'
                 };
                 return descriptions[id] || '';
@@ -285,6 +289,7 @@
                 if (id === 'paires' && window.initPaires) window.initPaires(document.getElementById('game-mount'));
                 if (id === 'sudoku' && window.initSudoku) window.initSudoku(document.getElementById('game-mount'));
                 if (id === 'match-3' && window.initMatch3) window.initMatch3(document.getElementById('game-mount'));
+                if (id === 'capitales' && window.initCapitales) window.initCapitales(document.getElementById('game-mount'));
                 if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
             }
         };
@@ -301,6 +306,7 @@
     <script src="games/mots-meles.js"></script>
     <script src="games/paires.js"></script>
     <script src="games/match-3.js"></script>
+    <script src="games/capitales.js"></script>
     <script src="games/scrabble.js"></script>
 </body>
 
