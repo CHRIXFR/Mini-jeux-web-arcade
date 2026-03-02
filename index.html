@@ -50,6 +50,8 @@
             <div id="tab-changelog" class="tab-panel active" role="tabpanel" aria-labelledby="tab-btn-changelog">
                 <div class="changelog-list">
                     <ul>
+                        <li><strong>02/03/2026</strong> : Optimisation de l'avatar (MP4) pour réduire la consommation de
+                            données.</li>
                         <li><strong>02/03/2026</strong> : Nouveau jeu : <strong>Jeu des Capitales</strong> 🌍 (3 modes).
                         </li>
                         <li><strong>01/03/2026</strong> : Formulaire de suggestions de jeux et de fonctionnalités.</li>
@@ -100,7 +102,11 @@
     <button id="avatar-changelog"
         onclick="document.getElementById('changelog-modal').style.display='flex'; document.getElementById('changelog-modal').setAttribute('aria-hidden', 'false');"
         title="Voir les nouveautés" aria-label="Voir les nouveautés">
-        <img src="images/Anime_lavatar_qui_salut.gif" alt="Avatar qui salut" width="70" height="70">
+        <video autoplay loop muted playsinline width="100" height="100" poster="images/personnage_saluant.jpeg">
+            <source src="images/Vidéo_de_personnage_saluant_en_boucle.mp4" type="video/mp4">
+            <!-- Fallback pour navigateurs ne supportant pas la vidéo -->
+            <img src="images/personnage_saluant.jpeg" alt="Avatar qui salue" width="100" height="100">
+        </video>
     </button>
 
     <footer>

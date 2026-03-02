@@ -2025,6 +2025,7 @@ body.in-game .game-view {
     animation-play-state: paused;
 }
 
+#avatar-changelog video,
 #avatar-changelog img {
     border-radius: 50%;
     border: 3px solid var(--accent);

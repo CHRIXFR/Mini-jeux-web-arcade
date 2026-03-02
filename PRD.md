@@ -133,3 +133,4 @@ Conformément aux standards de haute qualité :
 11. **Phase 11** : Améliorations Scrabble v2 (Bouton Aide, Traduction FR) et Lighthouse (Terminé).
 12. **Phase 12** : Formulaire de suggestions (jeux & fonctionnalités) intégré dans la modale Changelog via Formspree (Terminé).
 13. **Phase 13** : Création du Jeu des Capitales avec 3 modes et appel de flagcdn (Terminé).
+14. **Phase 14** : Optimisation de l'avatar flottant (passage du GIF au format MP4/JPEG) (Terminé).
