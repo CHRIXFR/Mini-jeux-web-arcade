@@ -49,18 +49,8 @@
             <!-- Panneau Changelog -->
             <div id="tab-changelog" class="tab-panel active" role="tabpanel" aria-labelledby="tab-btn-changelog">
                 <div class="changelog-list">
-                    <ul>
-                        <li><strong>02/03/2026</strong> : Améliorations Scrabble : correction du placement IA, ajout du
-                            compteur de sac et dictionnaire JSON ultra-rapide.</li>
-                        <li><strong>02/03/2026</strong> : Optimisation de l'avatar (MP4) pour réduire la consommation de
-                            données.</li>
-                        <li><strong>02/03/2026</strong> : Nouveau jeu : <strong>Jeu des Capitales</strong> 🌍 (3 modes).
-                        </li>
-                        <li><strong>01/03/2026</strong> : Formulaire de suggestions de jeux et de fonctionnalités.</li>
-                        <li><strong>01/03/2026</strong> : Ajout de l'avatar et de la section des nouveautés.</li>
-                        <li><strong>28/02/2026</strong> : Déploiement complet du jeu Scrabble.</li>
-                        <li><strong>20/02/2026</strong> : Lancement de l'Arcade Minimaliste avec Sudoku, Match-3 et
-                            d'autres classiques.</li>
+                    <ul id="changelog-list-content">
+                        <li>Chargement des dernières nouveautés... ⏳</li>
                     </ul>
                 </div>
             </div>
@@ -167,7 +157,59 @@
                     window.arcade.showToast('Erreur lors de l\'envoi. Réessayez.');
                 }
             });
+
+            // Chargement du changelog dynamique
+            fetchChangelog();
         });
+
+        // --- Recuperation dynamique du Changelog depuis GitHub ---
+        async function fetchChangelog() {
+            const listContent = document.getElementById('changelog-list-content');
+            if (!listContent) return;
+
+            try {
+                // Appel à l'API publique de GitHub pour récupérer les derniers commits
+                const response = await fetch('https://api.github.com/repos/CHRIXFR/Mini-jeux-web-arcade/commits?sha=main&per_page=30');
+                if (!response.ok) throw new Error('Erreur API GitHub');
+
+                const commits = await response.json();
+
+                // Filtrer les commits contenant le tag personnalisé 'News:'
+                const newsCommits = commits.filter(item => {
+                    return item.commit.message.includes('News:');
+                });
+
+                if (newsCommits.length === 0) {
+                    listContent.innerHTML = '<li>Aucune nouveauté récente trouvée. 🕵️‍♂️</li>';
+                    return;
+                }
+
+                // Vider le message de chargement
+                listContent.innerHTML = '';
+
+                // Formater et injecter chaque news
+                newsCommits.forEach(item => {
+                    const message = item.commit.message;
+                    // On retire le tag 'News:' (insensible à la casse si on le souhaite, ici on cherche le texte exact ou similaire)
+                    const cleanMessage = message.replace(/News:\s*/i, '').trim();
+
+                    // Formatage de la date (ex: "03/03/2026")
+                    const dateObj = new Date(item.commit.author.date);
+                    const formattedDate = dateObj.toLocaleDateString('fr-FR', {
+                        day: '2-digit', month: '2-digit', year: 'numeric'
+                    });
+
+                    // Création de l'élément de liste
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${formattedDate}</strong> : ${cleanMessage}`;
+                    listContent.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error('Erreur lors du chargement du changelog:', error);
+                listContent.innerHTML = '<li>Impossible de charger les nouveautés pour le moment. ⚠️</li>';
+            }
+        }
 
         // Définition d'un store global simple pour remplacer Zustand/Imports
         window.arcade = {
