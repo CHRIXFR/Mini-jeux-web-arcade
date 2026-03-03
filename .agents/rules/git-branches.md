@@ -1,5 +1,5 @@
 ---
-trigger: model_decision
+trigger: always_on
 description: Règle pour proposer la création de branches GitHub lors de nouvelles fonctionnalités ou modifications importantes.
 ---
 
