@@ -1616,6 +1616,7 @@ select option {
 }
 
 .pa-card {
+    width: 100%;
     aspect-ratio: 1;
     cursor: pointer;
     position: relative;
@@ -1768,14 +1769,22 @@ body.in-game .game-view {
     .scr-board,
     .grid-9x9,
     .ws-grid,
-    .jb-grid,
-    .pa-grid {
+    .jb-grid {
         grid-column: 1;
         grid-row: 1 / 20;
         height: min(80vh, 900px);
         width: auto !important;
         max-width: 100%;
         margin: 0;
+    }
+
+    .pa-grid {
+        grid-column: 1;
+        grid-row: 1 / 20;
+        height: min(70vh, 600px);
+        width: auto !important;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     /* Spécifique Pendu 4K : dessin en haut de la colonne gauche */
@@ -1971,7 +1980,6 @@ body.in-game .game-view {
     .grid-9x9,
     .ws-grid,
     .jb-grid,
-    .pa-grid,
     .hg-drawing-container {
         grid-column: 1;
         grid-row: 1 / 10;
@@ -1979,6 +1987,15 @@ body.in-game .game-view {
         width: auto !important;
         max-width: 100%;
         margin: 0;
+    }
+
+    .pa-grid {
+        grid-column: 1;
+        grid-row: 1 / 10;
+        height: auto;
+        width: 100%;
+        max-width: min(100%, 75vh);
+        margin: 0 auto;
     }
 
     .scr-header,
