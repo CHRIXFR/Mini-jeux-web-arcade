@@ -1,15 +1,24 @@
+/* ========================================================================
+   0. VARIABLES & THÈMES
+   ======================================================================== */
 :root {
     /* Mode Sombre (Par défaut) */
     --bg-color: #0c0c0e;
     --card-bg: #16161a;
+    --card-bg-alt: #1e1e24;
     --header-bg: rgba(12, 12, 14, 0.8);
     --text-primary: #ffffff;
     --text-secondary: #a0a0ab;
     --accent: #6366f1;
     --accent-glow: rgba(99, 102, 241, 0.2);
+    --accent-cyan: #06b6d4;
     --border: #27272a;
     --success: #22c55e;
+    --error: #ef4444;
+    --warning: #f59e0b;
     --radius: 12px;
+    --btn-radius: 8px;
+    --btn-height: 38px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --cell-alt: rgba(255, 255, 255, 0.02);
 }
@@ -17,19 +26,23 @@
 body.light-mode {
     --bg-color: #f8fafc;
     --card-bg: #ffffff;
+    --card-bg-alt: var(--card-bg);
     --header-bg: rgba(248, 250, 252, 0.8);
     --text-primary: #0f172a;
     --text-secondary: #334155;
-    /* Renforcé de #64748b à #334155 */
     --border: #cbd5e1;
-    /* Renforcé de #e2e8f0 à #cbd5e1 */
     --cell-alt: rgba(0, 0, 0, 0.05);
 }
 
+/* ========================================================================
+   1. RESET & BASE
+   ======================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
 }
 
 /* Scrollbar Personnalisée - Style Premium & Discret */
@@ -50,12 +63,6 @@ body.light-mode {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-secondary);
-}
-
-/* Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
 }
 
 
@@ -82,6 +89,9 @@ body {
     flex-direction: column;
 }
 
+/* ========================================================================
+   2. LAYOUT (Header, Main, Footer, Game Hub)
+   ======================================================================== */
 /* En-tête & Statistiques */
 header {
     padding: 2rem 1rem;
@@ -249,20 +259,32 @@ footer {
     }
 }
 
+/* ========================================================================
+   3. COMPOSANTS COMMUNS (Boutons, Modales, Toast, Formulaires)
+   ======================================================================== */
+
+/* --- Socle commun pour tous les boutons interactifs --- */
+.btn-primary,
+.btn-secondary,
+.control-btn {
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: var(--btn-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    outline: none;
+}
+
 .btn-secondary {
     background: transparent;
     color: var(--text-secondary);
     border: 1px solid var(--border);
     padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
     font-size: 0.9rem;
-    transition: var(--transition);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 38px;
+    height: var(--btn-height);
 }
 
 .game-view>.btn-secondary {
@@ -309,6 +331,9 @@ select option {
     padding: 4rem 0;
 }
 
+/* ========================================================================
+   4. JEU : SUDOKU
+   ======================================================================== */
 /* Styles Sudoku */
 .sudoku-container {
     max-width: 500px;
@@ -338,7 +363,7 @@ select option {
     border-radius: 6px;
     font-family: inherit;
     cursor: pointer;
-    height: 38px;
+    height: var(--btn-height);
     font-size: 0.9rem;
     outline: none;
     transition: var(--transition);
@@ -401,12 +426,12 @@ select option {
 }
 
 .grid-cell.error {
-    color: #ef4444;
+    color: var(--error);
 }
 
 .grid-cell.selected.error {
     color: white;
-    background: #ef4444;
+    background: var(--error);
 }
 
 /* Grille de notes dans la cellule */
@@ -438,10 +463,7 @@ select option {
     border: 1px solid var(--border);
     color: var(--text-primary);
     padding: 0.75rem;
-    border-radius: 8px;
-    cursor: pointer;
     font-size: 0.85rem;
-    transition: var(--transition);
 }
 
 .control-btn.active {
@@ -559,42 +581,6 @@ select option {
     animation: fadeIn 0.25s ease-out;
 }
 
-/* Liste Changelog */
-.changelog-list ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 0;
-    max-height: 200px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-    padding-right: 8px;
-    /* Espace pour la scrollbar */
-}
-
-/* Style spécifique pour la scrollbar du changelog si besoin d'encore plus de discrétion */
-.changelog-list ul::-webkit-scrollbar-thumb {
-    background: rgba(128, 128, 128, 0.2);
-}
-
-.changelog-list ul::-webkit-scrollbar-thumb:hover {
-    background: rgba(128, 128, 128, 0.4);
-}
-
-
-.changelog-list li {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    padding-left: 0.75rem;
-    border-left: 2px solid var(--accent);
-    line-height: 1.5;
-}
-
-.changelog-list li strong {
-    color: var(--text-primary);
-}
-
 /* Formulaire de suggestion */
 .suggestion-intro {
     font-size: 0.9rem;
@@ -693,10 +679,7 @@ select option {
     color: white;
     border: none;
     padding: 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
+    font-size: 0.9rem;
 }
 
 .btn-primary:hover {
@@ -704,6 +687,9 @@ select option {
     transform: translateY(-2px);
 }
 
+/* ========================================================================
+   5. JEU : MOTS MÊLÉS
+   ======================================================================== */
 /* Styles Mots Mêlés */
 .ws-game-container {
     max-width: 600px;
@@ -875,6 +861,9 @@ select option {
     margin-bottom: 0.5rem;
 }
 
+/* ========================================================================
+   6. JEU : JEWEL BLITZ (MATCH-3)
+   ======================================================================== */
 /* Styles Jewel Blitz */
 .jb-game-container {
     max-width: 500px;
@@ -1004,7 +993,7 @@ select option {
 }
 
 .jb-gem.is-cross {
-    filter: drop-shadow(0 0 12px #f59e0b);
+    filter: drop-shadow(0 0 12px var(--warning));
 }
 
 .jb-gem.is-color {
@@ -1060,7 +1049,7 @@ select option {
 }
 
 .cross-fx {
-    border-color: #f59e0b;
+    border-color: var(--warning);
     background: rgba(245, 158, 11, 0.2);
 }
 
@@ -1131,6 +1120,9 @@ select option {
     gap: 1rem;
 }
 
+/* ========================================================================
+   7. JEU : SCRABBLE
+   ======================================================================== */
 /* Styles Scrabble */
 .scr-game-container {
     max-width: 600px;
@@ -1170,7 +1162,7 @@ select option {
 
 /* Couleurs des bonus Scrabble */
 .scr-cell.mt {
-    background: #ef4444;
+    background: var(--error);
     color: white;
 }
 
@@ -1303,6 +1295,9 @@ select option {
     color: var(--accent);
 }
 
+/* ========================================================================
+   8. JEU : LE PENDU
+   ======================================================================== */
 /* Styles Le Pendu */
 .hg-game-container {
     max-width: 500px;
@@ -1455,8 +1450,8 @@ select option {
 }
 
 .hg-key.wrong {
-    background: #ef4444;
-    border-color: #ef4444;
+    background: var(--error);
+    border-color: var(--error);
     color: white;
 }
 
@@ -1486,6 +1481,9 @@ select option {
     }
 }
 
+/* ========================================================================
+   9. JEU : PAIRES
+   ======================================================================== */
 /* Jeu de Paires Styles */
 .pa-game-container {
     max-width: 600px;
@@ -1529,6 +1527,7 @@ select option {
     gap: 12px;
     perspective: 1000px;
     margin-bottom: 2rem;
+    max-width: 100%;
 }
 
 .pa-card {
@@ -1590,6 +1589,9 @@ select option {
     gap: 0.8rem;
 }
 
+/* ========================================================================
+   12. LAYOUT IN-GAME & RESPONSIVE
+   ======================================================================== */
 /* =========================================
    Ajustements globaux de mise en page en jeu 
    ========================================= */
@@ -1687,7 +1689,7 @@ body.in-game .game-view {
         grid-row: 1 / 20;
         height: min(80vh, 900px);
         width: auto !important;
-        max-width: none;
+        max-width: 100%;
         margin: 0;
     }
 
@@ -1890,6 +1892,7 @@ body.in-game .game-view {
         grid-row: 1 / 10;
         height: 85vh;
         width: auto !important;
+        max-width: 100%;
         margin: 0;
     }
 
@@ -1977,25 +1980,25 @@ body.in-game .game-view {
 }
 
 .scr-tile-ai {
-    outline: 2px solid #06b6d4;
-    box-shadow: 0 0 10px #06b6d4, inset 0 0 5px rgba(6, 182, 212, 0.5);
+    outline: 2px solid var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan), inset 0 0 5px rgba(6, 182, 212, 0.5);
     animation: pulse-cyan 2.5s infinite alternate;
 }
 
 @keyframes pulse-cyan {
     0% {
-        box-shadow: 0 0 5px #06b6d4, inset 0 0 2px rgba(6, 182, 212, 0.5);
+        box-shadow: 0 0 5px var(--accent-cyan), inset 0 0 2px rgba(6, 182, 212, 0.5);
     }
 
     100% {
-        box-shadow: 0 0 20px #06b6d4, inset 0 0 8px rgba(6, 182, 212, 0.8);
+        box-shadow: 0 0 20px var(--accent-cyan), inset 0 0 8px rgba(6, 182, 212, 0.8);
     }
 }
 
 .scr-tile-hint {
     background: #fef08a !important;
     color: #713f12 !important;
-    outline: 2px dashed #f59e0b;
+    outline: 2px dashed var(--warning);
     box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
     animation: pulse-hint 1.5s ease-in-out infinite alternate;
 }
@@ -2011,9 +2014,9 @@ body.in-game .game-view {
 }
 
 .scr-btn-hint {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    background: linear-gradient(135deg, #fbbf24, var(--warning)) !important;
     color: #1e293b !important;
-    border-color: #f59e0b !important;
+    border-color: var(--warning) !important;
     font-weight: 700;
 }
 
@@ -2022,6 +2025,9 @@ body.in-game .game-view {
     box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
 }
 
+/* ========================================================================
+   11. AVATAR & CHANGELOG / SUGGESTIONS
+   ======================================================================== */
 /* --- Styles Avatar & Changelog --- */
 #avatar-changelog {
     position: fixed;
@@ -2100,9 +2106,9 @@ body.in-game .game-view {
     margin-bottom: 0.3rem;
 }
 
-/* =========================================================================
-   JEU DES CAPITALES
-   ========================================================================= */
+/* ========================================================================
+   10. JEU : CAPITALES
+   ======================================================================== */
 .capitales-container {
     width: 100%;
     max-width: 800px;
@@ -2148,8 +2154,7 @@ body.in-game .game-view {
 
 .cap-menu {
     text-align: center;
-    background: #1e1e24;
-    /* Couleur un peu plus claire pour ressortir du fond */
+    background: var(--card-bg-alt);
     padding: 40px 20px;
     border-radius: 20px;
     border: 1px solid var(--border);
@@ -2198,8 +2203,7 @@ body.in-game .game-view {
     justify-content: center;
     align-items: center;
     min-height: 200px;
-    background: #1e1e24;
-    /* Plus clair en mode sombre */
+    background: var(--card-bg-alt);
     border: 1px solid var(--border);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     border-radius: 20px;
@@ -2260,8 +2264,7 @@ body.in-game .game-view {
 }
 
 body:not(.light-mode) .cap-option-btn {
-    background: #1e1e24;
-    /* Un peu plus clair pour les boutons aussi */
+    background: var(--card-bg-alt);
 }
 
 .cap-option-btn:hover:not(:disabled) {
@@ -2279,27 +2282,20 @@ body:not(.light-mode) .cap-option-btn {
 }
 
 .cap-option-btn.correct {
-    background: #10B981 !important;
-    /* Vert émeraude */
+    background: var(--success) !important;
     border-color: #34D399 !important;
-    /* Bordure plus lumineuse */
     color: white !important;
     box-shadow: 0 0 25px rgba(16, 185, 129, 0.7), 0 0 45px rgba(16, 185, 129, 0.3);
-    /* Effet néon intense */
     transform: scale(1.05);
-    /* Légèrement plus grand */
     z-index: 2;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .cap-option-btn.wrong {
-    background: #EF4444 !important;
-    /* Rouge vif */
+    background: var(--error) !important;
     border-color: #FCA5A5 !important;
-    /* Bordure plus lumineuse */
     color: white !important;
     box-shadow: 0 0 25px rgba(239, 68, 68, 0.7), 0 0 45px rgba(239, 68, 68, 0.3);
-    /* Effet néon intense */
     animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
@@ -2307,7 +2303,7 @@ body:not(.light-mode) .cap-option-btn {
 /* Écran de fin */
 .cap-end {
     text-align: center;
-    background: #1e1e24;
+    background: var(--card-bg-alt);
     padding: 40px;
     border-radius: 20px;
     border: 1px solid var(--border);
@@ -2376,18 +2372,6 @@ body:not(.light-mode) .cap-option-btn {
     40%,
     60% {
         transform: translate3d(4px, 0, 0);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
 
