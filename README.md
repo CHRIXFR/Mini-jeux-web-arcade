@@ -18,26 +18,27 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🌍 **Capitales** | 750 XP | Testez vos connaissances sur les drapeaux et les pays |
 | 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
 
-## Système de progression
+## Fonctionnalités Clés
 
-Chaque partie rapporte de l'**XP** qui permet de débloquer les jeux suivants. L'XP est sauvegardé localement dans votre navigateur.
-
-> 💡 Astuce développeur : ajoutez `?test=true` à l'URL pour débloquer tous les jeux immédiatement.
+- **Système de progression** : Chaque partie rapporte de l'**XP** pour débloquer de nouveaux défis.
+- **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub (filtre tag `News:`).
+- **Design Premium** : Interface optimisée (Glassmorphism, Dark/Light mode, animations fluides).
+- **Standard de contribution** : Un [modèle CSS](.agents/rules/css-game-template.md) est disponible pour l'ajout cohérent de nouveaux jeux.
 
 ## Stack technique
 
-- **Vanilla JavaScript** (ES6+) — aucune dépendance, aucune librairie
-- **Vanilla CSS** — variables CSS, thème sombre/clair, responsive
-- **Dictionnaire ODS** (Officiel du Scrabble) intégré au format JSON haute-performance
-- **Accessibilité** — Navigation clavier (Sudoku) et labels ARIA
-- **Tests** — Tests automatisés (UI / Non-régression) avec **Playwright**
+- **Vanilla JavaScript** (ES6+) — zéro dépendance, architecture modulaire par fichier.
+- **Modern CSS** — Utilisation intensive de variables CSS, Grid/Flexbox et Thème dynamique.
+- **GitHub API Integration** — Récupération asynchrone des nouveautés pour le changelog.
+- **Dictionnaire ODS** (Officiel du Scrabble) intégré au format JSON haute-performance.
+- **Playwright** — Suite de tests automatisés pour la non-régression visuelle et fonctionnelle.
 
 ## Lancer en local
 
 ```bash
 git clone https://github.com/CHRIXFR/Mini-jeux-web-arcade.git
 cd Mini-jeux-web-arcade
-# Un serveur local est nécessaire pour le chargement des dictionnaires
+# Un serveur local est nécessaire pour le chargement des dictionnaires (fichiers JSON)
 npx serve .
 ```
 
