@@ -1,37 +1,80 @@
 /* ========================================================================
-   0. VARIABLES & THÈMES
+   0. VARIABLES & THÈMES (UI/UX Premium)
    ======================================================================== */
 :root {
-    /* Mode Sombre (Par défaut) */
-    --bg-color: #0c0c0e;
-    --card-bg: #16161a;
-    --card-bg-alt: #1e1e24;
-    --header-bg: rgba(12, 12, 14, 0.8);
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0ab;
+    /* Mode Sombre Premium */
+    --bg-color: #09090b;
+    /* Zinc 950 ultra foncé pour profondeur */
+    --card-bg: #18181b;
+    /* Zinc 900 */
+    --card-bg-alt: #27272a;
+    /* Zinc 800 */
+    --header-bg: rgba(9, 9, 11, 0.7);
+    --glass-bg: rgba(24, 24, 27, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #a1a1aa;
+    /* Zinc 400 */
+
+    /* Couleurs sémantiques & Accents */
     --accent: #6366f1;
-    --accent-glow: rgba(99, 102, 241, 0.2);
+    /* Indigo 500 */
+    --accent-hover: #4f46e5;
+    /* Indigo 600 */
+    --accent-glow: rgba(99, 102, 241, 0.25);
     --accent-cyan: #06b6d4;
-    --border: #27272a;
-    --success: #22c55e;
+    --success: #10b981;
+    /* Emerald 500 */
     --error: #ef4444;
+    /* Red 500 */
     --warning: #f59e0b;
-    --radius: 12px;
-    --btn-radius: 8px;
-    --btn-height: 38px;
+    /* Amber 500 */
+
+    --border: #27272a;
+    --radius: 16px;
+    /* Arrondi plus généreux */
+    --btn-radius: 10px;
+    --btn-height: 42px;
+    /* Hauteur plus confortable (touch target) */
+
+    /* Animation & Effets */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --cell-alt: rgba(255, 255, 255, 0.02);
+    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Ombres Portées Premium */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px -5px var(--accent-glow);
+
+    --cell-alt: rgba(255, 255, 255, 0.03);
 }
 
 body.light-mode {
+    /* Mode Clair Premium */
     --bg-color: #f8fafc;
+    /* Slate 50 */
     --card-bg: #ffffff;
-    --card-bg-alt: var(--card-bg);
-    --header-bg: rgba(248, 250, 252, 0.8);
+    --card-bg-alt: #f1f5f9;
+    /* Slate 100 */
+    --header-bg: rgba(248, 250, 252, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.05);
+
     --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --border: #cbd5e1;
-    --cell-alt: rgba(0, 0, 0, 0.05);
+    /* Slate 900 */
+    --text-secondary: #475569;
+    /* Slate 600 */
+
+    --border: #e2e8f0;
+    /* Slate 200 */
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+
+    --cell-alt: rgba(0, 0, 0, 0.03);
 }
 
 /* ========================================================================
@@ -95,9 +138,11 @@ body {
 /* En-tête & Statistiques */
 header {
     padding: 2rem 1rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--header-bg);
-    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-sm);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -186,15 +231,33 @@ main {
     padding: 2rem;
     border-radius: var(--radius);
     cursor: pointer;
-    transition: var(--transition);
+    transition: var(--transition-bounce);
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0;
+    transition: var(--transition);
+    pointer-events: none;
 }
 
 .game-card:not(.locked):not(.disabled):hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-6px) scale(1.02);
     border-color: var(--accent);
-    box-shadow: 0 15px 40px -10px var(--accent-glow);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.game-card:not(.locked):not(.disabled):hover::before {
+    opacity: 1;
 }
 
 .game-icon {
@@ -273,6 +336,23 @@ footer {
     cursor: pointer;
     transition: var(--transition);
     outline: none;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-primary:hover {
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -508,7 +588,9 @@ select option {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -517,11 +599,14 @@ select option {
 }
 
 .modal-content {
-    background: var(--card-bg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     padding: 3rem;
     border-radius: var(--radius);
     text-align: center;
-    border: 1px solid var(--border);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
     max-width: 400px;
     width: 90%;
 }
@@ -536,7 +621,7 @@ select option {
 .changelog-modal-content {
     text-align: left;
     max-width: 460px;
-    padding: 2rem;
+    padding: 2.5rem;
 }
 
 /* Onglets de navigation */
@@ -1531,6 +1616,7 @@ select option {
 }
 
 .pa-card {
+    width: 100%;
     aspect-ratio: 1;
     cursor: pointer;
     position: relative;
@@ -1683,14 +1769,22 @@ body.in-game .game-view {
     .scr-board,
     .grid-9x9,
     .ws-grid,
-    .jb-grid,
-    .pa-grid {
+    .jb-grid {
         grid-column: 1;
         grid-row: 1 / 20;
         height: min(80vh, 900px);
         width: auto !important;
         max-width: 100%;
         margin: 0;
+    }
+
+    .pa-grid {
+        grid-column: 1;
+        grid-row: 1 / 20;
+        height: min(70vh, 600px);
+        width: auto !important;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     /* Spécifique Pendu 4K : dessin en haut de la colonne gauche */
@@ -1886,7 +1980,6 @@ body.in-game .game-view {
     .grid-9x9,
     .ws-grid,
     .jb-grid,
-    .pa-grid,
     .hg-drawing-container {
         grid-column: 1;
         grid-row: 1 / 10;
@@ -1894,6 +1987,15 @@ body.in-game .game-view {
         width: auto !important;
         max-width: 100%;
         margin: 0;
+    }
+
+    .pa-grid {
+        grid-column: 1;
+        grid-row: 1 / 10;
+        height: auto;
+        width: 100%;
+        max-width: min(100%, 75vh);
+        margin: 0 auto;
     }
 
     .scr-header,
