@@ -160,6 +160,49 @@ window.arcade.tetris = {
         }
     },
 
+    showStartModal: function () {
+        const isMobile = window.innerWidth <= 950 || ('ontouchstart' in window);
+
+        const controlsHTML = isMobile ?
+            `<ul style="text-align: left; margin: 10px 0; color: var(--text-secondary);">
+                <li>👆 <b>Boutons</b> pour déplacer</li>
+                <li>🔄 <b>Bouton ↻</b> pour tourner</li>
+             </ul>`
+            :
+            `<ul style="text-align: left; margin: 10px 0; color: var(--text-secondary);">
+                <li>⌨️ <b>Flèches</b> pour déplacer/tourner</li>
+                <li>⏬ <b>Espace</b> pour chute rapide</li>
+             </ul>`;
+
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'tetris-start-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2>Tetris</h2>
+                <div style="margin: 15px 0;">
+                    <p>Prêt à empiler les blocs et pulvériser vos records ?</p>
+                    ${controlsHTML}
+                </div>
+                <div class="modal-actions" style="margin-top: 25px;">
+                    <button id="btn-start-tetris" class="btn-primary">Commencer</button>
+                    <button id="btn-quit-tetris" class="btn-secondary">Menu Principal</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById('btn-start-tetris').onclick = () => {
+            modal.remove();
+            this.start();
+        };
+
+        document.getElementById('btn-quit-tetris').onclick = () => {
+            modal.remove();
+            window.arcade.renderHome();
+        };
+    },
+
     start: function () {
         // Nettoyage de sécurité
         if (this.animationId) cancelAnimationFrame(this.animationId);
@@ -574,15 +617,39 @@ window.arcade.tetris = {
 
         setTimeout(() => {
             if (xpGained > 0) window.arcade.addXP(xpGained);
-            window.arcade.showToast(`Game Over! Score: ${this.score}. Vous gagnez ${xpGained} XP.`);
-
-            // Modal de replay basique ou retour hub
-            if (confirm(`Bien joué !\nScore : ${this.score} - Lignes: ${this.lines}\nVoulez-vous rejouer ?`)) {
-                this.start();
-            } else {
-                window.arcade.showHome();
-            }
+            this.showGameOverModal(xpGained);
         }, 500);
+    },
+
+    showGameOverModal: function (xpGained) {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'tetris-gameover-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2>Game Over</h2>
+                <div style="margin: 15px 0; color: var(--text-secondary);">
+                    <p style="font-size: 1.1rem; margin-bottom: 5px;">Score final : <strong style="color: var(--text-primary);">${this.score}</strong></p>
+                    <p style="font-size: 1.1rem;">Lignes complétées : <strong style="color: var(--text-primary);">${this.lines}</strong></p>
+                </div>
+                ${xpGained > 0 ? `<div class="xp-bonus">+${xpGained} XP</div>` : ''}
+                <div class="modal-actions" style="margin-top: 25px;">
+                    <button id="btn-replay-tetris" class="btn-primary">Rejouer</button>
+                    <button id="btn-home-tetris" class="btn-secondary">Menu Principal</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById('btn-replay-tetris').onclick = () => {
+            modal.remove();
+            this.start();
+        };
+
+        document.getElementById('btn-home-tetris').onclick = () => {
+            modal.remove();
+            window.arcade.renderHome();
+        };
     }
 };
 
@@ -592,6 +659,12 @@ window.initTetris = function (mountNode) {
         window.arcade.tetris.cleanup();
     }
 
+    // Nettoyer toute modale orpheline au chargement (sécurité)
+    const existingStart = document.getElementById('tetris-start-modal');
+    if (existingStart) existingStart.remove();
+    const existingOver = document.getElementById('tetris-gameover-modal');
+    if (existingOver) existingOver.remove();
+
     window.arcade.tetris.init(mountNode);
-    window.arcade.tetris.start();
+    window.arcade.tetris.showStartModal();
 };
