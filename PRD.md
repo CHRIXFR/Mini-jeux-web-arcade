@@ -123,6 +123,18 @@ Conformément aux standards de haute qualité :
     - Système de choix multiple (1 bonne réponse, 4 mauvaises réponses aléatoires).
     - Feedback visuel avec animations premium (tremblement rouge en cas d'erreur, surbrillance verte en cas de succès).
     - Gain d'XP en fonction des bonnes réponses à la fin d'une série de 10 questions.
+    
+### 4.10 Jeu : Tetris Glassmorphism
+- **Déblocage** : Coût de **1500 XP**.
+- **Design** : Esthétique "Glassmorphism" ultra-moderne pour les pièces (tétrominos) avec des effets de transparence, d'ombres internes et de reflets.
+- **Fonctionnalités** :
+    - Gestion classique des lignes, du score et des niveaux de difficulté (accélération de la chute).
+    - Preview de la pièce suivante.
+    - **Contrôles Adaptatifs** : Flèches du clavier sur PC / Interface de boutons tactiles dédiée sur mobile.
+    - **Audio Immersif** : 
+        - Effets sonores dynamiques générés via l'API Web Audio (sans fichiers externes).
+        - Playlist de musiques de fond MP3 aléatoires s'enchaînant automatiquement.
+    - **UX Premium** : Secousse de l'écran lors d'un "Tetris" (4 lignes), flash lumineux lors de la complétion de ligne, et modales d'accueil/fin de partie personnalisées.
 
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
@@ -143,4 +155,7 @@ Conformément aux standards de haute qualité :
 16. **Phase 16** : Optimisation de l'Architecture CSS (Découpage et minification) (Terminé).
 17. **Phase 17** : Refonte UI/UX Premium (Utilisation de ui-ux-pro-max) (Terminé).
 18. **Phase 18** : Création et Implémentation du jeu Tetris avec Glassmorphism (Terminé).
-19. **Phase 19** : Exploration de nouveaux jeux (Jeux de Cartes, Objets Cachés, Mahjong) (En projet).
+19. **Phase 19** : Ajout de la gestion des sons et musiques de fond (Synthétiseur Web Audio & Player MP3) (Terminé).
+20. **Phase 20** : Ajout du préchargement des ressources pour tous les jeux et amélioration de l'interface d'accueil (En projet).
+21. **Phase 21** : Création du nouveau model d'ajout de jeu (En projet).
+22. **Phase 22** : Exploration de nouveaux jeux (Jeux de Cartes, Objets Cachés, Mahjong) (En projet).
