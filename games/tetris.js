@@ -90,8 +90,46 @@ window.arcade.tetris = {
     // ==========================================
     // INITIALISATION
     // ==========================================
+    renderLayout: function () {
+        this.mountNode.innerHTML = `
+            <div id="view-tetris" class="tetris-game-container">
+                <div class="tetris-header">
+                    <div class="tetris-stat-box">
+                        <span class="tetris-stat-label">Score</span>
+                        <span id="tetris-score" class="tetris-stat-value">0</span>
+                    </div>
+                    <div class="tetris-stat-box">
+                        <span class="tetris-stat-label">Lignes</span>
+                        <span id="tetris-lines" class="tetris-stat-value">0</span>
+                    </div>
+                    <div class="tetris-stat-box">
+                        <span class="tetris-stat-label">Niveau</span>
+                        <span id="tetris-level" class="tetris-stat-value">1</span>
+                    </div>
+                </div>
+                
+                <div class="tetris-main-area">
+                    <div id="tetris-grid" class="tetris-grid"></div>
+                    
+                    <div class="tetris-side-panel">
+                        <div class="tetris-stat-label">Suivant</div>
+                        <div id="tetris-next-grid" class="tetris-next-piece"></div>
+                        
+                        <div class="tetris-controls-mobile">
+                            <button id="btn-tetris-left" class="btn-secondary">◀</button>
+                            <button id="btn-tetris-rotate" class="btn-primary">↻</button>
+                            <button id="btn-tetris-right" class="btn-secondary">▶</button>
+                            <button id="btn-tetris-down" class="btn-secondary">▼</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
     init: function (mountNode) {
         this.mountNode = mountNode;
+        this.renderLayout();
         this.gridElement = document.getElementById('tetris-grid');
         this.nextGridElement = document.getElementById('tetris-next-grid');
         this.scoreElement = document.getElementById('tetris-score');
@@ -554,12 +592,6 @@ window.initTetris = function (mountNode) {
         window.arcade.tetris.cleanup();
     }
 
-    // Le mountNode n'a pas besoin de template,
-    // car le template a été codé en brut dans index.html pour #view-tetris.
-    // L'architecture classique chargeait le html par injection depuis ces initFiles, 
-    // mais vu l'index.html, on initie juste la logique et on affiche
-    document.querySelector('#view-tetris').style.display = 'block';
-
-    window.arcade.tetris.init(document.querySelector('#view-tetris'));
+    window.arcade.tetris.init(mountNode);
     window.arcade.tetris.start();
 };
