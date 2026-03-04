@@ -33,7 +33,84 @@ window.arcade.audio = {
             this.ctx.resume();
         }
 
+        this.syncMusicStatus();
+
         return this.isMuted;
+    },
+
+    // --- Lecteur de Musique de Fond (BGM) ---
+    bgmPlayer: null,
+    bgmTracks: [
+        'sons/gregorquendel-tetris-theme-korobeiniki-arranged-for-piano-186249.mp3',
+        'sons/gregorquendel-tetris-theme-korobeiniki-rearranged-arr-for-music-box-184978.mp3',
+        'sons/gregorquendel-tetris-theme-korobeiniki-rearranged-arr-for-strings-185592.mp3'
+    ],
+    currentTrackIndex: -1,
+
+    playMusic: function () {
+        if (this.isMuted) return;
+
+        if (!this.bgmPlayer) {
+            this.bgmPlayer = new Audio();
+            this.bgmPlayer.volume = 0.3; // Volume plus faible pour la musique de fond
+
+            // Événement quand une piste se termine : passer à la suivante
+            this.bgmPlayer.addEventListener('ended', () => {
+                this.nextTrack();
+            });
+        }
+
+        // Si la piste était en pause, on la reprend
+        if (this.bgmPlayer.src && this.bgmPlayer.paused) {
+            this.bgmPlayer.play().catch(e => console.warn("Lecture bloquée:", e));
+            return;
+        }
+
+        // Sinon, on démarre une nouvelle séquence aléatoire
+        if (!this.bgmPlayer.src) {
+            this.nextTrack();
+        }
+    },
+
+    pauseMusic: function () {
+        if (this.bgmPlayer && !this.bgmPlayer.paused) {
+            this.bgmPlayer.pause();
+        }
+    },
+
+    stopMusic: function () {
+        if (this.bgmPlayer) {
+            this.bgmPlayer.pause();
+            this.bgmPlayer.currentTime = 0;
+            this.bgmPlayer.src = '';
+            this.currentTrackIndex = -1;
+        }
+    },
+
+    nextTrack: function () {
+        if (this.isMuted || !this.bgmPlayer) return;
+
+        // Choix aléatoire différent du précédent
+        let nextIndex;
+        do {
+            nextIndex = Math.floor(Math.random() * this.bgmTracks.length);
+        } while (nextIndex === this.currentTrackIndex && this.bgmTracks.length > 1);
+
+        this.currentTrackIndex = nextIndex;
+        this.bgmPlayer.src = this.bgmTracks[this.currentTrackIndex];
+        this.bgmPlayer.play().catch(e => console.warn("Erreur lecture musique:", e));
+    },
+
+    syncMusicStatus: function () {
+        // Appelé lors du toggleMute
+        if (this.isMuted) {
+            this.pauseMusic();
+        } else {
+            // Reprendre seulement si le jeu actuel a besoin de musique (actuellement seul Tetris)
+            if (window.arcade.state && window.arcade.state.currentView === 'tetris') {
+                this.playMusic();
+            }
+        }
     },
 
     /**

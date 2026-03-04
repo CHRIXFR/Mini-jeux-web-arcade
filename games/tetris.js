@@ -158,6 +158,9 @@ window.arcade.tetris = {
             cancelAnimationFrame(this.animationId);
             this.animationId = null;
         }
+        if (window.arcade.audio) {
+            window.arcade.audio.stopMusic();
+        }
     },
 
     showStartModal: function () {
@@ -224,6 +227,11 @@ window.arcade.tetris = {
         // Lancer la première pièce
         this.nextPiece = this.generateRandomPiece();
         this.spawnPiece();
+
+        // Lancement Musique BGM
+        if (window.arcade.audio) {
+            window.arcade.audio.playMusic();
+        }
 
         // Lancer la boucle
         this.lastTime = 0;
@@ -631,6 +639,7 @@ window.arcade.tetris = {
         cancelAnimationFrame(this.animationId);
 
         if (window.arcade.audio) {
+            window.arcade.audio.pauseMusic();
             window.arcade.audio.playGameOver();
         }
 
