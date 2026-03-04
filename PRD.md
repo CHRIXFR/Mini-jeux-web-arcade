@@ -141,5 +141,6 @@ Conformément aux standards de haute qualité :
 14. **Phase 14** : Optimisation de l'avatar flottant (passage du GIF au format MP4/JPEG) (Terminé).
 15. **Phase 15** : Debugage et Amélioration du Scrabble (Fuite de lettres, compteur, placement IA, format JSON du dictionnaire) (Terminé).
 16. **Phase 16** : Optimisation de l'Architecture CSS (Découpage et minification) (Terminé).
-17. **Phase 17** : Refonte UI/UX Premium (Utilisation de ui-ux-pro-max) (En projet).
-18. **Phase 18** : Exploration de nouveaux jeux (Puissance 4, Jeux de Cartes, Objets Cachés, Mahjong, Tetris) (En projet).
+17. **Phase 17** : Refonte UI/UX Premium (Utilisation de ui-ux-pro-max) (Terminé).
+18. **Phase 18** : Création et Implémentation du jeu Tetris avec Glassmorphism (Terminé).
+19. **Phase 19** : Exploration de nouveaux jeux (Jeux de Cartes, Objets Cachés, Mahjong) (En projet).
