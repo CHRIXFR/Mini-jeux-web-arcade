@@ -283,6 +283,13 @@
                 this.state.currentView = 'home';
                 const avatar = document.getElementById('avatar-changelog');
                 if (avatar) avatar.style.display = 'flex';
+
+                // Texte hero dynamique selon XP
+                const lockedCount = this.games.filter(g => !this.state.testMode && this.state.xp < g.xp).length;
+                const heroText = lockedCount > 0
+                    ? `${lockedCount} jeu${lockedCount > 1 ? 'x' : ''} à découvrir · Cumulez de l'XP pour tout débloquer !`
+                    : 'Tous les jeux sont débloqués. Bonne partie ! 🎉';
+
                 const gridHtml = this.games.map(game => {
                     const isLocked = !this.state.testMode && this.state.xp < game.xp;
                     const clickAction = isLocked ? `onclick="window.arcade.showLockedMessage(${game.xp})"` : `onclick="window.arcade.loadGame('${game.id}')"`;
@@ -306,10 +313,19 @@
 
                 document.getElementById('app-container').innerHTML = `
                     <section id="home-page" class="view">
-                        <div class="hero"><p class="subtitle">Cumulez de l'XP pour débloquer de nouveaux défis.</p></div>
-                        <div class="games-grid">${gridHtml}</div>
+                        <div class="hero">
+                            <p class="subtitle">${heroText}</p>
+                            <button id="btn-scroll-games" class="scroll-arrow" aria-label="Voir les jeux" onclick="document.getElementById('games-grid-container').scrollIntoView({ behavior: 'smooth' })">↓</button>
+                        </div>
+                        <div id="games-grid-container" class="games-grid">${gridHtml}</div>
                     </section>
                 `;
+
+                // Lancement BGM de l'accueil
+                if (window.arcade.audio) {
+                    window.arcade.audio.setContext('base');
+                    window.arcade.audio.playMusic();
+                }
             },
             getGameDescription: function (id) {
                 const descriptions = {
@@ -346,6 +362,12 @@
                         <div id="game-mount"></div>
                     </div>
                 `;
+
+                // Contexte audio adapté au jeu
+                if (window.arcade.audio) {
+                    window.arcade.audio.setContext(id);
+                    window.arcade.audio.playMusic();
+                }
 
                 if (id === 'hangman' && window.initHangman) window.initHangman(document.getElementById('game-mount'));
                 if (id === 'mots-meles' && window.initMotsMeles) window.initMotsMeles(document.getElementById('game-mount'));

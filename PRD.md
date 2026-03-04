@@ -156,6 +156,6 @@ Conformément aux standards de haute qualité :
 17. **Phase 17** : Refonte UI/UX Premium (Utilisation de ui-ux-pro-max) (Terminé).
 18. **Phase 18** : Création et Implémentation du jeu Tetris avec Glassmorphism (Terminé).
 19. **Phase 19** : Ajout de la gestion des sons et musiques de fond (Synthétiseur Web Audio & Player MP3) (Terminé).
-20. **Phase 20** : Ajout du préchargement des ressources pour tous les jeux et amélioration de l'interface d'accueil (En projet).
+20. **Phase 20** : Amélioration de l'interface d'accueil, ajout de sons pour les jeux et du préchargement des ressources pour tous les jeux (Terminé).
 21. **Phase 21** : Création du nouveau model d'ajout de jeu (En projet).
 22. **Phase 22** : Exploration de nouveaux jeux (Jeux de Cartes, Objets Cachés, Mahjong) (En projet).
