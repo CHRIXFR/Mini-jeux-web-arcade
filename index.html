@@ -21,6 +21,8 @@
             <div class="user-stats">
                 <button id="theme-btn" class="theme-toggle" onclick="window.arcade.toggleTheme()"
                     title="Changer de thème">☀️</button>
+                <button id="audio-btn" class="theme-toggle" onclick="window.arcade.toggleAudio()"
+                    title="Activer/Désactiver le son">🔇</button>
                 <div class="stats-divider"></div>
                 <span class="xp-label">XP Total:</span>
                 <span id="total-xp" class="xp-value">0</span>
@@ -226,7 +228,8 @@
                 { id: 'sudoku', name: 'Sudoku', xp: 250, icon: '🧩', difficulty: 'Facile - Difficile' },
                 { id: 'match-3', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
                 { id: 'capitales', name: 'Capitales', xp: 750, icon: '🌍', difficulty: 'Culture G' },
-                { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' }
+                { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' },
+                { id: 'tetris', name: 'Tetris', xp: 1500, icon: '🧱', difficulty: 'Arcade' }
             ],
             addXP: function (amount) {
                 this.state.xp += amount;
@@ -247,6 +250,15 @@
                 } else {
                     document.body.classList.remove('light-mode');
                     document.getElementById('theme-btn').textContent = '☀️';
+                }
+            },
+            toggleAudio: function () {
+                if (window.arcade.audio) {
+                    const isMuted = window.arcade.audio.toggleMute();
+                    const audioBtn = document.getElementById('audio-btn');
+                    if (audioBtn) {
+                        audioBtn.textContent = isMuted ? '🔇' : '🔊';
+                    }
                 }
             },
             updateUI: function () {
@@ -307,7 +319,8 @@
                     'paires': 'Exercez votre mémoire en trouvant toutes les paires d\'emojis.',
                     'match-3': 'Alignez les gemmes pour exploser les scores.',
                     'capitales': 'Testez vos connaissances sur les drapeaux et capitales du monde.',
-                    'scrabble': 'Placez vos mots stratégiquement sur le plateau.'
+                    'scrabble': 'Placez vos mots stratégiquement sur le plateau.',
+                    'tetris': 'L\'indémodable jeu de puzzle par blocs avec un style moderne.'
                 };
                 return descriptions[id] || '';
             },
@@ -341,6 +354,7 @@
                 if (id === 'match-3' && window.initMatch3) window.initMatch3(document.getElementById('game-mount'));
                 if (id === 'capitales' && window.initCapitales) window.initCapitales(document.getElementById('game-mount'));
                 if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
+                if (id === 'tetris' && window.initTetris) window.initTetris(document.getElementById('game-mount'));
             }
         };
 
@@ -358,6 +372,8 @@
     <script src="games/match-3.js"></script>
     <script src="games/capitales.js"></script>
     <script src="games/scrabble.js"></script>
+    <script src="games/audio.js"></script>
+    <script src="games/tetris.js"></script>
 </body>
 
 </html>
