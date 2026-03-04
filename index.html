@@ -21,6 +21,8 @@
             <div class="user-stats">
                 <button id="theme-btn" class="theme-toggle" onclick="window.arcade.toggleTheme()"
                     title="Changer de thème">☀️</button>
+                <button id="audio-btn" class="theme-toggle" onclick="window.arcade.toggleAudio()"
+                    title="Activer/Désactiver le son">🔇</button>
                 <div class="stats-divider"></div>
                 <span class="xp-label">XP Total:</span>
                 <span id="total-xp" class="xp-value">0</span>
@@ -250,6 +252,15 @@
                     document.getElementById('theme-btn').textContent = '☀️';
                 }
             },
+            toggleAudio: function () {
+                if (window.arcade.audio) {
+                    const isMuted = window.arcade.audio.toggleMute();
+                    const audioBtn = document.getElementById('audio-btn');
+                    if (audioBtn) {
+                        audioBtn.textContent = isMuted ? '🔇' : '🔊';
+                    }
+                }
+            },
             updateUI: function () {
                 const xpEl = document.getElementById('total-xp');
                 const lvlEl = document.getElementById('level-display');
@@ -361,6 +372,7 @@
     <script src="games/match-3.js"></script>
     <script src="games/capitales.js"></script>
     <script src="games/scrabble.js"></script>
+    <script src="games/audio.js"></script>
     <script src="games/tetris.js"></script>
 </body>
 
