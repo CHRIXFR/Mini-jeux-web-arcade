@@ -17,11 +17,13 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 💎 **Match-3** | 500 XP | Alignez des gemmes et déclenchez des combos spéciaux |
 | 🌍 **Capitales** | 750 XP | Testez vos connaissances sur les drapeaux et les pays |
 | 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
+| 🧱 **Tetris** | 1 500 XP | L'indémodable avec une esthétique Glassmorphism |
 
 ## Fonctionnalités Clés
 
 - **Système de progression** : Chaque partie rapporte de l'**XP** pour débloquer de nouveaux défis.
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub (filtre tag `News:`).
+- **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlist de musiques de fond.
 - **Design Premium** : Interface optimisée (Glassmorphism, Dark/Light mode, animations fluides).
 - **Standard de contribution** : Un [modèle CSS](.agents/rules/css-game-template.md) est disponible pour l'ajout cohérent de nouveaux jeux.
 
@@ -31,6 +33,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Modern CSS** — Utilisation intensive de variables CSS, Grid/Flexbox et Thème dynamique.
 - **GitHub API Integration** — Récupération asynchrone des nouveautés pour le changelog.
 - **Dictionnaire ODS** (Officiel du Scrabble) intégré au format JSON haute-performance.
+- **Web Audio API** — Synthèse sonore dynamique pour les bruitages et support playlists BGM.
 - **Playwright** — Suite de tests automatisés pour la non-régression visuelle et fonctionnelle.
 
 ## Lancer en local
