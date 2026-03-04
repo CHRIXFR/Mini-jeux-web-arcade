@@ -2487,4 +2487,136 @@ body:not(.light-mode) .cap-option-btn {
         flex-direction: column;
         gap: 10px;
     }
+}/* ========================================================================
+   10. JEU : TETRIS
+   ======================================================================== */
+.tetris-game-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tetris-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.tetris-stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tetris-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+.tetris-stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.tetris-main-area {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.tetris-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    width: min(300px, 60vw);
+    aspect-ratio: 10 / 20;
+    background: var(--border);
+    gap: 1.5px;
+    border: 4px solid var(--border);
+    border-radius: 4px;
+}
+
+.tetris-next-piece {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    width: 80px;
+    aspect-ratio: 1;
+    background: var(--card-bg-alt);
+    gap: 1.5px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.tetris-cell {
+    background: var(--bg-color);
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.1s ease;
+}
+
+/* Styles Glassmorphism des Tétrominos */
+.tetris-block {
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.4), inset 2px 2px 4px rgba(255, 255, 255, 0.6), inset -2px -2px 6px rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    /* Base color classes */
+}
+
+.tetris-I {
+    background-color: rgba(6, 182, 212, 0.85);
+    /* Cyan */
+}
+
+.tetris-J {
+    background-color: rgba(59, 130, 246, 0.85);
+    /* Blue */
+}
+
+.tetris-L {
+    background-color: rgba(245, 158, 11, 0.85);
+    /* Orange */
+}
+
+.tetris-O {
+    background-color: rgba(250, 204, 21, 0.85);
+    /* Yellow */
+}
+
+.tetris-S {
+    background-color: rgba(16, 185, 129, 0.85);
+    /* Emerald */
+}
+
+.tetris-T {
+    background-color: rgba(168, 85, 247, 0.85);
+    /* Purple */
+}
+
+.tetris-Z {
+    background-color: rgba(239, 68, 68, 0.85);
+    /* Red */
+}
+
+/* Contrôles tactiles Optionnels */
+.tetris-controls-mobile {
+    display: none;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 950px) {
+    .tetris-controls-mobile {
+        display: flex;
+    }
 }

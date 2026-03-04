@@ -13,11 +13,13 @@ ehthumbs_vista.db
 
 # IDE files
 .vscode/
+.agents/docs/plans
 
 # Note: .agents/workflows is not ignored as it's meant to be shared with contributors.
 
 # Playwright
 test-results/
+tests/
 playwright-report/
 playwright/.cache/
 blob-report/

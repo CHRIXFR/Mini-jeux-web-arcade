@@ -20,9 +20,9 @@ Toujours utiliser les variables du Design System (définies dans `:root` de `sty
 | `--success` | Succès / correct |
 | `--error` | Erreur / incorrect |
 | `--warning` | Avertissement / indice |
-| `--radius` | Border-radius des cartes (12px) |
-| `--btn-radius` | Border-radius des boutons (8px) |
-| `--btn-height` | Hauteur standard des boutons (38px) |
+| `--radius` | Border-radius des cartes (16px) |
+| `--btn-radius` | Border-radius des boutons (10px) |
+| `--btn-height` | Hauteur standard des boutons (42px) |
 | `--transition` | Transition standard (0.3s cubic-bezier) |
 
 ## Classes de boutons réutilisables
