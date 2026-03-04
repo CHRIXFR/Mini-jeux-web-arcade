@@ -267,7 +267,7 @@ window.arcade.tetris = {
 
     // Réalise la translation de la pièce
     movePiece: function (dirX, dirY) {
-        if (this.isGameOver) return;
+        if (this.isGameOver) return false; // Return false to indicate no move happened
 
         // Check collision virtuelle
         if (!this.checkCollision(this.currentPiece.matrix, this.currentPiece.x + dirX, this.currentPiece.y + dirY)) {
@@ -277,13 +277,20 @@ window.arcade.tetris = {
                 // Si move vers le bas manuel, on reset le timer
                 this.dropCounter = 0;
             }
+            // Play move sound only for horizontal moves
+            if (dirX !== 0 && window.arcade.audio) {
+                window.arcade.audio.playMove();
+            }
+            this.draw();
+            return true; // Move successful
         } else {
             // Si c'est un drop qui collisionne, on fixe la pièce
             if (dirY > 0) {
                 this.lockPiece();
             }
+            this.draw(); // Redraw even if collision to show locked piece
+            return false; // Move failed due to collision
         }
-        this.draw();
     },
 
     rotatePiece: function () {
@@ -295,6 +302,9 @@ window.arcade.tetris = {
         // Si la rotation ne crée pas de collision
         if (!this.checkCollision(rotatedMatrix, this.currentPiece.x, this.currentPiece.y)) {
             this.currentPiece.matrix = rotatedMatrix;
+            if (window.arcade.audio) {
+                window.arcade.audio.playRotate();
+            }
             this.draw();
         }
         // Sinon (collision contre un mur), on essaie le 'Wall Kick' très basique
@@ -303,12 +313,18 @@ window.arcade.tetris = {
             if (!this.checkCollision(rotatedMatrix, this.currentPiece.x + 1, this.currentPiece.y)) {
                 this.currentPiece.matrix = rotatedMatrix;
                 this.currentPiece.x += 1;
+                if (window.arcade.audio) {
+                    window.arcade.audio.playRotate();
+                }
                 this.draw();
             }
             // Essaie à gauche
             else if (!this.checkCollision(rotatedMatrix, this.currentPiece.x - 1, this.currentPiece.y)) {
                 this.currentPiece.matrix = rotatedMatrix;
                 this.currentPiece.x -= 1;
+                if (window.arcade.audio) {
+                    window.arcade.audio.playRotate();
+                }
                 this.draw();
             }
         }
@@ -337,6 +353,9 @@ window.arcade.tetris = {
         }
         this.score += dropDistance * 2; // Bonus de soft drop
         this.lockPiece();
+        if (window.arcade.audio) {
+            window.arcade.audio.playDrop();
+        }
     },
 
     // Vérifie si la pièce intersecte la grille fixée ou le bords 
@@ -429,6 +448,15 @@ window.arcade.tetris = {
             }
 
             this.updateStatsUI();
+
+            // Effet visuel & Sonore
+            if (window.arcade.audio && linesCleared > 0) {
+                if (linesCleared >= 4) {
+                    window.arcade.audio.playTetris();
+                } else {
+                    window.arcade.audio.playLineClear();
+                }
+            }
 
             // Flash effet (UX Premium)
             this.gridElement.classList.add('flash');
@@ -601,6 +629,10 @@ window.arcade.tetris = {
     triggerGameOver: function () {
         console.log("GAME OVER");
         cancelAnimationFrame(this.animationId);
+
+        if (window.arcade.audio) {
+            window.arcade.audio.playGameOver();
+        }
 
         // Attribue XP basé sur lignes
         let xpGained = this.lines * 10;
