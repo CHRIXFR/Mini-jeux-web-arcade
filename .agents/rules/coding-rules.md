@@ -33,6 +33,12 @@ En tant qu'assistant IA, vous DEVEZ guider l'utilisateur sur la meilleure approc
 - **DRY (Don't Repeat Yourself)** : Si une logique est utilisée dans deux jeux différents, envisager de la déplacer dans un utilitaire commun.
 - **Nettoyage** : Supprimer systématiquement les `console.log` de debug avant de finaliser une tâche.
 
-## 5. Gestion des Branches (Workflow Git)
+## 5. Création de Jeux (Templates obligatoires)
+Pour tout ajout ou modification d'un mini-jeu, vous DEVEZ utiliser conjointement :
+- **Logique (JS)** : [js-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Antigravity/Mini-jeux-web-arcade/.agents/rules/js-game-template.md)
+- **Style (CSS)** : [css-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Antigravity/Mini-jeux-web-arcade/.agents/rules/css-game-template.md)
+Ces deux documents sont indissociables pour garantir la cohérence de l'Arcade.
+
+## 6. Gestion des Branches (Workflow Git)
 - **Proposer une branche** : Pour toute nouvelle fonctionnalité, refactoring majeur ou modification complexe, proposez systématiquement à l'utilisateur de créer une branche dédiée (ex: `feat-mon-jeu` ou `fix-bug-score`).
 - **Préserver le Main** : Éviter de coder directement sur `main` pour des travaux de longue haleine. Consulter la règle [git-branches.md](file:///c:/Users/chjeu/Documents/Codes/Antigravity/Mini-jeux-web/.agents/rules/git-branches.md) pour les détails.

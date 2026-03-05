@@ -70,19 +70,36 @@ class ScrabbleGame {
     }
 
     promptDifficulty() {
-        const modal = document.getElementById('scr-diff-modal');
-        if (modal) modal.style.display = 'flex';
+        const self = this;
+        window.arcade.showStartModal({
+            title: 'Scrabble',
+            icon: '🏆',
+            description: 'Affrontez l\'IA dans ce classique des jeux de mots !',
+            controls: [
+                { icon: '🔤', desktop: 'Cliquez sur une lettre puis sur le plateau', mobile: 'Touchez une lettre puis le plateau' },
+                { icon: '🤖', desktop: 'L\'IA joue automatiquement après vous', mobile: 'L\'IA joue après vous' }
+            ],
+            difficulty: {
+                options: [
+                    { value: 'beginner', label: 'Débutant' },
+                    { value: 'intermediate', label: 'Intermédiaire' },
+                    { value: 'confirmed', label: 'Confirmé' },
+                    { value: 'pro', label: 'Pro' }
+                ],
+                default: 'intermediate'
+            },
+            onStart: function (diff) { self.startGameWithDifficulty(diff || 'intermediate'); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 
     startGameWithDifficulty(diff) {
         this.difficulty = diff;
-        document.getElementById('scr-diff-modal').style.display = 'none';
         this.initBag();
         this.fillPlayerRack();
         this.fillAiRack();
         this.renderBoard();
         this.renderRack();
-        // Mise à jour initiale du compteur du sac
         const bagEl = document.getElementById('scr-bag-count');
         if (bagEl) bagEl.textContent = this.bag.length;
         window.arcade.showToast('Partie commencée !');
@@ -188,32 +205,6 @@ class ScrabbleGame {
                     <button id="scr-btn-joker" class="btn-primary">Confirmer</button>
                 </div>
             </div>
-
-            <!-- Modale Difficulté -->
-            <div id="scr-diff-modal" class="modal-overlay" style="display: none;">
-                <div class="modal-content">
-                    <h2>Niveau de l'IA</h2>
-                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">Choisissez la difficulté de votre adversaire avant de commencer.</p>
-                    <div class="modal-actions">
-                        <button class="btn-primary diff-btn" data-diff="beginner">Débutant</button>
-                        <button class="btn-primary diff-btn" data-diff="intermediate">Intermédiaire</button>
-                        <button class="btn-primary diff-btn" data-diff="confirmed">Confirmé</button>
-                        <button class="btn-primary diff-btn" data-diff="pro">Pro</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Modale Fin de Partie -->
-            <div id="scr-end-modal" class="modal-overlay" style="display: none;">
-                <div class="modal-content">
-                    <h2 id="scr-end-title">Fin de partie</h2>
-                    <div class="xp-bonus" id="scr-end-score" style="font-size: 2rem; margin-bottom: 2rem;">0 - 0</div>
-                    <div class="modal-actions">
-                        <button id="scr-btn-replay" class="btn-primary">Rejouer la partie</button>
-                        <button onclick="window.arcade.renderHome()" class="btn-secondary">Retour au menu</button>
-                    </div>
-                </div>
-            </div>
         `;
 
         document.getElementById('scr-btn-play').onclick = () => this.validateMove();
@@ -222,14 +213,6 @@ class ScrabbleGame {
         document.getElementById('scr-btn-exchange').onclick = () => this.exchangePlayerLetters();
         document.getElementById('scr-btn-pass').onclick = () => this.passTurn();
         document.getElementById('scr-btn-hint').onclick = () => this.hintMove();
-
-        document.querySelectorAll('.diff-btn').forEach(btn => {
-            btn.onclick = (e) => this.startGameWithDifficulty(e.target.getAttribute('data-diff'));
-        });
-        document.getElementById('scr-btn-replay').onclick = () => {
-            document.getElementById('scr-end-modal').style.display = 'none';
-            this.start();
-        };
 
         // Expose jeu pour tests Playwright
         window._scrabbleGame = this;
@@ -1003,7 +986,6 @@ class ScrabbleGame {
         if (this.isGameOver) return;
         this.isGameOver = true;
 
-        // Déduire la valeur des lettres restantes
         let pPenalty = 0;
         for (const l of this.playerRack) pPenalty += (l === '?' ? 0 : this.letterData[l].v);
 
@@ -1013,28 +995,42 @@ class ScrabbleGame {
         this.playerScore -= pPenalty;
         this.aiScore -= aPenalty;
 
-        // Bonus pour le joueur ayant terminé en premier
         if (this.playerRack.length === 0 && this.aiRack.length !== 0) this.playerScore += aPenalty;
         if (this.aiRack.length === 0 && this.playerRack.length !== 0) this.aiScore += pPenalty;
 
         this.updateStats();
 
         const pWon = this.playerScore > this.aiScore;
+        const isEqual = this.playerScore === this.aiScore;
+        const self = this;
+
+        let title, icon;
+        if (isEqual) {
+            title = 'Égalité ! 🤝';
+            icon = '🤝';
+        } else {
+            title = pWon ? 'Vous avez gagné !' : 'L\'IA a gagné...';
+            icon = pWon ? '🎉' : '🤖';
+        }
+
+        const xpGained = pWon ? Math.max(50, Math.floor(this.playerScore / 5)) : 0;
+        if (xpGained > 0) window.arcade.addXP(xpGained);
+
+        const diffLabels = { 'beginner': 'Débutant', 'intermediate': 'Intermédiaire', 'confirmed': 'Confirmé', 'pro': 'Pro' };
+
         setTimeout(() => {
-            const modal = document.getElementById('scr-end-modal');
-            const title = document.getElementById('scr-end-title');
-            const score = document.getElementById('scr-end-score');
-
-            if (this.playerScore === this.aiScore) {
-                title.textContent = 'Égalité ! 🤝';
-                title.style.color = '#3b82f6';
-            } else {
-                title.textContent = pWon ? 'Vous avez gagné ! 🎉' : 'L\'IA a gagné... 🤖';
-                title.style.color = pWon ? 'var(--success)' : '#ef4444';
-            }
-            score.textContent = `${this.playerScore} - ${this.aiScore}`;
-
-            modal.style.display = 'flex';
+            window.arcade.showGameOverModal({
+                title: title,
+                icon: icon,
+                stats: [
+                    { label: 'Votre score', value: this.playerScore },
+                    { label: 'Score IA', value: this.aiScore },
+                    { label: 'Difficulté', value: diffLabels[this.difficulty] || this.difficulty }
+                ],
+                xpGained: xpGained,
+                onReplay: function () { self.start(); },
+                onQuit: function () { window.arcade.renderHome(); }
+            });
         }, 1000);
     }
 }

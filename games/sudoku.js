@@ -4,7 +4,7 @@
 
 window.initSudoku = function (container) {
     const sudoku = new SudokuGame(container);
-    sudoku.start();
+    sudoku.showStartScreen();
 }
 
 class SudokuGame {
@@ -19,6 +19,35 @@ class SudokuGame {
         this.difficulty = 'medium';
         this.timer = 0;
         this.timerInterval = null;
+    }
+
+    showStartScreen() {
+        const self = this;
+        this.renderLayout();
+        window.arcade.showStartModal({
+            title: 'Sudoku',
+            icon: '🧩',
+            description: 'Le classique jeu de chiffres avec notes et indices.',
+            controls: [
+                { icon: '🖱️', desktop: 'Cliquez sur une case puis un chiffre', mobile: 'Touchez une case puis un chiffre' },
+                { icon: '📝', desktop: 'Mode Notes pour vos hypothèses', mobile: 'Mode Notes pour vos hypothèses' }
+            ],
+            difficulty: {
+                options: [
+                    { value: 'easy', label: 'Facile' },
+                    { value: 'medium', label: 'Moyen' },
+                    { value: 'hard', label: 'Difficile' }
+                ],
+                default: 'medium'
+            },
+            onStart: function (diff) {
+                self.difficulty = diff || 'medium';
+                const select = document.getElementById('diff-select');
+                if (select) select.value = self.difficulty;
+                self.newGame();
+            },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 
     start() {
@@ -339,29 +368,20 @@ class SudokuGame {
         const bonus = { 'easy': 50, 'medium': 100, 'hard': 200 }[this.difficulty];
         window.arcade.addXP(bonus);
 
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>Félicitations !</h2>
-                <p>Vous avez résolu le Sudoku en ${Math.floor(this.timer / 60)}m ${this.timer % 60}s.</p>
-                <div class="xp-bonus">+${bonus} XP</div>
-                <div class="modal-actions">
-                    <button id="btn-restart" class="btn-primary">Nouveau Défi</button>
-                    <button id="btn-quit" class="btn-secondary">Menu Principal</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
+        const min = Math.floor(this.timer / 60);
+        const sec = this.timer % 60;
+        const self = this;
 
-        document.getElementById('btn-restart').onclick = () => {
-            modal.remove();
-            this.newGame();
-        };
-
-        document.getElementById('btn-quit').onclick = () => {
-            modal.remove();
-            window.arcade.renderHome();
-        };
+        window.arcade.showGameOverModal({
+            title: 'Félicitations !',
+            icon: '🎉',
+            stats: [
+                { label: 'Temps', value: `${min}m ${sec}s` },
+                { label: 'Difficulté', value: { 'easy': 'Facile', 'medium': 'Moyen', 'hard': 'Difficile' }[this.difficulty] }
+            ],
+            xpGained: bonus,
+            onReplay: function () { self.newGame(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 }

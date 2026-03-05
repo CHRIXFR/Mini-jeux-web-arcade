@@ -4,7 +4,7 @@
 
 window.initPaires = function (container) {
     const game = new PairesGame(container);
-    game.start();
+    game.showStartScreen();
 }
 
 class PairesGame {
@@ -26,6 +26,34 @@ class PairesGame {
             '🍕', '🌮', '🍣', '🍦', '🍩', '🍫', '🍭', '🍮',
             '🍯', '🍰'
         ];
+    }
+
+    showStartScreen() {
+        const self = this;
+        this.renderLayout();
+        window.arcade.showStartModal({
+            title: 'Jeu de Paires',
+            icon: '🃏',
+            description: 'Exercez votre mémoire en trouvant toutes les paires d\'emojis.',
+            controls: [
+                { icon: '👆', desktop: 'Retournez deux cartes pour trouver les paires', mobile: 'Touchez deux cartes pour trouver les paires' }
+            ],
+            difficulty: {
+                options: [
+                    { value: 'easy', label: 'Facile (4x3)' },
+                    { value: 'medium', label: 'Moyen (4x4)' },
+                    { value: 'hard', label: 'Difficile (6x6)' }
+                ],
+                default: 'easy'
+            },
+            onStart: function (diff) {
+                self.difficulty = diff || 'easy';
+                const select = document.getElementById('pa-diff-select');
+                if (select) select.value = self.difficulty;
+                self.newGame();
+            },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 
     start() {
@@ -195,30 +223,20 @@ class PairesGame {
     }
 
     showWinModal(xp) {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>Bravo !</h2>
-                <p>Vous avez trouvé toutes les paires en ${this.moves} essais et ${this.formatTime(this.timer)}.</p>
-                <div class="xp-bonus">+${xp} XP</div>
-                <div class="modal-actions">
-                    <button id="pa-btn-retry" class="btn-primary">Rejouer</button>
-                    <button id="pa-btn-home" class="btn-secondary">Retour à l'accueil</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-
-        document.getElementById('pa-btn-retry').onclick = () => {
-            modal.remove();
-            this.newGame();
-        };
-        document.getElementById('pa-btn-home').onclick = () => {
-            modal.remove();
-            window.arcade.addXP(xp);
-            window.arcade.renderHome();
-        };
+        window.arcade.addXP(xp);
+        const self = this;
+        window.arcade.showGameOverModal({
+            title: 'Bravo !',
+            icon: '🎉',
+            stats: [
+                { label: 'Essais', value: this.moves },
+                { label: 'Temps', value: this.formatTime(this.timer) },
+                { label: 'Difficulté', value: { 'easy': 'Facile', 'medium': 'Moyen', 'hard': 'Difficile' }[this.difficulty] }
+            ],
+            xpGained: xp,
+            onReplay: function () { self.newGame(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 
     updateStats() {
