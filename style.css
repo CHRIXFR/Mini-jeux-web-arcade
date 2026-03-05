@@ -2682,14 +2682,3 @@ body:not(.light-mode) .cap-option-btn {
         align-items: center;
     }
 }
-
-@media (max-width: 500px) {
-    .tetris-header {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .tetris-stat-value {
-        font-size: 1rem;
-    }
-}
