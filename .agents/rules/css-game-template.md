@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Template CSS — Ajout d'un nouveau jeu
 
 Ce document sert de guide pour maintenir la cohérence du style lors de l'ajout d'un nouveau jeu ou composant dans l'Arcade.
@@ -173,3 +177,4 @@ Si un composant utilise `var(--card-bg-alt)` (fond légèrement plus clair en mo
 - [ ] L'en-tête de section `/* === N. JEU : ... === */` est ajouté
 - [ ] Les media queries desktop/mobile sont prises en compte
 - [ ] Le jeu fonctionne en thème sombre ET clair
+- [ ] Test du jeu en mode manuel

@@ -117,9 +117,9 @@ window.arcade.tetris = {
                         
                         <div class="tetris-controls-mobile">
                             <button id="btn-tetris-left" class="btn-secondary">◀</button>
-                            <button id="btn-tetris-rotate" class="btn-primary">↻</button>
                             <button id="btn-tetris-right" class="btn-secondary">▶</button>
                             <button id="btn-tetris-down" class="btn-secondary">▼</button>
+                            <button id="btn-tetris-rotate" class="btn-primary">↻</button>
                         </div>
                     </div>
                 </div>

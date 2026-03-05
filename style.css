@@ -906,6 +906,40 @@ select option {
     transform: scale(1.05);
 }
 
+/* Flèche de scroll vers la grille de jeux */
+.scroll-arrow {
+    display: block;
+    margin: 12px auto 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: var(--transition);
+    animation: bounce-arrow 2s ease-in-out infinite;
+}
+
+.scroll-arrow:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+@keyframes bounce-arrow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+}
+
 /* Jeux Verrouillés */
 .game-card.locked {
     cursor: not-allowed;
@@ -2487,7 +2521,9 @@ body:not(.light-mode) .cap-option-btn {
         flex-direction: column;
         gap: 10px;
     }
-}/* ========================================================================
+}
+
+/* ========================================================================
    10. JEU : TETRIS
    ======================================================================== */
 .tetris-game-container {
@@ -2610,13 +2646,50 @@ body:not(.light-mode) .cap-option-btn {
 /* Contrôles tactiles Optionnels */
 .tetris-controls-mobile {
     display: none;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.tetris-controls-mobile button {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
+    font-size: 1.2rem;
+    padding: 0;
 }
 
 @media (max-width: 950px) {
     .tetris-controls-mobile {
+        display: grid;
+    }
+
+    .tetris-main-area {
+        gap: 1rem;
+    }
+
+    .tetris-grid {
+        width: min(280px, 55vw);
+    }
+
+    .tetris-side-panel {
+        flex: 1;
         display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 500px) {
+    .tetris-header {
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tetris-stat-value {
+        font-size: 1rem;
     }
 }
