@@ -208,5 +208,8 @@
     }
 
     // Exposer l'initialisation globalement
-    window.initCapitales = initCapitales;
+    window.initCapitales = function (mountPoint) {
+        initCapitales(mountPoint);
+        // showStartScreen est déjà appelé dans initCapitales(mountPoint)
+    };
 })();

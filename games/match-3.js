@@ -47,7 +47,18 @@ class Match3Game {
                 { icon: '👆', desktop: 'Échangez deux gemmes adjacentes', mobile: 'Touchez pour échanger' },
                 { icon: '💥', desktop: 'Alignez 4+ gemmes pour des combos spéciaux', mobile: 'Alignez 4+ pour des combos' }
             ],
-            onStart: function () { self.newGame(); },
+            difficulty: {
+                options: [
+                    { value: 'easy', label: 'Facile' },
+                    { value: 'medium', label: 'Moyen' },
+                    { value: 'hard', label: 'Difficile' }
+                ],
+                default: 'medium'
+            },
+            onStart: function (diff) {
+                self.difficulty = diff || 'medium';
+                self.newGame();
+            },
             onQuit: function () { window.arcade.renderHome(); }
         });
     }
@@ -59,8 +70,15 @@ class Match3Game {
 
     newGame() {
         this.score = 0;
-        this.moves = 20;
         this.comboStats = { line: 0, cross: 0, color: 0 };
+
+        // Configuration selon difficulté
+        const moveConfigs = { 'easy': 30, 'medium': 20, 'hard': 15 };
+        this.moves = moveConfigs[this.difficulty] || 20;
+
+        const select = document.getElementById('jb-diff-select');
+        if (select) select.value = this.difficulty;
+
         this.updateStats();
         this.generateInitialGrid();
         this.renderGrid();
@@ -101,6 +119,15 @@ class Match3Game {
                             <span id="jb-moves" class="jb-stat-value">20</span>
                         </div>
                         <div class="stats-divider"></div>
+                        <div class="jb-stat-item">
+                            <span class="jb-stat-label">Difficulté</span>
+                            <select id="jb-diff-select" class="jb-diff-select">
+                                <option value="easy">Facile</option>
+                                <option value="medium">Moyen</option>
+                                <option value="hard">Difficile</option>
+                            </select>
+                        </div>
+                        <div class="stats-divider"></div>
                         <div class="jb-combos-mini">
                             <div class="combo-count" title="Lignes/Colonnes">⚡ <span id="count-line">0</span></div>
                             <div class="combo-count" title="Explosion Croix">✴️ <span id="count-cross">0</span></div>
@@ -117,7 +144,16 @@ class Match3Game {
             </div>
         `;
 
-        document.getElementById('jb-btn-new').onclick = () => this.newGame();
+        const btnNew = document.getElementById('jb-btn-new');
+        if (btnNew) btnNew.onclick = () => this.newGame();
+
+        const select = document.getElementById('jb-diff-select');
+        if (select) {
+            select.onchange = (e) => {
+                this.difficulty = e.target.value;
+                this.newGame();
+            };
+        }
     }
 
     renderGrid() {

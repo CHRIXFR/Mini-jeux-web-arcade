@@ -10,7 +10,7 @@ Comme le projet utilise des requêtes `fetch` (dictionnaires), il doit être ser
 1.  Ouvrir un terminal dans la racine du projet.
 2.  Lancer un serveur rapide avec Node.js (via `npx`) :
     ```powershell
-    npx -y serve -p 8080
+    npx serve .
     ```
     *Note : Si `serve` n'est pas installé, npx le téléchargera temporairement.*
 3.  Noter l'URL locale fournie (généralement `http://localhost:8080`).

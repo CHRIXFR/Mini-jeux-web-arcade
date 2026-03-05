@@ -110,11 +110,7 @@
      * @param {Function} [config.onQuit] - Callback "Menu Principal"
      */
     window.arcade.showGameOverModal = function (config) {
-        // SÉCURITÉ : Ne pas afficher si le joueur est revenu à l'accueil entre-temps
-        if (window.arcade.state && window.arcade.state.currentView !== 'game') {
-            console.warn("Affichage de modale de fin ignoré (déjà de retour au menu).");
-            return;
-        }
+        console.log("Appel de showGameOverModal", config);
 
         const existingModal = document.getElementById('game-over-modal');
         if (existingModal) existingModal.remove();

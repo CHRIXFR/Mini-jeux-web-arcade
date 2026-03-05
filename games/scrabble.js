@@ -54,7 +54,7 @@ class ScrabbleGame {
         return b;
     }
 
-    async start() {
+    start() {
         this.score = 0;
         this.playerScore = 0;
         this.aiScore = 0;
@@ -62,11 +62,7 @@ class ScrabbleGame {
         this.isGameOver = false;
         this.firstMove = true;
         this.renderLayout();
-        await this.loadDictionary();
-
-        if (this.isDictionaryLoaded) {
-            this.promptDifficulty();
-        }
+        this.promptDifficulty();
     }
 
     promptDifficulty() {
@@ -95,6 +91,7 @@ class ScrabbleGame {
 
     startGameWithDifficulty(diff) {
         this.difficulty = diff;
+        this.loadDictionary(); // Charger en arrière-plan
         this.initBag();
         this.fillPlayerRack();
         this.fillAiRack();
@@ -213,9 +210,6 @@ class ScrabbleGame {
         document.getElementById('scr-btn-exchange').onclick = () => this.exchangePlayerLetters();
         document.getElementById('scr-btn-pass').onclick = () => this.passTurn();
         document.getElementById('scr-btn-hint').onclick = () => this.hintMove();
-
-        // Expose jeu pour tests Playwright
-        window._scrabbleGame = this;
     }
 
     renderBoard() {
@@ -293,9 +287,7 @@ class ScrabbleGame {
             this.playerRack.push(moved.isJoker ? '?' : moved.letter);
             this.renderBoard();
             this.renderRack();
-            return;
         }
-
         // Placer la tuile sélectionnée
         if (this.selectedTileIndex !== null && !this.board[r][c]) {
             const letter = this.playerRack[this.selectedTileIndex];

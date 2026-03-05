@@ -1388,6 +1388,29 @@ select option {
     gap: 1rem;
 }
 
+.jb-diff-select {
+    background: var(--card-bg-alt);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 2px 8px;
+    border-radius: var(--btn-radius);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    outline: none;
+}
+
+.jb-diff-select:hover {
+    border-color: var(--accent);
+}
+
+.stats-divider {
+    width: 1px;
+    height: 30px;
+    background: var(--border);
+    margin: 0 0.5rem;
+}
+
 /* ========================================================================
    7. JEU : SCRABBLE
    ======================================================================== */
