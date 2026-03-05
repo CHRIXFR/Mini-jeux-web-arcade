@@ -157,5 +157,10 @@ Conformément aux standards de haute qualité :
 18. **Phase 18** : Création et Implémentation du jeu Tetris avec Glassmorphism (Terminé).
 19. **Phase 19** : Ajout de la gestion des sons et musiques de fond (Synthétiseur Web Audio & Player MP3) (Terminé).
 20. **Phase 20** : Amélioration de l'interface d'accueil, ajout de sons pour les jeux et du préchargement des ressources pour tous les jeux (Terminé).
-21. **Phase 21** : Création du nouveau model d'ajout de jeu (En projet).
+21. **Phase 21** : Standardisation du cycle de vie des jeux (Modales Start/End) et création des templates de développement JS/CSS obligatoires (Terminé).
 22. **Phase 22** : Exploration de nouveaux jeux (Jeux de Cartes, Objets Cachés, Mahjong) (En projet).
+
+## 7. Standards de Développement (Agents IA)
+Pour garantir la pérennité et la cohérence de l'Arcade, tout agent doit suivre les directives de couplage strictes entre la logique et le style :
+- **Documents de référence** : `js-game-template.md` et `css-game-template.md` (situés dans `.agents/rules/`).
+- **Règle d'or** : L'implémentation d'un nouveau jeu est considérée comme incomplète si elle ne respecte pas l'API des modales standardisées et le système de design responsive défini dans ces templates.

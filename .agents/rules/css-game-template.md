@@ -4,6 +4,9 @@ trigger: always_on
 
 # Template CSS — Ajout d'un nouveau jeu
 
+> [!IMPORTANT]
+> Ce document doit être utilisé en complément de [js-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Antigravity/Mini-jeux-web-arcade/.agents/rules/js-game-template.md) pour garantir un fonctionnement et un design cohérents.
+
 Ce document sert de guide pour maintenir la cohérence du style lors de l'ajout d'un nouveau jeu ou composant dans l'Arcade.
 
 ## Variables CSS disponibles
@@ -62,6 +65,26 @@ Ces trois classes héritent automatiquement d'un socle commun (`font-family`, `f
     animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
 }
 ```
+
+## Classes de modales standardisées
+
+Les modales de jeu (start et game over) sont gérées par `game-modal.js`. **Ne PAS recréer de modales custom.**
+
+Les classes suivantes sont disponibles et déjà stylées dans `style.css` :
+
+| Classe | Usage |
+|--------|-------|
+| `.modal-overlay` | Overlay plein écran avec flou |
+| `.modal-content` | Conteneur de la modale |
+| `.modal-game-icon` | Icône emoji du jeu (3.5rem) |
+| `.modal-description` | Description du jeu |
+| `.modal-section-label` | Label de section (CONTRÔLES, DIFFICULTÉ) |
+| `.modal-controls-list` | Liste des contrôles adaptatifs |
+| `.modal-difficulty-selector` | Groupe de boutons de difficulté |
+| `.modal-diff-btn` | Bouton de difficulté individuel |
+| `.modal-stats-grid` | Grille de statistiques de fin |
+| `.modal-stat-row` | Ligne de statistique |
+| `.modal-actions` | Groupe de boutons d'action |
 
 ## Structure CSS d'un nouveau jeu
 

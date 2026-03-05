@@ -5,7 +5,7 @@
 
 window.initMatch3 = function (container) {
     const game = new Match3Game(container);
-    game.start();
+    game.showStartScreen();
 };
 
 class Match3Game {
@@ -34,6 +34,22 @@ class Match3Game {
         // 'cross' : nettoie ligne & colonne (combo 5)
         // 'color' : nettoie tous les joyaux de la même couleur (combo 6)
         // 'omega' : nettoie toute la grille (combinaison de 2 joyaux couleur)
+    }
+
+    showStartScreen() {
+        const self = this;
+        this.renderLayout();
+        window.arcade.showStartModal({
+            title: 'Match-3',
+            icon: '💎',
+            description: 'Alignez les gemmes pour exploser les scores !',
+            controls: [
+                { icon: '👆', desktop: 'Échangez deux gemmes adjacentes', mobile: 'Touchez pour échanger' },
+                { icon: '💥', desktop: 'Alignez 4+ gemmes pour des combos spéciaux', mobile: 'Alignez 4+ pour des combos' }
+            ],
+            onStart: function () { self.newGame(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 
     start() {
@@ -450,21 +466,19 @@ class Match3Game {
     }
 
     showGameOverModal(xp) {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>Fin !</h2>
-                <div class="jb-stat-value" style="font-size: 3rem">${this.score}</div>
-                <div class="xp-bonus">+${xp} XP</div>
-                <div class="modal-actions">
-                    <button id="btn-restart-jb" class="btn-primary">Rejouer</button>
-                    <button id="btn-quit-jb" class="btn-secondary">Menu Principal</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('btn-restart-jb').onclick = () => { modal.remove(); this.newGame(); };
-        document.getElementById('btn-quit-jb').onclick = () => { modal.remove(); window.arcade.renderHome(); };
+        const self = this;
+        window.arcade.showGameOverModal({
+            title: 'Fin !',
+            icon: '💎',
+            stats: [
+                { label: 'Score', value: this.score },
+                { label: 'Combos Ligne', value: this.comboStats.line },
+                { label: 'Combos Croix', value: this.comboStats.cross },
+                { label: 'Combos Couleur', value: this.comboStats.color }
+            ],
+            xpGained: xp,
+            onReplay: function () { self.newGame(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 }

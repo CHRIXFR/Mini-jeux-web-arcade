@@ -281,6 +281,13 @@
             renderHome: function () {
                 document.body.classList.remove('in-game');
                 this.state.currentView = 'home';
+
+                // Nettoyage modales de jeu standardisées
+                const startModal = document.getElementById('game-start-modal');
+                if (startModal) startModal.remove();
+                const overModal = document.getElementById('game-over-modal');
+                if (overModal) overModal.remove();
+
                 const avatar = document.getElementById('avatar-changelog');
                 if (avatar) avatar.style.display = 'flex';
 
@@ -344,7 +351,7 @@
                 words: null,
                 async getWords() {
                     if (!this.words) {
-                        const r = await fetch('games/dictionary/French ODS dictionary.json');
+                        const r = await fetch('games/data/French ODS dictionary.json');
                         if (!r.ok) throw new Error('Dictionnaire introuvable');
                         this.words = await r.json();
                     }
@@ -386,6 +393,8 @@
             window.arcade.renderHome();
         };
     </script>
+    <!-- Système de modales standardisé -->
+    <script src="games/game-modal.js"></script>
     <!-- Chargement des composants de jeux -->
     <script src="games/sudoku.js"></script>
     <script src="games/hangman.js"></script>

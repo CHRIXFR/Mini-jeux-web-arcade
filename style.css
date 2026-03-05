@@ -759,6 +759,121 @@ select option {
     gap: 1rem;
 }
 
+/* --- Composants de modale de jeu standardisée --- */
+
+.modal-game-icon {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.modal-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.modal-section-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.modal-controls-section {
+    text-align: left;
+    margin-bottom: 1.25rem;
+}
+
+.modal-controls-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.modal-controls-list li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-ctrl-icon {
+    font-size: 1.1rem;
+}
+
+.modal-difficulty-section {
+    margin-bottom: 1.25rem;
+}
+
+.modal-difficulty-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.modal-diff-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.45rem 1rem;
+    border-radius: var(--btn-radius);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.modal-diff-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.modal-diff-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.modal-stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-stat-row:last-child {
+    border-bottom: none;
+}
+
+.modal-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.modal-stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
 .btn-primary {
     background: var(--accent);
     color: white;

@@ -4,7 +4,7 @@
 
 window.initMotsMeles = function (container) {
     const game = new WordSearchGame(container);
-    game.start();
+    game.showStartScreen();
 }
 
 class WordSearchGame {
@@ -32,6 +32,34 @@ class WordSearchGame {
         ];
         this.fullDictionary = [];
         this.isDictionaryLoaded = false;
+    }
+
+    showStartScreen() {
+        const self = this;
+        this.renderLayout();
+        window.arcade.showStartModal({
+            title: 'Mots Mêlés',
+            icon: '🔍',
+            description: 'Trouvez tous les mots cachés dans la grille !',
+            controls: [
+                { icon: '👆', desktop: 'Cliquez-glissez pour sélectionner un mot', mobile: 'Glissez pour sélectionner un mot' }
+            ],
+            difficulty: {
+                options: [
+                    { value: 'easy', label: 'Facile' },
+                    { value: 'medium', label: 'Moyen' },
+                    { value: 'hard', label: 'Difficile' }
+                ],
+                default: 'medium'
+            },
+            onStart: function (diff) {
+                self.difficulty = diff || 'medium';
+                const select = document.getElementById('ws-diff-select');
+                if (select) select.value = self.difficulty;
+                self.newGame();
+            },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 
     async start() {
@@ -385,22 +413,17 @@ class WordSearchGame {
     }
 
     showWinModal() {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>Bravo !</h2>
-                <p>Tous les mots ont été trouvés.</p>
-                <div class="xp-bonus">+100 XP</div>
-                <div class="modal-actions">
-                    <button id="btn-restart-ws" class="btn-primary">Nouvelle Grille</button>
-                    <button id="btn-quit-ws" class="btn-secondary">Menu Principal</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-
-        document.getElementById('btn-restart-ws').onclick = () => { modal.remove(); this.newGame(); };
-        document.getElementById('btn-quit-ws').onclick = () => { modal.remove(); window.arcade.renderHome(); };
+        const self = this;
+        window.arcade.showGameOverModal({
+            title: 'Bravo !',
+            icon: '🎉',
+            stats: [
+                { label: 'Mots trouvés', value: `${this.foundWords.size} / ${this.wordsToFind.length}` },
+                { label: 'Difficulté', value: { 'easy': 'Facile', 'medium': 'Moyen', 'hard': 'Difficile' }[this.difficulty] }
+            ],
+            xpGained: 100,
+            onReplay: function () { self.newGame(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 }

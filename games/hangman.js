@@ -4,7 +4,7 @@
 
 window.initHangman = function (container) {
     const game = new HangmanGame(container);
-    game.start();
+    game.showStartScreen();
 };
 
 class HangmanGame {
@@ -26,6 +26,21 @@ class HangmanGame {
         this.isGameOver = false;
     }
 
+    showStartScreen() {
+        this.renderLayout();
+        const self = this;
+        window.arcade.showStartModal({
+            title: 'Le Pendu',
+            icon: '😵',
+            description: 'Devinez le mot secret avant qu\'il ne soit trop tard !',
+            controls: [
+                { icon: '⌨️', desktop: 'Cliquez sur les lettres du clavier', mobile: 'Touchez les lettres' }
+            ],
+            onStart: function () { self.start(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
+    }
+
     async start() {
         this.guessedLetters.clear();
         this.wrongGuesses = 0;
@@ -33,7 +48,6 @@ class HangmanGame {
 
         this.renderLayout();
 
-        // Désactiver le clavier et le bouton de réinitialisation pendant le chargement
         const btnReset = document.getElementById('hg-btn-reset');
         if (btnReset) btnReset.disabled = true;
         document.querySelectorAll('.hg-key').forEach(k => k.disabled = true);
@@ -180,20 +194,18 @@ class HangmanGame {
     }
 
     showEndModal(win) {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>${win ? "Félicitations !" : "Dommage..."}</h2>
-                <p>${win ? "Vous avez trouvé le mot." : `Le mot secret était : <strong>${this.word}</strong>`}</p>
-                <div class="modal-actions">
-                    <button id="hg-btn-restart" class="btn-primary">Rejouer</button>
-                    <button id="hg-btn-quit" class="btn-secondary">Menu Principal</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('hg-btn-restart').onclick = () => { modal.remove(); this.start(); };
-        document.getElementById('hg-btn-quit').onclick = () => { modal.remove(); window.arcade.renderHome(); };
+        const self = this;
+        const xpGained = win ? 20 : 0;
+        window.arcade.showGameOverModal({
+            title: win ? 'Félicitations !' : 'Dommage...',
+            icon: win ? '🎉' : '😔',
+            stats: [
+                { label: 'Mot', value: this.word },
+                { label: 'Erreurs', value: `${this.wrongGuesses} / ${this.maxWrong}` }
+            ],
+            xpGained: xpGained,
+            onReplay: function () { self.start(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
     }
 }
