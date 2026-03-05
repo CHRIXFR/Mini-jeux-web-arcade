@@ -940,6 +940,40 @@ select option {
     }
 }
 
+/* Flèche de scroll vers la grille de jeux */
+.scroll-arrow {
+    display: block;
+    margin: 12px auto 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: var(--transition);
+    animation: bounce-arrow 2s ease-in-out infinite;
+}
+
+.scroll-arrow:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+@keyframes bounce-arrow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+}
+
 /* Jeux Verrouillés */
 .game-card.locked {
     cursor: not-allowed;
