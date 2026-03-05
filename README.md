@@ -25,7 +25,8 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub (filtre tag `News:`).
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlist de musiques de fond.
 - **Design Premium** : Interface optimisée (Glassmorphism, Dark/Light mode, animations fluides).
-- **Standard de contribution** : Un [modèle CSS](.agents/rules/css-game-template.md) est disponible pour l'ajout cohérent de nouveaux jeux.
+- **Moteur de Modales** : Cycle de vie des jeux unifié (Start/Game Over) via un moteur de modales standardisé.
+- **Standard de contribution** : L'utilisation conjointe des templates [Logique (JS)](.agents/rules/js-game-template.md) et [Style (CSS)](.agents/rules/css-game-template.md) est obligatoire pour toute extension.
 
 ## Stack technique
 
