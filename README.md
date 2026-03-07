@@ -18,6 +18,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🌍 **Capitales** | 750 XP | Testez vos connaissances sur les drapeaux et les pays |
 | 🔡 **Scrabble** | 1 000 XP | Affrontez une IA avec le dictionnaire ODS officiel |
 | 🧱 **Tetris** | 1 500 XP | L'indémodable avec une esthétique Glassmorphism |
+| 🕵️‍♂️ **Objets Cachés** | 2 000 XP | Retrouvez les objets perdus dans des décors générés par IA |
 
 ## Fonctionnalités Clés
 
