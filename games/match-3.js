@@ -495,24 +495,24 @@ class Match3Game {
 
     checkGameOver() {
         if (this.moves <= 0) {
-            const xp = Math.floor(this.score / 15);
-            window.arcade.addXP(xp);
-            this.showGameOverModal(xp);
+            this.showGameOverModal();
         }
     }
 
-    showGameOverModal(xp) {
+    showGameOverModal() {
         const self = this;
         window.arcade.showGameOverModal({
-            title: 'Fin !',
+            title: 'match-3',
+            gameStatus: 'Fin !',
             icon: '💎',
             stats: [
-                { label: 'Score', value: this.score },
+                { label: 'Score final', value: this.score },
                 { label: 'Combos Ligne', value: this.comboStats.line },
                 { label: 'Combos Croix', value: this.comboStats.cross },
                 { label: 'Combos Couleur', value: this.comboStats.color }
             ],
-            xpGained: xp,
+            score: this.score,
+            scoreType: 'points',
             onReplay: function () { self.newGame(); },
             onQuit: function () { window.arcade.renderHome(); }
         });

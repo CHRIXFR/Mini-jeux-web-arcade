@@ -629,22 +629,23 @@ window.arcade.tetris = {
         }
 
         setTimeout(() => {
-            if (xpGained > 0) window.arcade.addXP(xpGained);
-            this.showGameOverModal(xpGained);
+            this.showGameOverModal();
         }, 500);
     },
 
-    showGameOverModal: function (xpGained) {
+    showGameOverModal: function () {
         const self = this;
         window.arcade.showGameOverModal({
-            title: 'Game Over',
+            title: 'tetris',
+            gameStatus: 'Game Over',
             icon: '💀',
             stats: [
                 { label: 'Score final', value: this.score },
                 { label: 'Lignes complétées', value: this.lines },
                 { label: 'Niveau atteint', value: this.level }
             ],
-            xpGained: xpGained,
+            score: this.score,
+            scoreType: 'points',
             onReplay: function () { self.start(); },
             onQuit: function () { window.arcade.renderHome(); }
         });

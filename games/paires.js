@@ -214,26 +214,26 @@ class PairesGame {
     checkWin() {
         if (this.matchedPairs === this.cards.length / 2) {
             clearInterval(this.timerInterval);
-            const xpGain = this.difficulty === 'easy' ? 15 : (this.difficulty === 'medium' ? 30 : 60);
 
             setTimeout(() => {
-                this.showWinModal(xpGain);
+                this.showWinModal();
             }, 500);
         }
     }
 
-    showWinModal(xp) {
-        window.arcade.addXP(xp);
+    showWinModal() {
         const self = this;
         window.arcade.showGameOverModal({
-            title: 'Bravo !',
+            title: 'paires',
+            gameStatus: 'Bravo !',
             icon: '🎉',
             stats: [
                 { label: 'Essais', value: this.moves },
                 { label: 'Temps', value: this.formatTime(this.timer) },
                 { label: 'Difficulté', value: { 'easy': 'Facile', 'medium': 'Moyen', 'hard': 'Difficile' }[this.difficulty] }
             ],
-            xpGained: xp,
+            score: this.timer,
+            scoreType: 'time',
             onReplay: function () { self.newGame(); },
             onQuit: function () { window.arcade.renderHome(); }
         });
@@ -244,7 +244,12 @@ class PairesGame {
     }
 
     updateTimerDisplay() {
-        document.getElementById('pa-timer').textContent = this.formatTime(this.timer);
+        const timerEl = document.getElementById('pa-timer');
+        if (timerEl) {
+            timerEl.textContent = this.formatTime(this.timer);
+        } else {
+            clearInterval(this.timerInterval);
+        }
     }
 
     formatTime(seconds) {

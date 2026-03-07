@@ -320,10 +320,8 @@ class SudokuGame {
         const costs = { 'easy': 10, 'medium': 25, 'hard': 50 };
         const cost = costs[this.difficulty];
 
-        if (window.arcade.state.xp < cost) {
-            window.arcade.showToast("Pas assez d'XP pour un indice !");
-            return;
-        }
+        // Pas de système d'XP, le hint coûte juste du temps (+30s de malus par exemple)
+        this.timer += 30;
 
         // Trouver une case vide ou fausse
         const possibleHints = [];
@@ -339,11 +337,10 @@ class SudokuGame {
             const hint = possibleHints[Math.floor(Math.random() * possibleHints.length)];
             this.grid[hint.r][hint.c] = this.solution[hint.r][hint.c];
             this.initial[hint.r][hint.c] = true; // Fixé pour l'indice
-            window.arcade.addXP(-cost);
             this.renderGrid();
             this.updateNumberStatus();
             this.checkWin();
-            window.arcade.showToast(`Indice utilisé : -${cost} XP`);
+            window.arcade.showToast(`Indice utilisé : +30s de malus`);
         }
     }
 
@@ -365,21 +362,20 @@ class SudokuGame {
     }
 
     showWinModal() {
-        const bonus = { 'easy': 50, 'medium': 100, 'hard': 200 }[this.difficulty];
-        window.arcade.addXP(bonus);
-
         const min = Math.floor(this.timer / 60);
         const sec = this.timer % 60;
         const self = this;
 
         window.arcade.showGameOverModal({
-            title: 'Félicitations !',
+            title: 'sudoku',
+            gameStatus: 'Félicitations !',
             icon: '🎉',
             stats: [
                 { label: 'Temps', value: `${min}m ${sec}s` },
                 { label: 'Difficulté', value: { 'easy': 'Facile', 'medium': 'Moyen', 'hard': 'Difficile' }[this.difficulty] }
             ],
-            xpGained: bonus,
+            score: this.timer,
+            scoreType: 'time',
             onReplay: function () { self.newGame(); },
             onQuit: function () { window.arcade.renderHome(); }
         });

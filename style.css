@@ -4,6 +4,8 @@
 :root {
     /* Mode Sombre Premium */
     --bg-color: #09090b;
+    --bg-overlay: rgba(9, 9, 11, 0.85);
+    /* Overlay assombrissant pour lisibilité */
     /* Zinc 950 ultra foncé pour profondeur */
     --card-bg: #18181b;
     /* Zinc 900 */
@@ -54,6 +56,7 @@
 body.light-mode {
     /* Mode Clair Premium */
     --bg-color: #f8fafc;
+    --bg-overlay: rgba(248, 250, 252, 0.85);
     /* Slate 50 */
     --card-bg: #ffffff;
     --card-bg-alt: #f1f5f9;
@@ -75,6 +78,46 @@ body.light-mode {
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
 
     --cell-alt: rgba(0, 0, 0, 0.03);
+}
+
+body.neon-mode {
+    /* Thème Synthwave / Cyberpunk */
+    --bg-color: #0b0914;
+    --bg-overlay: rgba(11, 9, 20, 0.85);
+    --card-bg: #151125;
+    --card-bg-alt: #1e1835;
+    --header-bg: rgba(11, 9, 20, 0.7);
+    --glass-bg: rgba(21, 17, 37, 0.6);
+    --glass-border: rgba(217, 70, 239, 0.2);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #a78bfa;
+
+    --accent: #d946ef;
+    --accent-hover: #c026d3;
+    --accent-glow: rgba(217, 70, 239, 0.5);
+    --border: #3b0764;
+    --btn-radius: 4px;
+}
+
+body.ocean-mode {
+    /* Thème Océan / Profondeurs */
+    --bg-color: #082f49;
+    --bg-overlay: rgba(8, 47, 73, 0.85);
+    --card-bg: #0c4a6e;
+    --card-bg-alt: #0369a1;
+    --header-bg: rgba(8, 47, 73, 0.7);
+    --glass-bg: rgba(12, 74, 110, 0.6);
+    --glass-border: rgba(56, 189, 248, 0.15);
+
+    --text-primary: #e0f2fe;
+    --text-secondary: #7dd3fc;
+
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --accent-glow: rgba(56, 189, 248, 0.4);
+    --border: #0284c7;
+    --btn-radius: 100px;
 }
 
 /* ========================================================================
@@ -130,6 +173,39 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* Fond d'écran dynamique (Unsplash) et son overlay */
+#dynamic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#dynamic-bg.loaded {
+    opacity: 1;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-overlay, var(--bg-color));
+    z-index: -1;
+    transition: background-color 0.5s ease;
 }
 
 /* ========================================================================
@@ -260,9 +336,15 @@ main {
     opacity: 1;
 }
 
+.game-card:not(.locked):not(.disabled):hover .game-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
 .game-icon {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .game-card h3 {
@@ -283,6 +365,25 @@ main {
     letter-spacing: 0.05em;
     color: var(--accent);
     font-weight: 600;
+}
+
+.hs-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
+    z-index: 2;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.game-card:hover .hs-badge {
+    transform: scale(1.05);
 }
 
 .game-card.disabled {
@@ -352,7 +453,13 @@ footer {
 
 .btn-primary:hover {
     box-shadow: var(--shadow-md), var(--shadow-glow);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.control-btn:active {
+    transform: scale(0.96);
 }
 
 .btn-secondary {

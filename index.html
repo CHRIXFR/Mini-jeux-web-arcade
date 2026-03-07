@@ -12,6 +12,20 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Configuration Analytique (GoatCounter) -->
+    <script>
+        window.goatcounter = {
+            no_onload: true, // Désactiver le suivi automatique (on le gère manuellement)
+            // REMPLACER "mon-code-goatcounter" PAR VOTRE IDENTIFIANT GOATCOUNTER
+            endpoint: 'https://mini-arcade.goatcounter.com/count'
+        };
+    </script>
+    <script data-goatcounter="https://mini-arcade.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+    <!-- Driver.js pour le Tour Guidé -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
 </head>
 
 <body class="dark-mode">
@@ -19,14 +33,12 @@
         <div class="header-content">
             <h1 id="main-title">Arcade Minimaliste</h1>
             <div class="user-stats">
+                <button id="tour-btn" class="theme-toggle" onclick="window.arcade.startTour()"
+                    title="Lancer le guide d'accueil">❓</button>
                 <button id="theme-btn" class="theme-toggle" onclick="window.arcade.toggleTheme()"
                     title="Changer de thème">☀️</button>
                 <button id="audio-btn" class="theme-toggle" onclick="window.arcade.toggleAudio()"
                     title="Activer/Désactiver le son">🔇</button>
-                <div class="stats-divider"></div>
-                <span class="xp-label">XP Total:</span>
-                <span id="total-xp" class="xp-value">0</span>
-                <div class="level-badge" id="level-display">Niv. 1</div>
             </div>
         </div>
     </header>
@@ -216,58 +228,27 @@
         // Définition d'un store global simple pour remplacer Zustand/Imports
         window.arcade = {
             state: {
-                xp: parseInt(localStorage.getItem('arcade_xp')) || 0,
                 theme: localStorage.getItem('arcade_theme') || 'dark',
                 currentView: 'home',
                 testMode: new URLSearchParams(window.location.search).has('test')
             },
-            games: [
-                { id: 'hangman', name: 'Le Pendu', xp: 0, icon: '😵', difficulty: 'Normal' },
-                { id: 'mots-meles', name: 'Mots Mêlés', xp: 50, icon: '🔍', difficulty: 'Normal' },
-                { id: 'paires', name: 'Paires', xp: 100, icon: '🃏', difficulty: 'Variable' },
-                { id: 'sudoku', name: 'Sudoku', xp: 250, icon: '🧩', difficulty: 'Facile - Difficile' },
-                { id: 'match-3', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
-                { id: 'capitales', name: 'Capitales', xp: 750, icon: '🌍', difficulty: 'Culture G' },
-                { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' },
-                { id: 'tetris', name: 'Tetris', xp: 1500, icon: '🧱', difficulty: 'Arcade' },
-                { id: 'objets-caches', name: 'Objets Cachés', xp: 2000, icon: '🕵️', difficulty: 'Observation' }
+            themes: [
+                { id: 'dark', icon: '🌙', bg: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1920&auto=format' },
+                { id: 'light', icon: '☀️', bg: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1920&auto=format' },
+                { id: 'neon', icon: '⚡', bg: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920&auto=format' },
+                { id: 'ocean', icon: '🌊', bg: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1920&auto=format' }
             ],
-            addXP: function (amount) {
-                this.state.xp += amount;
-                localStorage.setItem('arcade_xp', this.state.xp);
-                this.updateUI();
-                this.showToast(`+${amount} XP !`);
-                if (this.state.currentView === 'home') this.renderHome(); // Rafraîchir l'accueil pour débloquer les cartes
-            },
-            toggleTheme: function () {
-                this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
-                localStorage.setItem('arcade_theme', this.state.theme);
-                this.applyTheme();
-            },
-            applyTheme: function () {
-                if (this.state.theme === 'light') {
-                    document.body.classList.add('light-mode');
-                    document.getElementById('theme-btn').textContent = '🌙';
-                } else {
-                    document.body.classList.remove('light-mode');
-                    document.getElementById('theme-btn').textContent = '☀️';
-                }
-            },
-            toggleAudio: function () {
-                if (window.arcade.audio) {
-                    const isMuted = window.arcade.audio.toggleMute();
-                    const audioBtn = document.getElementById('audio-btn');
-                    if (audioBtn) {
-                        audioBtn.textContent = isMuted ? '🔇' : '🔊';
-                    }
-                }
-            },
-            updateUI: function () {
-                const xpEl = document.getElementById('total-xp');
-                const lvlEl = document.getElementById('level-display');
-                if (xpEl) xpEl.textContent = this.state.xp;
-                if (lvlEl) lvlEl.textContent = `Niv. ${Math.floor(this.state.xp / 100) + 1}`;
-            },
+            games: [
+                { id: 'hangman', name: 'Le Pendu', icon: '😵', difficulty: 'Normal' },
+                { id: 'mots-meles', name: 'Mots Mêlés', icon: '🔍', difficulty: 'Normal' },
+                { id: 'paires', name: 'Paires', icon: '🃏', difficulty: 'Variable' },
+                { id: 'sudoku', name: 'Sudoku', icon: '🧩', difficulty: 'Facile - Difficile' },
+                { id: 'match-3', name: 'Match-3', icon: '💎', difficulty: 'Puzzle' },
+                { id: 'capitales', name: 'Capitales', icon: '🌍', difficulty: 'Culture G' },
+                { id: 'scrabble', name: 'Scrabble', icon: '🔡', difficulty: 'Expert' },
+                { id: 'tetris', name: 'Tetris', icon: '🧱', difficulty: 'Arcade' },
+                { id: 'objets-caches', name: 'Objets Cachés', icon: '🕵️', difficulty: 'Observation' }
+            ],
             showToast: function (msg) {
                 const t = document.createElement('div');
                 t.className = 'toast';
@@ -275,9 +256,10 @@
                 document.body.appendChild(t);
                 setTimeout(() => { t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2000); }, 100);
             },
-            showLockedMessage: function (requiredXp) {
-                const missingXp = requiredXp - this.state.xp;
-                this.showToast(`Désolé, il vous manque ${missingXp} XP pour débloquer ce jeu ! 🎮`);
+            formatTime: function (seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             },
             renderHome: function () {
                 document.body.classList.remove('in-game');
@@ -292,25 +274,26 @@
                 const avatar = document.getElementById('avatar-changelog');
                 if (avatar) avatar.style.display = 'flex';
 
-                // Texte hero dynamique selon XP
-                const lockedCount = this.games.filter(g => !this.state.testMode && this.state.xp < g.xp).length;
-                const heroText = lockedCount > 0
-                    ? `${lockedCount} jeu${lockedCount > 1 ? 'x' : ''} à découvrir · Cumulez de l'XP pour tout débloquer !`
-                    : 'Tous les jeux sont débloqués. Bonne partie ! 🎉';
+                // Texte hero sans XP
+                const heroText = 'Choisissez un jeu et battez vos propres records ! 🏆';
 
                 const gridHtml = this.games.map(game => {
-                    const isLocked = !this.state.testMode && this.state.xp < game.xp;
-                    const clickAction = isLocked ? `onclick="window.arcade.showLockedMessage(${game.xp})"` : `onclick="window.arcade.loadGame('${game.id}')"`;
-                    const accessibilityProps = isLocked ? 'aria-disabled="true"' : 'role="button" tabindex="0"';
+                    const clickAction = `onclick="window.arcade.loadGame('${game.id}')"`;
+                    const accessibilityProps = 'role="button" tabindex="0"';
+
+                    // Récupérer le score depuis localstorage
+                    const storageKey = `arcade_hs_${game.id}`;
+                    const hsData = JSON.parse(localStorage.getItem(storageKey));
+                    let hsHtml = '';
+                    if (hsData) {
+                        const val = hsData.type === 'time' ? window.arcade.formatTime(hsData.score) : hsData.score;
+                        const label = hsData.type === 'time' ? 'Meilleur Temps' : 'Record';
+                        hsHtml = `<div class="hs-badge" title="${label} : ${val}">⭐ ${val}</div>`;
+                    }
 
                     return `
-                        <div class="game-card ${isLocked ? 'locked' : ''}" ${clickAction} ${accessibilityProps}>
-                            ${isLocked ? `
-                                <div class="lock-overlay">
-                                    <div class="lock-icon">🔒</div>
-                                    <div class="lock-badge">${game.xp} XP Requis</div>
-                                </div>
-                            ` : ''}
+                        <div class="game-card" ${clickAction} ${accessibilityProps}>
+                            ${hsHtml}
                             <div class="game-icon" role="img" aria-label="Icône du jeu ${game.name}">${game.icon}</div>
                             <h3>${game.name}</h3>
                             <p>${this.getGameDescription(game.id)}</p>
@@ -333,6 +316,15 @@
                 if (window.arcade.audio) {
                     window.arcade.audio.setContext('base');
                     window.arcade.audio.playMusic();
+                }
+
+                // Analytique (GoatCounter)
+                if (window.goatcounter && window.goatcounter.count) {
+                    window.goatcounter.count({
+                        path: '/',
+                        title: 'Accueil Arcade',
+                        event: false
+                    });
                 }
             },
             getGameDescription: function (id) {
@@ -360,6 +352,78 @@
                     return this.words;
                 }
             },
+            toggleTheme: function () {
+                const currentIndex = this.themes.findIndex(t => t.id === this.state.theme) || 0;
+                const nextIndex = (currentIndex + 1) % this.themes.length;
+                this.state.theme = this.themes[nextIndex].id;
+                localStorage.setItem('arcade_theme', this.state.theme);
+                this.applyTheme();
+            },
+            toggleAudio: function () {
+                if (window.arcade.audio) {
+                    const isMuted = window.arcade.audio.toggleMute();
+                    const audioBtn = document.getElementById('audio-btn');
+                    if (audioBtn) {
+                        audioBtn.textContent = isMuted ? '🔇' : '🔊';
+                    }
+                }
+            },
+            applyTheme: function () {
+                const current = this.themes.find(t => t.id === this.state.theme) || this.themes[0];
+
+                document.body.classList.remove('dark-mode', 'light-mode', 'neon-mode', 'ocean-mode');
+                document.body.classList.add(`${current.id}-mode`);
+
+                const themeBtn = document.getElementById('theme-btn');
+                if (themeBtn) themeBtn.textContent = current.icon;
+
+                let bgElement = document.getElementById('dynamic-bg');
+                if (!bgElement) {
+                    bgElement = document.createElement('div');
+                    bgElement.id = 'dynamic-bg';
+                    document.body.prepend(bgElement);
+                }
+
+                bgElement.classList.remove('loaded');
+                const img = new Image();
+                img.src = current.bg;
+                img.onload = () => {
+                    bgElement.style.backgroundImage = `url(${current.bg})`;
+                    bgElement.classList.add('loaded');
+                };
+            },
+            startTour: function () {
+                if (!window.driver) return;
+                const isHome = this.state.currentView === 'home';
+                const steps = [
+                    { element: '#main-title', popover: { title: 'Bienvenue', description: 'Ceci est l\'Arcade Minimaliste. Découvrez des mini-jeux classiques dans une enveloppe moderne !', side: "bottom" } },
+                    { element: '#tour-btn', popover: { title: 'Aide', description: 'Cliquez ici à tout moment pour revoir ce guide.', side: "bottom" } },
+                    { element: '#theme-btn', popover: { title: 'Thèmes Dynamiques', description: 'Changez l\'apparence. Clair, sombre, néon ou avec un fond d\'écran dynamique (Unsplash !)', side: "bottom" } },
+                    { element: '#audio-btn', popover: { title: 'Sons & Musique', description: 'Activez l\'ambiance sonore pour une meilleure immersion (BGM et effets).', side: "bottom" } }
+                ];
+
+                if (isHome) {
+                    steps.push({ element: '#avatar-changelog', popover: { title: 'Nouveautés & Suggestions', description: 'Cliquez sur l\'avatar pour voir le changelog ou nous envoyer vos idées.', side: "left" } });
+                    steps.push({ element: '#games-grid-container', popover: { title: 'Accès Immédiat & Scores', description: 'Battez vos records : ils sont sauvegardés localement.', side: "top" } });
+                }
+
+                const driverObj = window.driver.js.driver({
+                    showProgress: true,
+                    nextBtnText: 'Suivant →',
+                    prevBtnText: '← Précédent',
+                    doneBtnText: 'C\'est parti !',
+                    steps: steps
+                });
+                driverObj.drive();
+            },
+            checkFirstVisit: function () {
+                if (!localStorage.getItem('arcade_tour_done')) {
+                    setTimeout(() => {
+                        this.startTour();
+                        localStorage.setItem('arcade_tour_done', 'true');
+                    }, 500);
+                }
+            },
             loadGame: function (id) {
                 document.body.classList.add('in-game');
                 this.state.currentView = id;
@@ -378,6 +442,15 @@
                     window.arcade.audio.playMusic();
                 }
 
+                // Analytique (GoatCounter) - Événement jeu joué
+                if (window.goatcounter && window.goatcounter.count) {
+                    window.goatcounter.count({
+                        path: `load-game-${id}`,
+                        title: `Jeu Lancé: ${this.getGameDescription(id).split(' ')[0]} ${id}`,
+                        event: true
+                    });
+                }
+
                 if (id === 'hangman' && window.initHangman) window.initHangman(document.getElementById('game-mount'));
                 if (id === 'mots-meles' && window.initMotsMeles) window.initMotsMeles(document.getElementById('game-mount'));
                 if (id === 'paires' && window.initPaires) window.initPaires(document.getElementById('game-mount'));
@@ -392,8 +465,8 @@
 
         window.onload = () => {
             window.arcade.applyTheme();
-            window.arcade.updateUI();
             window.arcade.renderHome();
+            window.arcade.checkFirstVisit();
         };
     </script>
     <!-- Système de modales standardisé -->

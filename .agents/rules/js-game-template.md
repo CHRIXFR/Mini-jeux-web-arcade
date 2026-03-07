@@ -93,16 +93,23 @@ onStart: function (diff) {
 ## Modale de fin — `arcade.showGameOverModal(config)`
 
 ```javascript
-showGameOverModal(xpGained) {
+showGameOverModal() {
     const self = this;
     window.arcade.showGameOverModal({
-        title: 'Game Over',
+        title: 'mon-jeu', // Identité pour le score (localStorage)
+        gameStatus: 'Partie terminée !', // Titre affiché
         icon: '💀',
         stats: [
             { label: 'Score', value: this.score },
             { label: 'Niveau', value: this.level }
         ],
-        xpGained: xpGained,
+        score: this.score,
+        scoreType: 'points', // ou 'time' pour les jeux à chrono
+        // Optionnel : bouton supplémentaire (ex: Historique)
+        extraButton: {
+            label: '📊 Historique',
+            onClick: () => self.showHistory()
+        },
         onReplay: function () { self.newGame(); },
         onQuit: function () { window.arcade.renderHome(); }
     });
@@ -111,12 +118,13 @@ showGameOverModal(xpGained) {
 
 ### Paramètres de `showGameOverModal`
 
-| Paramètre | Type | Requis | Description |
-|-----------|------|--------|-------------|
-| `title` | string | ✅ | Titre (victoire, défaite, etc.) |
+| `title` | string | ✅ | ID du jeu (utilisé pour les records) |
+| `gameStatus` | string | ❌ | Message (Victoire/Défaite) |
 | `icon` | string | ✅ | Emoji contextuel |
 | `stats` | array | ✅ | Liste `{ label, value }` |
-| `xpGained` | number | ✅ | XP gagnés (0 si défaite) |
+| `score` | number | ✅ | Valeur pour le record local |
+| `scoreType` | string | ✅ | `'points'` (croissant) ou `'time'` (décroissant) |
+| `extraButton` | object | ❌ | `{ label, onClick }` |
 | `onReplay` | function | ✅ | Callback "Rejouer" |
 | `onQuit` | function | ✅ | Callback "Menu Principal" |
 
@@ -171,8 +179,9 @@ Des fonctions utilitaires peuvent être ajoutées dans `audio.js` (ex: `playMove
 ## Checklist avant commit
 
 - [ ] `showStartScreen()` utilise `arcade.showStartModal()`
-- [ ] La modale de fin utilise `arcade.showGameOverModal()`
+- [ ] La modale de fin utilise `arcade.showGameOverModal()` avec `score` et `scoreType`
 - [ ] Pas de modale HTML inline pour start/end (sauf cas spécifique)
 - [ ] Callbacks `onReplay` et `onQuit` fonctionnels
-- [ ] XP ajoutés via `window.arcade.addXP()` avant la modale de fin
+- [ ] Pas d'appels à `addXP()` (système supprimé)
 - [ ] Difficulté synchronisée entre modale et select in-game (si applicable)
+- [ ] Meilleur score local affiché sur la carte du jeu (automatique via `title`)

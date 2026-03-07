@@ -70,8 +70,7 @@ class HangmanGame {
             const btn = document.getElementById('hg-btn-reset');
             if (btn) btn.textContent = "Chargement dico...";
 
-            const text = await window.arcade.dictionaryCache.getRaw();
-            const words = text.split(/\r?\n/);
+            const words = await window.arcade.dictionaryCache.getWords();
 
             this.fullDictionary = [];
             for (let word of words) {
@@ -174,10 +173,8 @@ class HangmanGame {
         const isWon = this.word.split('').every(letter => this.guessedLetters.has(letter));
         if (isWon) {
             this.isGameOver = true;
-            const xp = 20;
-            window.arcade.addXP(xp);
             setTimeout(() => {
-                window.arcade.showToast(`Gagné ! +${xp} XP`);
+                window.arcade.showToast('Gagné !');
                 this.showEndModal(true);
             }, 500);
         }
@@ -195,15 +192,14 @@ class HangmanGame {
 
     showEndModal(win) {
         const self = this;
-        const xpGained = win ? 20 : 0;
         window.arcade.showGameOverModal({
-            title: win ? 'Félicitations !' : 'Dommage...',
+            title: 'hangman',
+            gameStatus: win ? 'Félicitations !' : 'Dommage...',
             icon: win ? '🎉' : '😔',
             stats: [
                 { label: 'Mot', value: this.word },
                 { label: 'Erreurs', value: `${this.wrongGuesses} / ${this.maxWrong}` }
             ],
-            xpGained: xpGained,
             onReplay: function () { self.start(); },
             onQuit: function () { window.arcade.renderHome(); }
         });

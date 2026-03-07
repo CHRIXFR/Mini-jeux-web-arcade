@@ -89,7 +89,6 @@
             this.container = container;
             this.levelIndex = 0;
             this.score = 0;
-            this.xpGained = 0;
 
             this.currentTheme = null;
             this.targets = [];
@@ -147,7 +146,6 @@
                 onStart: function () {
                     self.levelIndex = 0;
                     self.score = 0;
-                    self.xpGained = 0;
                     self.startLevel();
                 },
                 onQuit: function () { window.arcade.renderHome(); }
@@ -300,7 +298,6 @@
                 this.addTime(2); // +2 secondes bonus
                 this.score += 10;
                 this.scoreDisp.textContent = this.score;
-                this.xpGained += 5; // +5 XP par cible trouvée
 
                 this.foundTargets++;
                 if (this.foundTargets >= this.targets.length) {
@@ -404,7 +401,6 @@
             // Bonus de temps
             const timeBonus = Math.floor(this.timeRemaining);
             this.score += timeBonus * 2;
-            this.xpGained += 20; // 20 XP bonus fin de niveau
 
             this.levelIndex++;
             setTimeout(() => this.startLevel(), 1500);
@@ -415,21 +411,16 @@
             if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
 
             const self = this;
-            if (this.xpGained > 0) {
-                window.arcade.addXP(this.xpGained);
-            }
-
-            window.arcade.audio?.playTone(300, 'sawtooth', 0.3, 0.2);
-            window.arcade.audio?.playTone(200, 'sawtooth', 0.5, 0.2, 0.3);
-
             window.arcade.showGameOverModal({
-                title: 'Temps Écoulé !',
+                title: 'objets-caches',
+                gameStatus: 'Temps Écoulé !',
                 icon: '⏳',
                 stats: [
-                    { label: 'Score', value: this.score },
-                    { label: 'Niveau Atteint', value: this.levelIndex + 1 }
+                    { label: 'Score final', value: this.score },
+                    { label: 'Niveau atteint', value: this.levelIndex + 1 }
                 ],
-                xpGained: this.xpGained,
+                score: this.score,
+                scoreType: 'points',
                 onReplay: function () { self.showStartScreen(); },
                 onQuit: function () { window.arcade.renderHome(); }
             });

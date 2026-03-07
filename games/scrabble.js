@@ -991,39 +991,121 @@ class ScrabbleGame {
         if (this.aiRack.length === 0 && this.playerRack.length !== 0) this.aiScore += pPenalty;
 
         this.updateStats();
+        this.saveMatchHistory();
 
+        setTimeout(() => {
+            this.triggerGameOverModal();
+        }, 1000);
+    }
+
+    saveMatchHistory() {
+        const diffLabels = { 'beginner': 'Débutant', 'intermediate': 'Intermédiaire', 'confirmed': 'Confirmé', 'pro': 'Pro' };
+        const historyItem = {
+            date: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+            difficulty: diffLabels[this.difficulty] || this.difficulty,
+            playerScore: this.playerScore,
+            aiScore: this.aiScore
+        };
+        let history = JSON.parse(localStorage.getItem('arcade_history_scrabble') || '[]');
+        history.unshift(historyItem);
+        if (history.length > 10) history = history.slice(0, 10);
+        localStorage.setItem('arcade_history_scrabble', JSON.stringify(history));
+    }
+
+    triggerGameOverModal() {
         const pWon = this.playerScore > this.aiScore;
         const isEqual = this.playerScore === this.aiScore;
         const self = this;
 
-        let title, icon;
+        let gameStatus, icon;
         if (isEqual) {
-            title = 'Égalité ! 🤝';
+            gameStatus = 'Égalité ! 🤝';
             icon = '🤝';
         } else {
-            title = pWon ? 'Vous avez gagné !' : 'L\'IA a gagné...';
+            gameStatus = pWon ? 'Vous avez gagné !' : 'L\'IA a gagné...';
             icon = pWon ? '🎉' : '🤖';
         }
 
-        const xpGained = pWon ? Math.max(50, Math.floor(this.playerScore / 5)) : 0;
-        if (xpGained > 0) window.arcade.addXP(xpGained);
-
         const diffLabels = { 'beginner': 'Débutant', 'intermediate': 'Intermédiaire', 'confirmed': 'Confirmé', 'pro': 'Pro' };
 
-        setTimeout(() => {
-            window.arcade.showGameOverModal({
-                title: title,
-                icon: icon,
-                stats: [
-                    { label: 'Votre score', value: this.playerScore },
-                    { label: 'Score IA', value: this.aiScore },
-                    { label: 'Difficulté', value: diffLabels[this.difficulty] || this.difficulty }
-                ],
-                xpGained: xpGained,
-                onReplay: function () { self.start(); },
-                onQuit: function () { window.arcade.renderHome(); }
-            });
-        }, 1000);
+        window.arcade.showGameOverModal({
+            title: 'scrabble',
+            gameStatus: gameStatus,
+            icon: icon,
+            stats: [
+                { label: 'Votre score', value: this.playerScore },
+                { label: 'Score IA', value: this.aiScore },
+                { label: 'Difficulté', value: diffLabels[this.difficulty] || this.difficulty }
+            ],
+            score: this.playerScore,
+            scoreType: 'points',
+            extraButton: {
+                label: '📊 Historique des scores',
+                onClick: () => self.showHistoryModal()
+            },
+            onReplay: function () { self.start(); },
+            onQuit: function () { window.arcade.renderHome(); }
+        });
+    }
+
+    showHistoryModal() {
+        const history = JSON.parse(localStorage.getItem('arcade_history_scrabble') || '[]');
+        let tableRows = history.map(h => {
+            const color = h.playerScore > h.aiScore ? 'var(--success)' : (h.playerScore < h.aiScore ? 'var(--error)' : 'inherit');
+            return `
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 10px 5px;">${h.date}</td>
+                    <td style="padding: 10px 5px;">${h.difficulty}</td>
+                    <td style="padding: 10px 5px; color: ${color}; font-weight: bold;">
+                        ${h.playerScore} - ${h.aiScore}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        if (history.length === 0) {
+            tableRows = `<tr><td colspan="3" style="text-align:center; padding: 20px;">Aucune partie enregistrée</td></tr>`;
+        }
+
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 500px; width: 90%;">
+                <h2>Dernières Parties</h2>
+                <div style="max-height: 300px; overflow-y: auto; margin: 20px 0; background: var(--card-bg-alt); padding: 10px; border-radius: var(--radius);">
+                    <table style="width: 100%; text-align: left; border-collapse: collapse; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border); color: var(--text-secondary);">
+                                <th style="padding: 10px 5px;">Date</th>
+                                <th style="padding: 10px 5px;">Niveau</th>
+                                <th style="padding: 10px 5px;">Score (Vous - IA)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-actions">
+                    <button id="btn-close-history" class="btn-primary">Retour</button>
+                    <button id="btn-clear-history" class="btn-secondary">Effacer l'historique</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById('btn-close-history').addEventListener('click', () => {
+            modal.remove();
+            this.triggerGameOverModal();
+        });
+
+        document.getElementById('btn-clear-history').addEventListener('click', () => {
+            if (confirm("Voulez-vous vraiment effacer l'historique de vos parties ?")) {
+                localStorage.removeItem('arcade_history_scrabble');
+                modal.remove();
+                this.showHistoryModal(); // Rafraîchir
+            }
+        });
     }
 }
 

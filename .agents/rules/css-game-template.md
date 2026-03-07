@@ -85,6 +85,7 @@ Les classes suivantes sont disponibles et déjà stylées dans `style.css` :
 | `.modal-stats-grid` | Grille de statistiques de fin |
 | `.modal-stat-row` | Ligne de statistique |
 | `.modal-actions` | Groupe de boutons d'action |
+| `.hs-badge` | Badge de meilleur score affiché sur les cartes |
 
 ## Structure CSS d'un nouveau jeu
 

@@ -188,20 +188,17 @@
     function endGame() {
         DOM.game.style.display = 'none';
 
-        const xpGained = STATE.score * 20;
-        if (xpGained > 0) {
-            window.arcade.addXP(xpGained);
-        }
-
         const modeLabels = { 'pays': 'Pays', 'capitale': 'Capitale', 'mixte': 'Mixte' };
         window.arcade.showGameOverModal({
-            title: 'Partie Terminée !',
+            title: 'capitales',
+            gameStatus: 'Partie Terminée !',
             icon: '🌍',
             stats: [
-                { label: 'Score', value: `${STATE.score} / ${STATE.totalQuestions}` },
+                { label: 'Score final', value: `${STATE.score} / ${STATE.totalQuestions}` },
                 { label: 'Mode', value: modeLabels[STATE.mode] || 'Mixte' }
             ],
-            xpGained: xpGained,
+            score: STATE.score,
+            scoreType: 'points',
             onReplay: function () { showStartScreen(); },
             onQuit: function () { window.arcade.renderHome(); }
         });

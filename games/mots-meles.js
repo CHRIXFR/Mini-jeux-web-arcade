@@ -112,8 +112,7 @@ class WordSearchGame {
             }
             if (select) select.disabled = true;
 
-            const text = await window.arcade.dictionaryCache.getRaw();
-            const words = text.split(/\r?\n/);
+            const words = await window.arcade.dictionaryCache.getWords();
 
             this.fullDictionary = [];
             for (let word of words) {
@@ -334,11 +333,9 @@ class WordSearchGame {
         if (this.wordsToFind.includes(selectedWord) && !this.foundWords.has(selectedWord)) {
             this.foundWords.add(selectedWord);
             this.markFoundWord();
-            window.arcade.addXP(10);
         } else if (this.wordsToFind.includes(reversedWord) && !this.foundWords.has(reversedWord)) {
             this.foundWords.add(reversedWord);
             this.markFoundWord();
-            window.arcade.addXP(10);
         }
 
         this.selectionStart = null;
@@ -406,7 +403,6 @@ class WordSearchGame {
     checkWin() {
         if (this.foundWords.size === this.wordsToFind.length) {
             setTimeout(() => {
-                window.arcade.addXP(100);
                 this.showWinModal();
             }, 500);
         }
@@ -415,13 +411,13 @@ class WordSearchGame {
     showWinModal() {
         const self = this;
         window.arcade.showGameOverModal({
-            title: 'Bravo !',
+            title: 'mots-meles',
+            gameStatus: 'Bravo !',
             icon: '🎉',
             stats: [
                 { label: 'Mots trouvés', value: `${this.foundWords.size} / ${this.wordsToFind.length}` },
                 { label: 'Difficulté', value: { 'easy': 'Facile', 'medium': 'Moyen', 'hard': 'Difficile' }[this.difficulty] }
             ],
-            xpGained: 100,
             onReplay: function () { self.newGame(); },
             onQuit: function () { window.arcade.renderHome(); }
         });
