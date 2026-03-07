@@ -229,7 +229,8 @@
                 { id: 'match-3', name: 'Match-3', xp: 500, icon: '💎', difficulty: 'Puzzle' },
                 { id: 'capitales', name: 'Capitales', xp: 750, icon: '🌍', difficulty: 'Culture G' },
                 { id: 'scrabble', name: 'Scrabble', xp: 1000, icon: '🔡', difficulty: 'Expert' },
-                { id: 'tetris', name: 'Tetris', xp: 1500, icon: '🧱', difficulty: 'Arcade' }
+                { id: 'tetris', name: 'Tetris', xp: 1500, icon: '🧱', difficulty: 'Arcade' },
+                { id: 'objets-caches', name: 'Objets Cachés', xp: 2000, icon: '🕵️', difficulty: 'Observation' }
             ],
             addXP: function (amount) {
                 this.state.xp += amount;
@@ -343,7 +344,8 @@
                     'match-3': 'Alignez les gemmes pour exploser les scores.',
                     'capitales': 'Testez vos connaissances sur les drapeaux et capitales du monde.',
                     'scrabble': 'Placez vos mots stratégiquement sur le plateau.',
-                    'tetris': 'L\'indémodable jeu de puzzle par blocs avec un style moderne.'
+                    'tetris': 'L\'indémodable jeu de puzzle par blocs avec un style moderne.',
+                    'objets-caches': 'Retrouvez les objets cachés avant la fin du temps imparti.'
                 };
                 return descriptions[id] || '';
             },
@@ -384,6 +386,7 @@
                 if (id === 'capitales' && window.initCapitales) window.initCapitales(document.getElementById('game-mount'));
                 if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
                 if (id === 'tetris' && window.initTetris) window.initTetris(document.getElementById('game-mount'));
+                if (id === 'objets-caches' && window.initObjetsCaches) window.initObjetsCaches(document.getElementById('game-mount'));
             }
         };
 
@@ -405,6 +408,7 @@
     <script src="games/scrabble.js"></script>
     <script src="games/audio.js"></script>
     <script src="games/tetris.js"></script>
+    <script src="games/objets-caches.js"></script>
 </body>
 
 </html>
