@@ -1916,6 +1916,12 @@ body.in-game .game-view {
     position: relative;
 }
 
+#game-mount {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 /* Extension de base */
 .scr-game-container,
 .ws-game-container,
@@ -2863,5 +2869,275 @@ body:not(.light-mode) .cap-option-btn {
 
     .tetris-stat-value {
         font-size: 1rem;
+    }
+}
+
+/* ========================================================================
+   8. JEU : OBJETS CACHÉS
+   ======================================================================== */
+
+.oc-game-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.oc-landscape-prompt {
+    display: none;
+    background: var(--accent);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: var(--radius);
+    font-weight: bold;
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+@media (max-width: 950px) and (orientation: portrait) {
+    .oc-landscape-prompt {
+        display: block;
+    }
+}
+
+.oc-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--card-bg);
+}
+
+.oc-infos {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.oc-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.oc-stat-label span {
+    color: var(--accent);
+}
+
+.oc-timer-container {
+    width: 100%;
+    height: 12px;
+    background: var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.oc-timer-bar {
+    height: 100%;
+    width: 100%;
+    background: var(--success);
+    transition: width 0.1s linear, background-color 0.3s;
+}
+
+.oc-targets-list {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 2rem;
+}
+
+.oc-target-item {
+    transition: opacity 0.3s, transform 0.3s;
+    background: transparent;
+}
+
+.oc-target-item.found-target {
+    opacity: 0.3;
+    transform: scale(0.8);
+    filter: grayscale(1);
+}
+
+.oc-scene {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--card-bg-alt);
+    border: 4px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    touch-action: none;
+    transition: background 0.5s ease;
+}
+
+/* Thèmes de la scène */
+.oc-scene.bg-cuisine {
+    background-image: url('images/objets-caches/cuisine/bg-cuisine.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.dark-mode .oc-scene.bg-cuisine {
+    background-image: url('images/objets-caches/cuisine/bg-cuisine.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4);
+    /* Assombrit via un pseudo overlay interne */
+}
+
+.oc-scene.bg-nature {
+    background-image: url('images/objets-caches/nature/bg-nature.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.dark-mode .oc-scene.bg-nature {
+    background-image: url('images/objets-caches/nature/bg-nature.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4);
+}
+
+.oc-scene.bg-espace {
+    background-image: url('images/objets-caches/espace/bg-espace.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.dark-mode .oc-scene.bg-espace {
+    background-image: url('images/objets-caches/espace/bg-espace.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4);
+}
+
+.oc-item {
+    position: absolute;
+    font-size: 3rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s;
+    /* Pour l'effet "tas", un text-shadow donne du volume */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.oc-item-img {
+    text-shadow: none;
+    /* Inactif pour les images */
+}
+
+/* Styles pour les images transparentes PNG */
+.oc-item-img img {
+    -webkit-user-drag: none;
+    /* Léger filtre pour bien détacher l'objet du fond */
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.oc-item:hover {
+    transform: translate(-50%, -50%) scale(1.2) !important;
+    z-index: 1000 !important;
+}
+
+.oc-item.found {
+    animation: oc-pop 0.3s forwards;
+    pointer-events: none;
+}
+
+@keyframes oc-pop {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.oc-shake {
+    animation: oc-shake-anim 0.3s cubic-bezier(.36, .07, .19, .97) both;
+    border-color: var(--error) !important;
+}
+
+@keyframes oc-shake-anim {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.oc-time-feedback {
+    position: absolute;
+    font-size: 2.5rem;
+    font-weight: bold;
+    pointer-events: none;
+    animation: oc-float-up 1s forwards;
+    z-index: 2000;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.oc-time-feedback.pos {
+    color: var(--success);
+}
+
+.oc-time-feedback.neg {
+    color: var(--error);
+}
+
+@keyframes oc-float-up {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translate(-50%, -100%) scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -200%) scale(1);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 950px) {
+    .oc-item {
+        font-size: 2rem;
+    }
+
+    .oc-scene {
+        aspect-ratio: 4/3;
+        /* Un peu plus carré sur petit écran paysage */
+    }
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+    .oc-scene {
+        aspect-ratio: 1;
     }
 }

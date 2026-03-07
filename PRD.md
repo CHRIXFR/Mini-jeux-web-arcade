@@ -136,6 +136,15 @@ Conformément aux standards de haute qualité :
         - Playlist de musiques de fond MP3 aléatoires s'enchaînant automatiquement.
     - **UX Premium** : Secousse de l'écran lors d'un "Tetris" (4 lignes), flash lumineux lors de la complétion de ligne, et modales d'accueil/fin de partie personnalisées.
 
+### 4.11 Jeu : Objets Cachés
+- **Déblocage** : Coût de **2000 XP**.
+- **Gameplay** : Trouver une liste d'objets spécifiques cachés parmi un "foutoir" généré dynamiquement avant la fin d'un temps imparti.
+- **Fonctionnalités** :
+    - Niveaux thématiques (Cuisine, Nature, Espace) via génération dynamique d'une scène d'emojis superposés et inclinés.
+    - Chronomètre global avec gain de temps (+2s) sur clic correct et pénalité (-3s) sur clic incorrect.
+    - Effets visuels (secousse d'écran "Shake" rouge en cas d'erreur, disparition animée "Pop" en cas de succès).
+    - Difficulté progressive s'enchaînant automatiquement (plus d'objets, moins de temps).
+    - Modales Start/End standardisées et effet sonores intégrés. 
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
 2. **Phase 2** : Système de points et Sudoku (Terminé).
@@ -158,7 +167,7 @@ Conformément aux standards de haute qualité :
 19. **Phase 19** : Ajout de la gestion des sons et musiques de fond (Synthétiseur Web Audio & Player MP3) (Terminé).
 20. **Phase 20** : Amélioration de l'interface d'accueil, ajout de sons pour les jeux et du préchargement des ressources pour tous les jeux (Terminé).
 21. **Phase 21** : Standardisation du cycle de vie des jeux (Modales Start/End) et création des templates de développement JS/CSS obligatoires (Terminé).
-22. **Phase 22** : Exploration de nouveaux jeux (Jeux de Cartes, Objets Cachés, Mahjong) (En projet).
+22. **Phase 22** : Implémentation du Jeu des Objets Cachés (Terminé, thème Espace préparé pour intégration future). 
 
 ## 7. Standards de Développement (Agents IA)
 Pour garantir la pérennité et la cohérence de l'Arcade, tout agent doit suivre les directives de couplage strictes entre la logique et le style :
