@@ -19,6 +19,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🔡 **Scrabble** | Expert | Affrontez une IA avec l'historique de vos 10 dernières parties |
 | 🧱 **Tetris** | Arcade | L'indémodable avec une esthétique moderne et fluide |
 | 🕵️‍♂️ **Objets Cachés** | Observation | Retrouvez les objets perdus dans des décors générés par IA |
+| 🎷 **Blind Test** | Musical | Devinez les musiques cultes jouées au synthétiseur 8-bits |
 
 ## Fonctionnalités Clés
 
