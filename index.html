@@ -247,7 +247,8 @@
                 { id: 'capitales', name: 'Capitales', icon: '🌍', difficulty: 'Culture G' },
                 { id: 'scrabble', name: 'Scrabble', icon: '🔡', difficulty: 'Expert' },
                 { id: 'tetris', name: 'Tetris', icon: '🧱', difficulty: 'Arcade' },
-                { id: 'objets-caches', name: 'Objets Cachés', icon: '🕵️', difficulty: 'Observation' }
+                { id: 'objets-caches', name: 'Objets Cachés', icon: '🕵️', difficulty: 'Observation' },
+                { id: 'blind-test', name: 'Blind Test 8-Bits', icon: '🎵', difficulty: 'Musical' }
             ],
             showToast: function (msg) {
                 const t = document.createElement('div');
@@ -337,7 +338,8 @@
                     'capitales': 'Testez vos connaissances sur les drapeaux et capitales du monde.',
                     'scrabble': 'Placez vos mots stratégiquement sur le plateau.',
                     'tetris': 'L\'indémodable jeu de puzzle par blocs avec un style moderne.',
-                    'objets-caches': 'Retrouvez les objets cachés avant la fin du temps imparti.'
+                    'objets-caches': 'Retrouvez les objets cachés avant la fin du temps imparti.',
+                    'blind-test': 'Devinez la musique jouée par le synthétiseur.'
                 };
                 return descriptions[id] || '';
             },
@@ -460,6 +462,7 @@
                 if (id === 'scrabble' && window.initScrabble) window.initScrabble(document.getElementById('game-mount'));
                 if (id === 'tetris' && window.initTetris) window.initTetris(document.getElementById('game-mount'));
                 if (id === 'objets-caches' && window.initObjetsCaches) window.initObjetsCaches(document.getElementById('game-mount'));
+                if (id === 'blind-test' && window.initBlindTest) window.initBlindTest(document.getElementById('game-mount'));
             }
         };
 
@@ -482,6 +485,7 @@
     <script src="games/audio.js"></script>
     <script src="games/tetris.js"></script>
     <script src="games/objets-caches.js"></script>
+    <script src="games/blind-test.js"></script>
 </body>
 
 </html>

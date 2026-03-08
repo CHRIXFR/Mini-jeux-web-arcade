@@ -215,9 +215,19 @@ window.arcade.audio = {
         this.currentTrackIndex = nextIndex;
         this.loadAndCache(tracks[this.currentTrackIndex]);
     },
+    isBgmSuspended: false,
+
+    suspendBgm: function (suspended) {
+        this.isBgmSuspended = suspended;
+        if (suspended) {
+            this.pauseMusic();
+        } else {
+            this.syncMusicStatus();
+        }
+    },
 
     syncMusicStatus: function () {
-        if (this.isMuted) {
+        if (this.isMuted || this.isBgmSuspended) {
             this.pauseMusic();
         } else {
             this.playMusic();
@@ -238,6 +248,10 @@ window.arcade.audio = {
     playTone: function (freq, type, duration, vol) {
         if (this.isMuted || !this.ctx) return;
 
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+
         const osc = this.ctx.createOscillator();
         const gainNode = this.ctx.createGain();
 
@@ -252,6 +266,99 @@ window.arcade.audio = {
 
         osc.start();
         osc.stop(this.ctx.currentTime + duration);
+    },
+
+    /**
+     * Joue une mélodie (séquence de notes) de manière planifiée.
+     * @param {Array} notes - Tableau d'objets {f: frequence_hz, d: duree_en_battements, t?: type_onde}
+     * @param {number} bpm - Battements par minute (vitesse)
+     * @param {string} defaultType - Type d'onde par défaut ('square', 'sine', 'triangle', 'sawtooth')
+     */
+    playMelody: function (notes, bpm = 120, defaultType = 'square') {
+        if (this.isMuted || !this.ctx) return;
+
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+
+        try {
+            this.stopMelody(); // Arrête la mélodie existante
+        } catch (e) {
+            console.warn("Erreur à l'arrêt de la mélodie précédente", e);
+        }
+
+        this.melodyNodes = [];
+        const beatDuration = 60 / bpm;
+        let startTime = this.ctx.currentTime + 0.1; // Léger délai pour éviter les artefacts
+
+        // Master gain de la mélodie
+        this.melodyMasterGain = this.ctx.createGain();
+        this.melodyMasterGain.connect(this.ctx.destination);
+
+        notes.forEach(note => {
+            const timeDuration = note.d * beatDuration;
+
+            // Fréquence > 0 = note jouée. Frequence <= 0 = silence
+            if (note.f > 0) {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = note.t || defaultType;
+                osc.frequency.setValueAtTime(note.f, startTime);
+
+                // ADSR Simplifiée (Attack, Sustain, Release)
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.2, startTime + 0.05); // Attack court
+                gain.gain.setValueAtTime(0.2, Math.max(startTime + 0.05, startTime + timeDuration - 0.05)); // Sustain
+                gain.gain.linearRampToValueAtTime(0, startTime + timeDuration); // Release court
+
+                osc.connect(gain);
+                gain.connect(this.melodyMasterGain);
+
+                osc.start(startTime);
+                osc.stop(startTime + timeDuration);
+
+                this.melodyNodes.push(osc);
+            }
+            // On avance le temps d'écriture de la durée de la note (ou du silence)
+            startTime += timeDuration;
+        });
+    },
+
+    /**
+     * Arrête immédiatement la lecture de la mélodie planifiée (avec un fade out rapide)
+     */
+    stopMelody: function () {
+        if (this.melodyNodes && this.ctx) {
+            const now = this.ctx.currentTime;
+
+            // On capture l'instance actuelle pour le setTimeout
+            const gainToStop = this.melodyMasterGain;
+            this.melodyMasterGain = null; // On le met à null tout de suite
+
+            if (gainToStop) {
+                try {
+                    // Fade out très rapide pour éviter le 'clic' brutal d'arrêt
+                    gainToStop.gain.cancelScheduledValues(now);
+                    let currentGain = gainToStop.gain.value;
+                    if (currentGain <= 0.001) currentGain = 0.002; // Eviter erreur 'exponentialRampToValueAtTime' avec zéro
+
+                    gainToStop.gain.setValueAtTime(currentGain, now);
+                    gainToStop.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                } catch (e) {
+                    console.warn("Audio warning (fade out):", e);
+                }
+
+                setTimeout(() => {
+                    try { gainToStop.disconnect(); } catch (e) { }
+                }, 150);
+            }
+
+            this.melodyNodes.forEach(osc => {
+                try { osc.stop(now + 0.1); } catch (e) { } // On stop l'oscillateur juste après le fade out
+            });
+            this.melodyNodes = [];
+        }
     },
 
     // --- Banque de sons Tetris ---

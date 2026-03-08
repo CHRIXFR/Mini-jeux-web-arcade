@@ -1,0 +1,55 @@
+Addams_Family - La famille Addams - Musique de film
+Tetris_ThemeA - Tetris (Theme A) - Musique de jeu video
+Mario_Overworld - Super Mario Bros - Musique de jeu video
+Star_Wars_Main - Star Wars (Thème Principal) - Musique de film
+Ode_To_Joy - Ode à la Joie - Musique Clasic
+Pirates_Caribbean - Pirates des Caraïbes - Musique de film
+Zelda_Overworld - The Legend of Zelda (Theme) - Musique de jeu video
+Harry_Potter_Hedwig - Harry Potter (Hedwig's Theme) - Musique de film
+Pokemon_Center - Pokémon (Centre Pokémon) - Musique de jeu video
+Jaws_Theme - Les Dents de la Mer - Musique de film
+Seven_Nation_Army - Seven Nation Army - Musique POP
+Simpsons_Theme - Les Simpson - Musique de film d'animation
+Take_On_Me - Take on Me (A-ha) - Musique POP
+Mozart_Eine_Kleine - Une petite musique de nuit - Musique Clasic
+Mission_Impossible - Mission Impossible - Musique de film
+Indiana_Jones - Indiana Jones - Musique de film
+Fur_Elise - La Lettre à Élise - Musique Clasic
+Doom_E1M1 - Doom - At Doom's Gate - Musique de jeu video
+Pink_Panther - La Panthère Rose - Musique de film
+We_Will_Rock_You - We Will Rock You - Musique POP
+Jurassic_Park - Jurassic Park - Musique de film
+Mario_Underworld - Super Mario Bros (Souterrain) - Musique de jeu video
+Halloween_Theme - Halloween (John Carpenter) - Musique de film
+Vivaldi_Spring - Le Printemps (Vivaldi) - Musique Clasic
+Smooth_Criminal - Smooth Criminal - Musique POP
+Billie_Jean - Billie Jean (Michael Jackson) - Musique POP
+Game_Of_Thrones - Game of Thrones - Musique de film
+Pac_Man - Pac-Man Theme - Musique de jeu video
+Let_It_Go - Let It Go (La Reine des Neiges) - Musique de film d'animation
+Beethoven_Symphony5 - Symphonie No. 5 (Beethoven) - Musique Clasic
+Sonic_Green_Hill - Sonic (Green Hill Zone) - Musique de jeu video
+The_Godfather - Le Parrain (Theme) - Musique de film
+Hakuna_Matata - Hakuna Matata (Le Roi Lion) - Musique de film d'animation
+Megalovania - Megalovania (Undertale) - Musique de jeu video
+Toxic_Britney - Toxic (Britney Spears) - Musique POP
+Pokemon_Theme_Song - Générique Pokémon - Musique de jeu video
+Back_To_The_Future - Retour vers le Futur - Musique de film
+Nokia_Espa - Grande Valse (Sonnerie Nokia) - Musique autres
+Smells_Like_Teen_Spirit - Smells Like Teen Spirit - Musique POP
+Inspector_Gadget - Inspecteur Gadget - Musique de film d'animation
+Interstellar - Interstellar (Cornfield Chase) - Musique de film
+Final_Fantasy_Victory - Final Fantasy (Victory Fanfare) - Musique de jeu video
+Swan_Lake - Le Lac des Cygnes (Tchaikovsky) - Musique Clasic
+Mii_Channel - Chaine Mii (Wii) - Musique de jeu video
+Rick_Roll - Never Gonna Give You Up - Musique POP
+Harry_Potter_Prologue - Harry Potter (Prologue) - Musique de film
+Eye_Of_The_Tiger - Eye Of The Tiger - Musique POP
+Looney_Tunes - Looney Tunes - Musique de film d'animation
+Tetris_ThemeB - Tetris (Theme B) - Musique de jeu video
+Carmen_Habanera - Carmen (L'amour est un oiseau rebelle) - Musique Clasic
+Nyan_Cat - Nyan Cat - Musique autres
+Stranger_Things - Stranger Things - Musique de film
+Bohemian_Rhapsody - Bohemian Rhapsody - Musique POP
+Super_Smash_Bros - Super Smash Bros Brawl - Musique de jeu video
+Pirates_He_A_Pirate - He's a Pirate (Pirates des Caraïbes) - Musique de film

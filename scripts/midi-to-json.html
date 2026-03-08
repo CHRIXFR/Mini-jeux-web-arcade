@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Partitions (Blind Test)</title>
+    <style>
+        :root {
+            --bg: #09090b;
+            --card-bg: #18181b;
+            --card-bg-alt: #27272a;
+            --border: #3f3f46;
+            --text: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Colonne de Gauche : Liste */
+        .sidebar {
+            width: 350px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .track-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            list-style: none;
+            margin: 0;
+        }
+
+        .track-item {
+            background: var(--card-bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .track-item:hover,
+        .track-item.active {
+            border-color: var(--accent);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .track-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .track-title {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .track-actions button {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .track-actions button:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Colonne de Droite : Éditeur */
+        .editor {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+
+        input,
+        select {
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+
+        textarea {
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: monospace;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            background: var(--card-bg-alt);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--border);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Modales Import/Export */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎵 Gestionnaire de Partitions</h1>
+        <div class="header-actions">
+            <button class="btn" onclick="openImportModal()">📥 Importer JSON</button>
+            <button class="btn btn-success" onclick="openExportModal()">📤 Exporter JSON</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar : Liste des morceaux -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span style="font-weight: bold;">Morceaux (<span id="track-count">0</span>)</span>
+                <button class="btn btn-primary" onclick="createNewTrack()">+ Nouveau</button>
+            </div>
+            <ul class="track-list" id="track-list">
+                <!-- Rempli en JS -->
+            </ul>
+        </aside>
+
+        <!-- Éditeur principal -->
+        <main class="editor">
+            <div id="editor-empty" style="text-align: center; color: var(--text-muted); margin-top: 5rem;">
+                <h2>Sélectionnez ou créez une partition</h2>
+                <p>Cliquez sur un morceau dans la liste de gauche ou sur "+ Nouveau".</p>
+            </div>
+
+            <div id="editor-form" style="display: none;">
+                <h2 id="editor-title">Éditer le morceau</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="trackId">ID unique (ex: star-wars)</label>
+                        <input type="text" id="trackId" placeholder="sans-espace" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="titre">Titre (affiché aux joueurs)</label>
+                        <input type="text" id="titre" placeholder="Film - Titre de la musique" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="theme">Thème</label>
+                        <select id="theme">
+                            <option value="Musique de film">🎬 Musique de film</option>
+                            <option value="Musique POP">🍭 Musique POP</option>
+                            <option value="Musique de jeu video">🎮 Musique de jeu video</option>
+                            <option value="Musique de film d'animation">🦄 Musique de film d'animation</option>
+                            <option value="Musique Clasic">🎻 Musique Clasic</option>
+                            <option value="Musique autres">🎲 Musique autres</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bpm">BPM (Vitesse)</label>
+                        <input type="number" id="bpm" value="120" min="40" max="300">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Onde Audio (Instrument)</label>
+                        <select id="type">
+                            <option value="square">Square (Rétro 8-bit, strident)</option>
+                            <option value="sine">Sine (Doux, pur)</option>
+                            <option value="triangle">Triangle (Flûte douce)</option>
+                            <option value="sawtooth">Sawtooth (Agressif, cuivré)</option>
+                        </select>
+                    </div>
+
+                    <!-- Faux champ pour conserver la grille propre -->
+                    <div class="form-group"></div>
+
+                    <div class="form-group full">
+                        <div style="display: flex; justify-content: space-between; align-items:flex-end;">
+                            <label for="notesInput">Notes (Texte simplifié)</label>
+                            <label class="btn btn-primary"
+                                style="margin-bottom: 0.5rem; cursor: pointer; font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                                🎹 Convertir un fichier .mid
+                                <input type="file" id="midi-upload" accept=".mid,.midi" style="display: none;"
+                                    onchange="handleMidiUpload(event)">
+                            </label>
+                        </div>
+                        <textarea id="notesInput" placeholder="Ex: C4,0.5 D4,0.5 E4,1 REST,0.5"></textarea>
+                        <div class="help-text">
+                            Format : <b>Note,Durée</b> séparés par un espace.<br>
+                            - Notes : C4, C#4, D4, REST (pour silence)<br>
+                            - Durées : 1 = noire, 0.5 = croche, 0.25 = double-croche, 2 = blanche<br>
+                            <i>Exemple: C4,1 E4,1 G4,2 REST,0.5 F#4,1</i>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                    <div>
+                        <span id="save-status"
+                            style="color: var(--success); opacity: 0; transition: opacity 0.3s; font-weight: bold;">Enregistré
+                            !</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button id="btn-test-sound" class="btn btn-success" onclick="testCurrentTrack()"
+                            style="padding: 0.75rem 1.5rem; font-size: 1.1rem; min-width: 160px;">▶️ Tester le
+                            son</button>
+                        <button class="btn btn-primary" onclick="saveCurrentTrack()"
+                            style="padding: 0.75rem 2rem; font-size: 1.1rem;">💾 Sauvegarder</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal d'Import -->
+    <div id="modal-import" class="modal">
+        <div class="modal-content">
+            <h2>Importer depuis blind-test.json</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Collez ici le contenu complet de votre fichier
+                <code>games/data/blind-test.json</code>. Attention, cela remplacera la liste actuelle.
+            </p>
+            <textarea id="import-text" placeholder="[ { &quot;id&quot;: ... } ]"></textarea>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('modal-import')">Annuler</button>
+                <button class="btn btn-primary" onclick="processImport()">Importer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'Export -->
+    <div id="modal-export" class="modal">
+        <div class="modal-content">
+            <h2>Exporter vers blind-test.json</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Copiez ce texte et remplacez le contenu de votre
+                fichier <code>games/data/blind-test.json</code> avec.</p>
+            <textarea id="export-text" readonly></textarea>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('modal-export')">Fermer</button>
+                <button class="btn btn-success" id="copy-btn" onclick="copyExport()">Copier dans le
+                    presse-papier</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dictionnaire des fréquences
+        const NOTE_FREQUENCIES = {
+            'C0': 16.35, 'C#0': 17.32, 'D0': 18.35, 'D#0': 19.45, 'E0': 20.60, 'F0': 21.83, 'F#0': 23.12, 'G0': 24.50, 'G#0': 25.96, 'A0': 27.50, 'A#0': 29.14, 'B0': 30.87,
+            'C1': 32.70, 'C#1': 34.65, 'D1': 36.71, 'D#1': 38.89, 'E1': 41.20, 'F1': 43.65, 'F#1': 46.25, 'G1': 49.00, 'G#1': 51.91, 'A1': 55.00, 'A#1': 58.27, 'B1': 61.74,
+            'C2': 65.41, 'C#2': 69.30, 'D2': 73.42, 'D#2': 77.78, 'E2': 82.41, 'F2': 87.31, 'F#2': 92.50, 'G2': 98.00, 'G#2': 103.83, 'A2': 110.00, 'A#2': 116.54, 'B2': 123.47,
+            'C3': 130.81, 'C#3': 138.59, 'D3': 146.83, 'D#3': 155.56, 'E3': 164.81, 'F3': 174.61, 'F#3': 185.00, 'G3': 196.00, 'G#3': 207.65, 'A3': 220.00, 'A#3': 233.08, 'B3': 246.94,
+            'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88,
+            'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25, 'E5': 659.25, 'F5': 698.46, 'F#5': 739.99, 'G5': 783.99, 'G#5': 830.61, 'A5': 880.00, 'A#5': 932.33, 'B5': 987.77,
+            'C6': 1046.50, 'C#6': 1108.73, 'D6': 1174.66, 'D#6': 1244.51, 'E6': 1318.51, 'F6': 1396.91, 'F#6': 1479.98, 'G6': 1567.98, 'G#6': 1661.22, 'A6': 1760.00, 'A#6': 1864.66, 'B6': 1975.53,
+            'C7': 2093.00, 'C#7': 2217.46, 'D7': 2349.32, 'D#7': 2489.02, 'E7': 2637.02, 'F7': 2793.83, 'F#7': 2959.96, 'G7': 3135.96, 'G#7': 3322.44, 'A7': 3520.00, 'A#7': 3729.31, 'B7': 3951.07
+        };
+
+        const REVERSE_FREQUENCIES = Object.fromEntries(
+            Object.entries(NOTE_FREQUENCIES).map(([k, v]) => [v, k])
+        );
+
+        // État de l'application
+        let tracks = [];
+        let currentEditingIndex = -1;
+
+        // ==========================
+        // UI / PARSERS
+        // ==========================
+
+        // Transforme le texte C4,1 en objets {f: 261.63, d:1}
+        function parseTextToNotes(text) {
+            const items = text.trim().split(/\s+/);
+            const notes = [];
+            for (let item of items) {
+                if (!item) continue;
+                const parts = item.split(',');
+                if (parts.length !== 2) continue;
+
+                let noteName = parts[0].toUpperCase();
+                let duration = parseFloat(parts[1]) || 1;
+                let f = noteName !== 'REST' ? (NOTE_FREQUENCIES[noteName] || 0) : 0;
+
+                notes.push({ f: f, d: duration });
+            }
+            return notes;
+        }
+
+        // Transforme les objets JSON {f: 261.63, d:1} en texte "C4,1"
+        function formatNotesToText(notes) {
+            if (!notes || !notes.length) return "";
+            return notes.map(n => {
+                let noteName = 'REST';
+                // Chercher la note la plus proche (tolérance flottants)
+                if (n.f > 0) {
+                    for (let [name, freq] of Object.entries(NOTE_FREQUENCIES)) {
+                        if (Math.abs(freq - n.f) < 0.5) {
+                            noteName = name;
+                            break;
+                        }
+                    }
+                }
+                return `${noteName},${n.d}`;
+            }).join(' ');
+        }
+
+        // ==========================
+        // PARSER MIDI (.mid) -> TEXTE
+        // ==========================
+
+        function handleMidiUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const buffer = new Uint8Array(e.target.result);
+                try {
+                    const notesText = parseMidiBuffer(buffer);
+                    if (notesText) {
+                        document.getElementById('notesInput').value = notesText;
+                        document.getElementById('save-status').textContent = "Converti !";
+                        document.getElementById('save-status').style.color = "var(--success)";
+                        document.getElementById('save-status').style.opacity = '1';
+                        setTimeout(() => document.getElementById('save-status').style.opacity = '0', 3000);
+
+                        // Pré-remplir le titre avec le nom du fichier
+                        if (!document.getElementById('titre').value) {
+                            let cleanName = file.name.replace(/\.[^/.]+$/, "");
+                            cleanName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+                            document.getElementById('titre').value = cleanName;
+                        }
+                    }
+                } catch (err) {
+                    console.error("Erreur lecture MIDI", err);
+                    alert("Impossible de lire ce fichier MIDI. Assurez-vous qu'il contienne une seule piste mélodique simple.");
+                }
+                event.target.value = ''; // Reset input
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Mini parser MIDI en Vanilla JS
+        function parseMidiBuffer(buffer) {
+            let offset = 0;
+            const readString = (len) => {
+                let str = '';
+                for (let i = 0; i < len; i++) str += String.fromCharCode(buffer[offset++]);
+                return str;
+            };
+            const read16 = () => (buffer[offset++] << 8) | buffer[offset++];
+            const read32 = () => (buffer[offset++] << 24) | (buffer[offset++] << 16) | (buffer[offset++] << 8) | buffer[offset++];
+            const readVarInt = () => {
+                let val = 0;
+                while (true) {
+                    let b = buffer[offset++];
+                    val = (val << 7) | (b & 0x7f);
+                    if (!(b & 0x80)) return val;
+                }
+            };
+
+            if (readString(4) !== 'MThd') throw new Error("Header MThd introuvable");
+            read32(); // header length (toujours 6)
+            read16(); // format
+            const tracksCount = read16(); // num tracks
+            const ticksPerQuarter = read16(); // division (PPQ)
+
+            let allNotes = [];
+
+            // On cherche la première piste qui contient des notes jouables
+            for (let t = 0; t < tracksCount; t++) {
+                if (readString(4) !== 'MTrk') continue;
+                const trackLen = read32();
+                const endOffset = offset + trackLen;
+
+                let absTime = 0;
+                let activeNotes = {};
+                let tempNotes = [];
+
+                while (offset < endOffset) {
+                    let delta = readVarInt();
+                    absTime += delta;
+
+                    let status = buffer[offset++];
+                    if (status === 0xFF) { // Meta event
+                        let type = buffer[offset++];
+                        let len = readVarInt();
+                        offset += len;
+                        continue;
+                    }
+
+                    // Simple Note On/Off
+                    if ((status & 0xF0) === 0x90 || (status & 0xF0) === 0x80) {
+                        let note = buffer[offset++];
+                        let vel = buffer[offset++];
+                        let isOn = (status & 0xF0) === 0x90 && vel > 0;
+
+                        if (isOn) {
+                            activeNotes[note] = absTime;
+                        } else {
+                            if (activeNotes[note] !== undefined) {
+                                tempNotes.push({
+                                    midiNote: note,
+                                    start: activeNotes[note],
+                                    duration: absTime - activeNotes[note]
+                                });
+                                delete activeNotes[note];
+                            }
+                        }
+                    } else if ((status & 0xF0) === 0xC0 || (status & 0xF0) === 0xD0) {
+                        offset += 1; // Program change, channel pressure (1 byte)
+                    } else if (status < 0xF0) {
+                        offset += 2; // Autres event (2 bytes)
+                    }
+                }
+
+                if (tempNotes.length > allNotes.length) {
+                    allNotes = tempNotes;
+                }
+            }
+
+            if (allNotes.length === 0) throw new Error("Aucune note trouvée");
+
+            // Trier temporellement
+            allNotes.sort((a, b) => a.start - b.start);
+
+            // Mapper Midi(60=C4) vers String
+            const midiToName = (m) => {
+                const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+                return notes[m % 12] + (Math.floor(m / 12) - 1);
+            };
+
+            // Convertir en texte formaté "Note,Durée"
+            let textResult = [];
+            let lastEnd = 0;
+
+            for (let note of allNotes) {
+                // Gestion des silences
+                if (note.start > lastEnd + 5) {
+                    let restDur = (note.start - lastEnd) / ticksPerQuarter;
+                    if (restDur > 0.1) textResult.push(`REST,${Number(restDur.toFixed(2))}`);
+                }
+
+                let dur = note.duration / ticksPerQuarter;
+                textResult.push(`${midiToName(note.midiNote)},${Number(dur.toFixed(2))}`);
+                lastEnd = note.start + note.duration;
+            }
+
+            return textResult.join(' ');
+        }
+
+        // ==========================
+        // GESTION DE LA LISTE
+        // ==========================
+
+        function renderTrackList() {
+            const listEl = document.getElementById('track-list');
+            listEl.innerHTML = '';
+            document.getElementById('track-count').textContent = tracks.length;
+
+            tracks.forEach((track, index) => {
+                const li = document.createElement('li');
+                li.className = `track-item ${currentEditingIndex === index ? 'active' : ''}`;
+                li.onclick = () => loadTrackToEditor(index);
+
+                li.innerHTML = `
+                    <div class="track-info">
+                        <div class="track-title">${track.titre || 'Sans titre'}</div>
+                        <div class="track-meta">${track.id} • ${track.bpm} BPM • ${track.notes ? track.notes.length : 0} notes</div>
+                    </div>
+                    <div class="track-actions">
+                        <button onclick="deleteTrack(event, ${index})" title="Supprimer">🗑️</button>
+                    </div>
+                `;
+                listEl.appendChild(li);
+            });
+        }
+
+        function createNewTrack() {
+            currentEditingIndex = -1;
+            renderTrackList();
+
+            // Effacer le form
+            document.getElementById('editor-empty').style.display = 'none';
+            document.getElementById('editor-form').style.display = 'block';
+            document.getElementById('editor-title').textContent = "Nouvelle Partition";
+
+            document.getElementById('trackId').value = '';
+            document.getElementById('titre').value = '';
+            document.getElementById('theme').value = 'mixte';
+            document.getElementById('bpm').value = '120';
+            document.getElementById('type').value = 'square';
+            document.getElementById('notesInput').value = '';
+        }
+
+        function loadTrackToEditor(index) {
+            currentEditingIndex = index;
+            renderTrackList();
+
+            const track = tracks[index];
+            document.getElementById('editor-empty').style.display = 'none';
+            document.getElementById('editor-form').style.display = 'block';
+            document.getElementById('editor-title').textContent = `Éditer : ${track.titre}`;
+
+            document.getElementById('trackId').value = track.id || '';
+            document.getElementById('titre').value = track.titre || '';
+            document.getElementById('theme').value = track.theme || 'mixte';
+            document.getElementById('bpm').value = track.bpm || 120;
+            document.getElementById('type').value = track.type || 'square';
+            document.getElementById('notesInput').value = formatNotesToText(track.notes);
+        }
+
+        function saveCurrentTrack() {
+            const id = document.getElementById('trackId').value.trim() || `track-${Date.now()}`;
+            const titre = document.getElementById('titre').value.trim() || 'Sans Titre';
+            const theme = document.getElementById('theme').value;
+            const bpm = parseInt(document.getElementById('bpm').value) || 120;
+            const type = document.getElementById('type').value;
+            const textNotes = document.getElementById('notesInput').value;
+
+            const notes = parseTextToNotes(textNotes);
+
+            const trackObj = { id, titre, theme, bpm, type, notes };
+
+            if (currentEditingIndex >= 0) {
+                tracks[currentEditingIndex] = trackObj;
+            } else {
+                tracks.push(trackObj);
+                currentEditingIndex = tracks.length - 1;
+            }
+
+            renderTrackList();
+            loadTrackToEditor(currentEditingIndex); // Rafréchir l'UI
+
+            // Afficher le feedback 
+            const status = document.getElementById('save-status');
+            status.style.opacity = '1';
+            setTimeout(() => status.style.opacity = '0', 2000);
+        }
+
+        function deleteTrack(event, index) {
+            event.stopPropagation(); // Évite de cliquer sur l'élément de la liste
+            if (confirm("Voulez-vous vraiment supprimer cette partition ?")) {
+                tracks.splice(index, 1);
+                if (currentEditingIndex === index) {
+                    currentEditingIndex = -1;
+                    document.getElementById('editor-form').style.display = 'none';
+                    document.getElementById('editor-empty').style.display = 'block';
+                } else if (currentEditingIndex > index) {
+                    currentEditingIndex--;
+                }
+                renderTrackList();
+            }
+        }
+
+        // ==========================
+        // LECTEUR AUDIO (Web Audio API)
+        // ==========================
+
+        let audioCtx;
+        let activeOscillators = [];
+        let isPlaying = false;
+        let testTimeout = null;
+
+        async function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
+            }
+        }
+
+        function stopTest() {
+            activeOscillators.forEach(osc => {
+                try {
+                    osc.stop();
+                    osc.disconnect();
+                } catch (e) { }
+            });
+            activeOscillators = [];
+            isPlaying = false;
+
+            if (testTimeout) clearTimeout(testTimeout);
+
+            const btn = document.getElementById('btn-test-sound');
+            if (btn) {
+                btn.innerHTML = '▶️ Tester le son';
+                btn.classList.replace('btn-danger', 'btn-success');
+            }
+        }
+
+        async function testCurrentTrack() {
+            console.log("▶️ Clic sur Tester le son");
+            await initAudio();
+            console.log("🔊 AudioContext state :", audioCtx.state);
+
+            if (isPlaying) {
+                console.log("⏹️ Arrêt forcé (déjà en lecture)");
+                stopTest();
+                return;
+            }
+
+            const bpm = parseInt(document.getElementById('bpm').value) || 120;
+            const type = document.getElementById('type').value;
+            const textNotes = document.getElementById('notesInput').value;
+
+            console.log(`🎵 Parsing : BPM=${bpm}, Ondee=${type}`);
+            const notes = parseTextToNotes(textNotes);
+
+            if (notes.length === 0) {
+                console.warn("⚠️ Aucune note valide trouvée !");
+                alert("Aucune note valide à jouer.");
+                return;
+            }
+
+            console.log(`✅ ${notes.length} notes prêtes à être jouées`);
+            isPlaying = true;
+            const btn = document.getElementById('btn-test-sound');
+            btn.innerHTML = '🛑 Arrêter';
+            btn.classList.replace('btn-success', 'btn-danger'); // Pour rajouter un côté visuel rouge
+
+            const beatDuration = 60 / bpm;
+            let startTime = audioCtx.currentTime + 0.1;
+
+            notes.forEach((note, index) => {
+                const noteDuration = note.d * beatDuration;
+
+                if (note.f > 0) {
+                    console.log(`🎶 Joue note [${index}] freq=${note.f} dur=${noteDuration.toFixed(2)}s à T+${(startTime - audioCtx.currentTime).toFixed(2)}s`);
+
+                    const osc = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(note.f, startTime);
+
+                    // Enveloppe basique pour éviter les clics agressifs
+                    gainNode.gain.setValueAtTime(0, startTime);
+                    // On ne monte le gain que si la note est assez longue pour l'enveloppe
+                    const attack = Math.min(0.05, noteDuration * 0.2);
+                    const release = Math.min(0.05, noteDuration * 0.2);
+
+                    gainNode.gain.linearRampToValueAtTime(0.3, startTime + attack);
+                    gainNode.gain.setValueAtTime(0.3, startTime + noteDuration - release);
+                    gainNode.gain.linearRampToValueAtTime(0, startTime + noteDuration);
+
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + noteDuration);
+
+                    activeOscillators.push(osc);
+                } else {
+                    console.log(`🤐 Silence [${index}] dur=${noteDuration.toFixed(2)}s`);
+                }
+
+                startTime += noteDuration;
+            });
+
+            // Remise à zéro auto du bouton
+            const totalDuration = (startTime - audioCtx.currentTime) * 1000;
+            console.log(`⏱️ Durée totale prévue : ${totalDuration}ms`);
+
+            testTimeout = setTimeout(() => {
+                console.log("🔚 Fin naturelle de la lecture");
+                if (isPlaying) stopTest();
+            }, totalDuration);
+        }
+
+        // ==========================
+        // MODALES IMPORT / EXPORT
+        // ==========================
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function openImportModal() {
+            document.getElementById('import-text').value = '';
+            document.getElementById('modal-import').classList.add('active');
+        }
+
+        function processImport() {
+            try {
+                const text = document.getElementById('import-text').value;
+                const parsed = JSON.parse(text);
+                if (Array.isArray(parsed)) {
+                    tracks = parsed;
+                    currentEditingIndex = -1;
+                    document.getElementById('editor-form').style.display = 'none';
+                    document.getElementById('editor-empty').style.display = 'block';
+                    renderTrackList();
+                    closeModal('modal-import');
+                } else {
+                    alert('Erreur : le JSON doit être un tableau [...]');
+                }
+            } catch (e) {
+                alert('JSON invalide.');
+            }
+        }
+
+        function openExportModal() {
+            // Nettoie l'objet pour un export propre (arrondi des fréquences)
+            const cleanTracks = tracks.map(t => ({
+                id: t.id,
+                titre: t.titre,
+                theme: t.theme,
+                bpm: t.bpm,
+                type: t.type,
+                notes: t.notes.map(n => ({ f: Number(n.f.toFixed(2)), d: n.d }))
+            }));
+
+            document.getElementById('export-text').value = JSON.stringify(cleanTracks, null, 2);
+            document.getElementById('modal-export').classList.add('active');
+
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = 'Copier dans le presse-papier';
+            btn.classList.replace('btn-success', 'btn-primary');
+        }
+
+        function copyExport() {
+            const text = document.getElementById('export-text');
+            text.select();
+            document.execCommand('copy');
+
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = 'Copié ! ✅';
+            btn.classList.replace('btn-primary', 'btn-success');
+        }
+    </script>
+</body>
+
+</html>

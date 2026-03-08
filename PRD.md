@@ -146,6 +146,16 @@ Conformément aux standards de haute qualité :
     - Effets visuels (secousse d'écran "Shake" rouge en cas d'erreur, disparition animée "Pop" en cas de succès).
     - Difficulté progressive s'enchaînant automatiquement (plus d'objets, moins de temps).
     - Modales Start/End standardisées et effets sonores intégrés. 
+
+### 4.12 Jeu : Blind Test Musical
+- **Déblocage** : Coût de **2500 XP**.
+- **Gameplay** : Deviner le titre d'une musique jouée au synthétiseur 8-bits de l'arcade.
+- **Fonctionnalités** :
+    - 4 thèmes paramétrables (Film, Animation, Classique, Mixte/POP/Jeu-Vidéo).
+    - Base de données riche de +40 partitions générées dynamiquement via Node.js (`gen-partition`).
+    - Modèle QCM avec 5 choix possibles générés dynamiquement et interruption de la boucle audio.
+    - Animation d'onde sonore CSS et synchronisation avec le moteur audio (`playMelody`).
+
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
 2. **Phase 2** : Système de points et Sudoku (Terminé).
@@ -169,6 +179,7 @@ Conformément aux standards de haute qualité :
 20. **Phase 20** : Amélioration de l'interface d'accueil, ajout de sons pour les jeux et du préchargement des ressources pour tous les jeux (Terminé).
 21. **Phase 21** : Standardisation du cycle de vie des jeux (Modales Start/End) et création des templates de développement JS/CSS obligatoires (Terminé).
 22. **Phase 22** : Implémentation du Jeu des Objets Cachés V2 (Thèmes Cuisine, Nature et Espace avec assets IA) (Terminé).
+23. **Phase 23** : Ajout du jeu Blind Test Musical (Moteur Audio, QCM, 40+ partitions via skill IA) (Terminé).
 
 ## 7. Standards de Développement (Agents IA)
 Pour garantir la pérennité et la cohérence de l'Arcade, tout agent doit suivre les directives de couplage strictes entre la logique et le style :
