@@ -26,6 +26,9 @@
     <!-- Driver.js pour le Tour Guidé -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+    <!-- SortableJS pour le Drag & Drop des jeux (Favoris) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
 
 <body class="dark-mode">
@@ -278,7 +281,26 @@
                 // Texte hero sans XP
                 const heroText = 'Choisissez un jeu et battez vos propres records ! 🏆';
 
-                const gridHtml = this.games.map(game => {
+                // --- CHARGEMENT DE L'ORDRE PERSONNALISÉ DES JEUX FAVORIS ---
+                let orderedGames = [...this.games];
+                try {
+                    const savedOrderStr = localStorage.getItem('arcade_custom_order');
+                    if (savedOrderStr) {
+                        const savedOrder = JSON.parse(savedOrderStr);
+                        if (Array.isArray(savedOrder)) {
+                            orderedGames.sort((a, b) => {
+                                const indexA = savedOrder.indexOf(a.id);
+                                const indexB = savedOrder.indexOf(b.id);
+                                if (indexA === -1 && indexB === -1) return 0;
+                                if (indexA === -1) return 1; // les nouveaux jeux ou non classés vont à la fin
+                                if (indexB === -1) return -1;
+                                return indexA - indexB;
+                            });
+                        }
+                    }
+                } catch (e) { console.error('Erreur lecture ordre', e); }
+
+                const gridHtml = orderedGames.map(game => {
                     const clickAction = `onclick="window.arcade.loadGame('${game.id}')"`;
                     const accessibilityProps = 'role="button" tabindex="0"';
 
@@ -293,7 +315,8 @@
                     }
 
                     return `
-                        <div class="game-card" ${clickAction} ${accessibilityProps}>
+                        <div class="game-card" data-id="${game.id}" ${clickAction} ${accessibilityProps}>
+                            <div class="drag-handle" title="Trier les favoris (Glisser-Déposer)" onclick="event.stopPropagation()">☰</div>
                             ${hsHtml}
                             <div class="game-icon" role="img" aria-label="Icône du jeu ${game.name}">${game.icon}</div>
                             <h3>${game.name}</h3>
@@ -312,6 +335,22 @@
                         <div id="games-grid-container" class="games-grid">${gridHtml}</div>
                     </section>
                 `;
+
+                // --- INIT SORTABLEJS ---
+                const gridContainer = document.getElementById('games-grid-container');
+                if (gridContainer && window.Sortable) {
+                    new Sortable(gridContainer, {
+                        handle: '.drag-handle', // La poignée pour glisser
+                        animation: 150, // Animation fluide (MS)
+                        ghostClass: 'sortable-ghost',
+                        onEnd: function () {
+                            // Sauvegarde du nouvel ordre après relâchement
+                            const itemEls = gridContainer.querySelectorAll('.game-card');
+                            const newOrder = Array.from(itemEls).map(el => el.getAttribute('data-id'));
+                            localStorage.setItem('arcade_custom_order', JSON.stringify(newOrder));
+                        }
+                    });
+                }
 
                 // Lancement BGM de l'accueil
                 if (window.arcade.audio) {
@@ -406,6 +445,7 @@
 
                 if (isHome) {
                     steps.push({ element: '#avatar-changelog', popover: { title: 'Nouveautés & Suggestions', description: 'Cliquez sur l\'avatar pour voir le changelog ou nous envoyer vos idées.', side: "left" } });
+                    steps.push({ element: '#games-grid-container', popover: { title: 'Vos Favoris', description: 'Utilisez l\'icône ☰ sur chaque carte pour glisser et organiser vos jeux favoris en tête de liste !', side: "top" } });
                     steps.push({ element: '#games-grid-container', popover: { title: 'Accès Immédiat & Scores', description: 'Battez vos records : ils sont sauvegardés localement.', side: "top" } });
                 }
 

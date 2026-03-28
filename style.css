@@ -3430,3 +3430,46 @@ body:not(.light-mode) .cap-option-btn {
     display: none;
     /* Affiché uniquement si musique terminée sans réponse */
 }
+
+/* ========================================================================
+   14. CLASSEMENT DES FAVORIS (DRAG & DROP)
+   ======================================================================== */
+.game-card {
+    position: relative;
+}
+
+.drag-handle {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: grab;
+    padding: 5px;
+    border-radius: 5px;
+    background: transparent;
+    transition: all var(--transition);
+    z-index: 10;
+    line-height: 1;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.drag-handle:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+.game-card.sortable-ghost {
+    opacity: 0.4;
+    border: 2px dashed var(--accent);
+    background: transparent;
+}
+
+.game-card.sortable-drag {
+    cursor: grabbing;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
