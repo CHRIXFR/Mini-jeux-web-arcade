@@ -20,6 +20,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🧱 **Tetris** | Arcade | L'indémodable avec une esthétique moderne et fluide |
 | 🕵️‍♂️ **Objets Cachés** | Observation | Retrouvez les objets perdus dans des décors générés par IA |
 | 🎷 **Blind Test** | Musical | Devinez les musiques cultes jouées au synthétiseur 8-bits |
+| 🐍 **Snake** | Arcade | Surélevez le défi avec des paliers de vitesse et des murs aléatoires |
 
 ## Fonctionnalités Clés
 
