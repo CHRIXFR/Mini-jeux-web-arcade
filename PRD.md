@@ -165,6 +165,15 @@ Conformément aux standards de haute qualité :
     - Style *Glassmorphism* appliqué aux conteneurs du jeu.
     - Contrôles hybrides : Support du clavier (`Flèches`/`ZQSD`) sur Desktop et d'un **D-Pad tactile intégré** sur Mobile.
 
+### 4.14 Jeu : Neon Pulse
+- **Déblocage** : Disponible par défaut (**0 XP**).
+- **Gameplay** : Variante immersive du légendaire casse-briques.
+- **Fonctionnalités** :
+    - Esthétique néon avec effets "glow" et trainée dynamique pour la ou les balles.
+    - Évolution par difficulté (10 niveaux progressifs) sans calcul de score : l'objectif est d'atteindre le plus haut niveau avec un maximum de 3 vies.
+    - Système de bonus/malus aléatoires : Multiballe, Raquette Géante, Double Lasers, et un rarissime Vie Supplémentaire.
+    - Roulades dynamiques d'effets sonores limitant le délai et les crachs grâce à la Web Audio API.
+
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
 2. **Phase 2** : Système de points et Sudoku (Terminé).
@@ -190,6 +199,7 @@ Conformément aux standards de haute qualité :
 22. **Phase 22** : Implémentation du Jeu des Objets Cachés V2 (Thèmes Cuisine, Nature et Espace avec assets IA) (Terminé).
 23. **Phase 23** : Ajout du jeu Blind Test Musical (Moteur Audio, QCM, 40+ partitions via skill IA) (Terminé).
 24. **Phase 24** : Conception et Implémentation du jeu Snake, design en Glassmorphism et contrôles hybrides (Terminé).
+25. **Phase 25** : Création du jeu Neon Pulse (Casse-briques), résolution des fuites audio, retrait du score au profit des niveaux et bonus vitaux (Terminé).
 
 ## 7. Standards de Développement (Agents IA)
 Pour garantir la pérennité et la cohérence de l'Arcade, tout agent doit suivre les directives de couplage strictes entre la logique et le style :
