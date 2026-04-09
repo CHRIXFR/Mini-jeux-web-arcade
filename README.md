@@ -21,6 +21,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🕵️‍♂️ **Objets Cachés** | Observation | Retrouvez les objets perdus dans des décors générés par IA |
 | 🎷 **Blind Test** | Musical | Devinez les musiques cultes jouées au synthétiseur 8-bits |
 | 🐍 **Snake** | Arcade | Surélevez le défi avec des paliers de vitesse et des murs aléatoires |
+| ☄️ **Neon Pulse** | Casse-briques | Détruisez les briques dans cette variante néon avec 10 niveaux et bonus |
 
 ## Fonctionnalités Clés
 
