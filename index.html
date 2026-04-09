@@ -251,7 +251,8 @@
                 { id: 'scrabble', name: 'Scrabble', icon: '🔡', difficulty: 'Expert' },
                 { id: 'tetris', name: 'Tetris', icon: '🧱', difficulty: 'Arcade' },
                 { id: 'objets-caches', name: 'Objets Cachés', icon: '🕵️', difficulty: 'Observation' },
-                { id: 'blind-test', name: 'Blind Test 8-Bits', icon: '🎵', difficulty: 'Musical' }
+                { id: 'blind-test', name: 'Blind Test 8-Bits', icon: '🎵', difficulty: 'Musical' },
+                { id: 'snake', name: 'Snake', icon: '🐍', difficulty: 'Arcade' }
             ],
             showToast: function (msg) {
                 const t = document.createElement('div');
@@ -378,7 +379,8 @@
                     'scrabble': 'Placez vos mots stratégiquement sur le plateau.',
                     'tetris': 'L\'indémodable jeu de puzzle par blocs avec un style moderne.',
                     'objets-caches': 'Retrouvez les objets cachés avant la fin du temps imparti.',
-                    'blind-test': 'Devinez la musique jouée par le synthétiseur.'
+                    'blind-test': 'Devinez la musique jouée par le synthétiseur.',
+                    'snake': 'Dirigez le serpent et mangez des pommes.'
                 };
                 return descriptions[id] || '';
             },
@@ -503,6 +505,7 @@
                 if (id === 'tetris' && window.initTetris) window.initTetris(document.getElementById('game-mount'));
                 if (id === 'objets-caches' && window.initObjetsCaches) window.initObjetsCaches(document.getElementById('game-mount'));
                 if (id === 'blind-test' && window.initBlindTest) window.initBlindTest(document.getElementById('game-mount'));
+                if (id === 'snake' && window.initSnake) window.initSnake(document.getElementById('game-mount'));
             }
         };
 
@@ -526,6 +529,7 @@
     <script src="games/tetris.js"></script>
     <script src="games/objets-caches.js"></script>
     <script src="games/blind-test.js"></script>
+    <script src="games/snake.js"></script>
 </body>
 
 </html>

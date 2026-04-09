@@ -24,7 +24,7 @@ Conformément aux standards de haute qualité :
 ### 4.1 Page d'Accueil (Game Hub) & Progression
 - **Sélection de Jeux** : Grille avec icônes. Les jeux non débloqués apparaissent avec un état "verrouillé".
 - **Système de Points (XP)** : Les points s'accumulent en jouant et en gagnant.
-- **Déblocage de Contenu** : Les nouveaux jeux se débloquent automatiquement ou manuellement une fois le palier d'XP atteint.
+- **Déblocage de Contenu** : Tous les jeux sont désormais débloqués par défaut (0 XP) suite aux retours des joueurs tests.
 - **Barre de Progression** : Affichage du niveau actuel et du total d'XP en haut de l'écran.
 
 ### 4.2 Jeu : Le Pendu (Hangman)
@@ -36,22 +36,22 @@ Conformément aux standards de haute qualité :
     - Clavier virtuel pour une utilisation mobile facilitée.
 
 ### 4.3 Jeu : Mots Mêlés (Word Search)
-- **Déblocage** : Coût de **50 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Niveaux de difficulté** : Ajout de niveaux (ex: Taille de grille, temps limité).
 - **Génération** : Grilles dynamiques en français.
 
 ### 4.4 Jeu : Jeu de Paires (Memory)
-- **Déblocage** : Coût de **100 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Niveaux de difficulté** : Facile (12 cartes), Moyen (16 cartes), Difficile (36 cartes).
 - **Fonctionnalités** : Minuteur, suivi des essais, thèmes d'emojis.
 
 ### 4.5 Jeu : Sudoku
-- **Déblocage** : Coût de **250 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Niveaux de difficulté** : Facile, Moyen, Difficile.
 - **Fonctions** : Notes, surbrillance, erreurs en temps réel, chrono.
 
 ### 4.6 Jeu : Match-3
-- **Déblocage** : Coût de **500 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Gameplay** : Aligner des gemmes identiques.
 - **Combos Spéciaux** : 
     - **Combo 4** : Création de gemmes Ligne/Colonne.
@@ -61,7 +61,7 @@ Conformément aux standards de haute qualité :
 - **Interface** : Compteurs de combos en temps réel dans le header.
 
 ### 4.7 Jeu : Scrabble Solo
-- **Déblocage** : Coût de **1000 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Statut** : Terminé.
 - **Gameplay** : Placer des lettres sur un plateau 15x15 pour former des mots.
 - **Fonctionnalités** :
@@ -112,7 +112,7 @@ Conformément aux standards de haute qualité :
   - Affichage d'un message de confirmation visuel après envoi réussi.
 
 ### 4.9 Jeu : Jeu des Capitales
-- **Déblocage** : Coût de **750 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Gameplay** : Deviner le pays ou la capitale correspondant au drapeau affiché.
 - **Modes de jeu** :
     - **Nommer le Pays** : Trouver le pays associé au drapeau parmi 5 propositions.
@@ -125,7 +125,7 @@ Conformément aux standards de haute qualité :
     - Gain d'XP en fonction des bonnes réponses à la fin d'une série de 10 questions.
     
 ### 4.10 Jeu : Tetris Glassmorphism
-- **Déblocage** : Coût de **1500 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Design** : Esthétique "Glassmorphism" ultra-moderne pour les pièces (tétrominos) avec des effets de transparence, d'ombres internes et de reflets.
 - **Fonctionnalités** :
     - Gestion classique des lignes, du score et des niveaux de difficulté (accélération de la chute).
@@ -137,7 +137,7 @@ Conformément aux standards de haute qualité :
     - **UX Premium** : Secousse de l'écran lors d'un "Tetris" (4 lignes), flash lumineux lors de la complétion de ligne, et modales d'accueil/fin de partie personnalisées.
 
 ### 4.11 Jeu : Objets Cachés
-- **Déblocage** : Coût de **2000 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Gameplay** : Trouver une liste d'objets spécifiques cachés parmi un "foutoir" généré dynamiquement avant la fin d'un temps imparti.
 - **Fonctionnalités** :
     - **Assets V2 (IA)** : Utilisation d'images haute résolution générées par IA pour les objets et les décors.
@@ -148,13 +148,22 @@ Conformément aux standards de haute qualité :
     - Modales Start/End standardisées et effets sonores intégrés. 
 
 ### 4.12 Jeu : Blind Test Musical
-- **Déblocage** : Coût de **2500 XP**.
+- **Déblocage** : Disponible par défaut (**0 XP**).
 - **Gameplay** : Deviner le titre d'une musique jouée au synthétiseur 8-bits de l'arcade.
 - **Fonctionnalités** :
     - 4 thèmes paramétrables (Film, Animation, Classique, Mixte/POP/Jeu-Vidéo).
     - Base de données riche de +40 partitions générées dynamiquement via Node.js (`gen-partition`).
     - Modèle QCM avec 5 choix possibles générés dynamiquement et interruption de la boucle audio.
     - Animation d'onde sonore CSS et synchronisation avec le moteur audio (`playMelody`).
+
+### 4.13 Jeu : Snake
+- **Déblocage** : Disponible par défaut (**0 XP**).
+- **Gameplay** : Jeu classique du serpent avec un système de progression dynamique.
+- **Fonctionnalités** :
+    - Niveaux générés dynamiquement avec paliers de difficulté tous les 5 pommes ingérées (augmentation de l'allure du serpent).
+    - Mode avec génération aléatoire d'obstacles/murs (croissante selon le niveau en cours).
+    - Style *Glassmorphism* appliqué aux conteneurs du jeu.
+    - Contrôles hybrides : Support du clavier (`Flèches`/`ZQSD`) sur Desktop et d'un **D-Pad tactile intégré** sur Mobile.
 
 ## 6. Feuille de Route (Roadmap)
 1. **Phase 1** : Initialisation et Design System (Terminé).
@@ -180,6 +189,7 @@ Conformément aux standards de haute qualité :
 21. **Phase 21** : Standardisation du cycle de vie des jeux (Modales Start/End) et création des templates de développement JS/CSS obligatoires (Terminé).
 22. **Phase 22** : Implémentation du Jeu des Objets Cachés V2 (Thèmes Cuisine, Nature et Espace avec assets IA) (Terminé).
 23. **Phase 23** : Ajout du jeu Blind Test Musical (Moteur Audio, QCM, 40+ partitions via skill IA) (Terminé).
+24. **Phase 24** : Conception et Implémentation du jeu Snake, design en Glassmorphism et contrôles hybrides (Terminé).
 
 ## 7. Standards de Développement (Agents IA)
 Pour garantir la pérennité et la cohérence de l'Arcade, tout agent doit suivre les directives de couplage strictes entre la logique et le style :
