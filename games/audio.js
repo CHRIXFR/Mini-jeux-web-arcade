@@ -245,7 +245,7 @@ window.arcade.audio = {
      * @param {number} duration - Durée en secondes
      * @param {number} vol - Volume (0 à 1)
      */
-    playTone: function (freq, type, duration, vol) {
+    playTone: function (freq, type, duration = 0.1, vol = 0.1) {
         if (this.isMuted || !this.ctx) return;
 
         if (this.ctx.state === 'suspended') {
