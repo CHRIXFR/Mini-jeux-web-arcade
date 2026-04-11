@@ -31,12 +31,13 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Guide Interactif (Driver.js)** : Un tour d'onboarding accompagne les nouveaux joueurs pour découvrir l'interface.
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub pour vous tenir au courant.
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
+- **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
 - **Respect de la Vie Privée** : Analytique légère (GoatCounter) sans cookies et stockage local uniquement.
 
 ## Stack technique
 
 - **Vanilla JavaScript** (ES6+) — zéro dépendance, architecture modulaire par fichier.
-- **Modern CSS** — Design System robuste, Glassmorphism et thèmes adaptatifs.
+- **Modern CSS** — Design System robuste, Glassmorphism, thèmes adaptatifs et `mobile.css` dédié au responsive.
 - **Driver.js** — Moteur de visite guidée pour l'accueil.
 - **Unsplash API** — Chargement dynamique d'images de fond thématiques.
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.

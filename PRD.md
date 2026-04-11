@@ -200,6 +200,7 @@ Conformément aux standards de haute qualité :
 23. **Phase 23** : Ajout du jeu Blind Test Musical (Moteur Audio, QCM, 40+ partitions via skill IA) (Terminé).
 24. **Phase 24** : Conception et Implémentation du jeu Snake, design en Glassmorphism et contrôles hybrides (Terminé).
 25. **Phase 25** : Création du jeu Neon Pulse (Casse-briques), résolution des fuites audio, retrait du score au profit des niveaux et bonus vitaux (Terminé).
+26. **Phase 26** : Optimisation de l'affichage mobile — Création de `mobile.css` dédié aux media queries, masquage du header en jeu, bouton retour compact flottant, viewport maximisé (Terminé).
 
 ## 7. Standards de Développement (Agents IA)
 Pour garantir la pérennité et la cohérence de l'Arcade, tout agent doit suivre les directives de couplage strictes entre la logique et le style :
