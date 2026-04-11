@@ -170,6 +170,19 @@ Des fonctions utilitaires peuvent être ajoutées dans `audio.js` (ex: `playMove
 </div>
 ```
 
+## Comportement mobile automatique
+
+> [!NOTE]
+> Les optimisations suivantes sont gérées automatiquement via `mobile.css` et ne nécessitent **aucun code JS supplémentaire** :
+
+- `loadGame()` ajoute la classe `body.in-game` qui déclenche les adaptations mobiles
+- Le **header global** et le **footer** sont masqués sur mobile en mode jeu
+- Le **bouton "← Retour"** est transformé en icône compacte flottante (cercle 36px, haut-gauche)
+- Le texte d'aide contrôles (`[class$="-controls-help"]`) est masqué sur mobile
+- Les panneaux `.glass-panel` ont un padding réduit
+
+Le développeur doit seulement s'assurer que son jeu **s'adapte au viewport** via les media queries ajoutées dans `mobile.css` (pas dans `style.css`).
+
 ## Conventions de nommage
 
 - Préfixer tous les IDs et classes avec un identifiant court (ex: `hg-`, `scr-`, `pa-`)
