@@ -108,6 +108,7 @@ class Match3Game {
     renderLayout() {
         this.container.innerHTML = `
             <div class="jb-game-container">
+                <h2>💎 Match-3</h2>
                 <div class="jb-header">
                     <div class="jb-stats">
                         <div class="jb-stat-item">

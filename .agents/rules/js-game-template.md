@@ -158,8 +158,12 @@ Des fonctions utilitaires peuvent être ajoutées dans `audio.js` (ex: `playMove
 
 ## Structure HTML du jeu
 
+> [!IMPORTANT]
+> Chaque jeu **DOIT** inclure un `<h2>` titre avec icône en première position dans son conteneur principal. Ce titre est affiché de manière compacte sur mobile grâce à `mobile.css`.
+
 ```html
 <div class="[prefix]-game-container">
+    <h2>🎮 Nom du Jeu</h2>
     <div class="[prefix]-header">
         <!-- Stats, timer, sélecteur difficulté -->
     </div>
@@ -192,6 +196,7 @@ Le développeur doit seulement s'assurer que son jeu **s'adapte au viewport** vi
 ## Checklist avant commit
 
 - [ ] `showStartScreen()` utilise `arcade.showStartModal()`
+- [ ] Le `renderLayout()` contient un `<h2>🎮 Nom du Jeu</h2>` en première position
 - [ ] La modale de fin utilise `arcade.showGameOverModal()` avec `score` et `scoreType`
 - [ ] Pas de modale HTML inline pour start/end (sauf cas spécifique)
 - [ ] Callbacks `onReplay` et `onQuit` fonctionnels

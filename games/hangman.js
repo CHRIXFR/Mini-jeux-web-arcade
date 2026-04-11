@@ -92,6 +92,7 @@ class HangmanGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="hg-game-container">
+                <h2>😵 Le Pendu</h2>
                 <div class="hg-drawing-container">
                     <div class="hg-part hg-gallows-v" data-step="1"></div>
                     <div class="hg-part hg-gallows-h" data-step="2"></div>

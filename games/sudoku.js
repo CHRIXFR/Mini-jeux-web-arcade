@@ -145,6 +145,7 @@ class SudokuGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="sudoku-container">
+                <h2>🧩 Sudoku</h2>
                 <div class="sudoku-header">
                     <div id="sudoku-timer">00:00</div>
                     <div class="difficulty-picker">

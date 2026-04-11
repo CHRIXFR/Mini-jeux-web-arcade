@@ -32,6 +32,7 @@ class SnakeGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="sk-game-container">
+                <h2>🐍 Snake</h2>
                 <div class="sk-header">
                     <div class="sk-stats">
                         <div class="sk-stat" style="margin-right: 2rem;">

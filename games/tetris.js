@@ -93,6 +93,7 @@ window.arcade.tetris = {
     renderLayout: function () {
         this.mountNode.innerHTML = `
             <div id="view-tetris" class="tetris-game-container">
+                <h2>🧱 Tetris</h2>
                 <div class="tetris-header">
                     <div class="tetris-stat-box">
                         <span class="tetris-stat-label">Score</span>

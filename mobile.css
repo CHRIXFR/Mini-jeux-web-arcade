@@ -217,3 +217,700 @@
         width: 100%;
     }
 }
+
+
+/* -----------------------------------------------
+   5. TITRES DE JEUX — Style compact mobile (h2)
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    /* Titre de jeu compact sur mobile */
+    body.in-game h2 {
+        font-size: 1rem;
+        margin: 0.15rem 0 0.25rem 0;
+        padding: 0;
+        text-align: center;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+
+    /* Titre de jeu compact en mode paysage */
+    body.in-game h2 {
+        font-size: 0.9rem;
+        margin: 0.1rem 0 0.15rem 0;
+        padding: 0;
+        text-align: center;
+        line-height: 1.1;
+    }
+}
+
+
+/* -----------------------------------------------
+   6. AJUSTEMENTS PAR JEU — Portrait (≤ 600px)
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    /* ====== LE PENDU ====== */
+    .hg-game-container {
+        padding-top: 0.25rem;
+    }
+
+    /* Réduire le dessin du pendu pour tout faire tenir */
+    .hg-drawing-container {
+        transform: scale(0.75);
+        transform-origin: top center;
+        margin-bottom: -2rem;
+    }
+
+    .hg-word-display {
+        font-size: 1.4rem;
+        letter-spacing: 0.3rem;
+        margin: 0.5rem 0;
+    }
+
+    .hg-keyboard {
+        gap: 0.2rem;
+        padding: 0 0.25rem;
+    }
+
+    .hg-key {
+        min-width: 28px;
+        min-height: 32px;
+        font-size: 0.85rem;
+        padding: 0.2rem;
+    }
+
+
+    /* ====== MOTS MÊLÉS ====== */
+    .ws-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .ws-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .ws-header h2 {
+        margin-bottom: 0;
+    }
+
+    .ws-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Grille compacte */
+    .ws-cell {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    /* Liste des mots plus compacte */
+    .ws-words-container h3 {
+        font-size: 0.85rem;
+        margin: 0.25rem 0;
+    }
+
+    .ws-word-list {
+        gap: 0.25rem;
+    }
+
+    .ws-word {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.4rem;
+    }
+
+
+    /* ====== PAIRES ====== */
+    .pa-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .pa-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .pa-header h2 {
+        margin: 0;
+    }
+
+    .pa-stats {
+        gap: 1rem;
+    }
+
+    .pa-controls {
+        gap: 0.5rem;
+    }
+
+    /* Grille de cartes compacte */
+    .pa-grid {
+        gap: 0.35rem;
+        padding: 0.25rem;
+    }
+
+    .pa-card {
+        min-height: 50px;
+    }
+
+    .pa-card-small {
+        min-height: 40px;
+        font-size: 1.2rem;
+    }
+
+
+    /* ====== SUDOKU ====== */
+    .sudoku-container {
+        padding-top: 0.25rem;
+    }
+
+    .sudoku-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    #sudoku-timer {
+        font-size: 0.9rem;
+    }
+
+    /* Grille sudoku adaptée */
+    .grid-9x9 {
+        max-width: 95vw;
+    }
+
+    .sudoku-controls {
+        gap: 0.25rem;
+        margin: 0.25rem 0;
+    }
+
+    .sudoku-controls .control-btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .number-pad {
+        gap: 0.25rem;
+    }
+
+    .num-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+
+    /* ====== MATCH-3 ====== */
+    .jb-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .jb-header {
+        padding: 0.25rem;
+    }
+
+    .jb-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+
+    /* Uniformisation du sélecteur de difficulté Match-3 */
+    .jb-diff-select {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 6px;
+        background: var(--glass-bg);
+        color: var(--text-primary);
+        border: 1px solid var(--glass-border);
+    }
+
+    .jb-combos-mini {
+        font-size: 0.75rem;
+        gap: 0.3rem;
+    }
+
+    .stats-divider {
+        display: none;
+    }
+
+    /* Grille match-3 compacte */
+    .jb-grid {
+        max-width: 95vw;
+    }
+
+
+    /* ====== CAPITALES ====== */
+    .capitales-container {
+        padding-top: 0.25rem;
+    }
+
+    .capitales-header {
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .cap-flag-container {
+        padding: 0.5rem;
+    }
+
+    .cap-flag-img {
+        height: 80px;
+    }
+
+    .cap-question {
+        font-size: 0.9rem;
+        margin: 0.25rem 0;
+    }
+
+    .cap-options-grid {
+        gap: 0.35rem;
+    }
+
+    .cap-option-btn {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .cap-next {
+        margin-top: 0.5rem;
+    }
+
+
+    /* ====== SCRABBLE ====== */
+    .scr-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .scr-game-container > h2 {
+        font-size: 0.9rem;
+    }
+
+    .scr-header {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .scr-score-box {
+        gap: 0.15rem;
+    }
+
+    .scr-score-value {
+        font-size: 1.2rem;
+    }
+
+    .scr-turn-info {
+        font-size: 0.8rem;
+    }
+
+    /* Plateau Scrabble adapté */
+    .scr-board {
+        max-width: 95vw;
+        max-height: 55vh;
+    }
+
+    .scr-cell {
+        font-size: 0.55rem;
+    }
+
+    .scr-tile {
+        font-size: 0.7rem;
+    }
+
+    .scr-tile-val {
+        font-size: 0.4rem;
+    }
+
+    /* Chevalet compact */
+    .scr-rack {
+        gap: 0.2rem;
+    }
+
+    .scr-rack .scr-tile {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+    }
+
+    /* Boutons d'actions compacts */
+    .scr-controls {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        justify-content: center;
+    }
+
+    .scr-controls button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+
+    /* ====== TETRIS ====== */
+    .tetris-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .tetris-header {
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .tetris-stat-box {
+        padding: 0.2rem 0.5rem;
+    }
+
+    .tetris-stat-value {
+        font-size: 1rem;
+    }
+
+    .tetris-stat-label {
+        font-size: 0.65rem;
+    }
+
+    /* Grille Tetris : prise en charge portrait */
+    .tetris-main-area {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .tetris-grid {
+        max-height: 55vh;
+        width: auto;
+        aspect-ratio: 1/2;
+    }
+
+    /* Panneau latéral → horizontal en bas */
+    .tetris-side-panel {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tetris-next-piece {
+        width: 60px;
+        height: 60px;
+    }
+
+    .tetris-controls-mobile {
+        display: flex;
+        gap: 0.3rem;
+    }
+
+
+    /* ====== OBJETS CACHÉS ====== */
+    .oc-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .oc-header {
+        padding: 0.35rem;
+        gap: 0.25rem;
+    }
+
+    .oc-infos {
+        font-size: 0.8rem;
+        gap: 0.5rem;
+    }
+
+    .oc-targets-list {
+        gap: 0.25rem;
+    }
+
+    /* Scène d'images compacte */
+    .oc-scene {
+        max-height: 55vh;
+        overflow: hidden;
+    }
+
+
+    /* ====== BLIND TEST ====== */
+    .blindtest-container {
+        padding-top: 0.25rem;
+    }
+
+    .blindtest-header {
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .bt-player-container {
+        padding: 0.5rem;
+    }
+
+    .audio-waves span {
+        width: 3px;
+    }
+
+    .bt-question {
+        font-size: 0.9rem;
+        margin: 0.25rem 0;
+    }
+
+    .bt-options-grid {
+        gap: 0.35rem;
+    }
+
+    .bt-option-btn {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+
+    /* ====== SNAKE ====== */
+    .sk-game-container {
+        padding-top: 0.25rem;
+    }
+
+    .sk-header {
+        margin-bottom: 0.25rem;
+    }
+
+    .sk-stats {
+        gap: 1rem;
+    }
+
+    .sk-stat-label {
+        font-size: 0.65rem;
+    }
+
+    .sk-stat-value {
+        font-size: 1rem;
+    }
+
+    /* Grille Snake compacte */
+    .sk-grid {
+        max-width: 95vw;
+        max-height: 50vh;
+        aspect-ratio: 1;
+    }
+
+    /* D-pad compact */
+    .sk-dpad {
+        gap: 0.2rem;
+    }
+
+    .sk-dpad .control-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+
+
+    /* ====== NEON PULSE ====== */
+    .np-container {
+        padding-top: 0.25rem;
+    }
+
+    .np-header {
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .np-stats {
+        font-size: 0.85rem;
+        gap: 0.5rem;
+    }
+}
+
+
+/* -----------------------------------------------
+   7. AJUSTEMENTS PAR JEU — Paysage (≤ 950px)
+   ----------------------------------------------- */
+
+@media (max-width: 950px) and (orientation: landscape) {
+
+    /* ====== LE PENDU ====== */
+    /* Layout horizontal : dessin à gauche, clavier à droite */
+    .hg-game-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.25rem;
+    }
+
+    .hg-game-container > h2 {
+        width: 100%;
+        margin: 0;
+    }
+
+    .hg-drawing-container {
+        transform: scale(0.6);
+        transform-origin: top left;
+        flex: 0 0 35%;
+        max-height: 70vh;
+    }
+
+    .hg-word-display {
+        width: 100%;
+        font-size: 1.2rem;
+        margin: 0.25rem 0;
+    }
+
+    .hg-keyboard {
+        flex: 1;
+        gap: 0.2rem;
+    }
+
+    .hg-key {
+        min-width: 26px;
+        min-height: 28px;
+        font-size: 0.8rem;
+    }
+
+
+    /* ====== PAIRES ====== */
+    /* Agrandir la grille pour que les cartes soient lisibles */
+    .pa-header {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.25rem;
+    }
+
+    .pa-grid {
+        max-height: 70vh;
+        gap: 0.3rem;
+    }
+
+    .pa-card {
+        min-height: 55px;
+        min-width: 55px;
+        font-size: 1.5rem;
+    }
+
+    .pa-card .pa-card-front,
+    .pa-card .pa-card-back {
+        font-size: 1.5rem;
+    }
+
+    .pa-card-small {
+        min-height: 45px;
+        min-width: 45px;
+        font-size: 1.1rem;
+    }
+
+
+    /* ====== SUDOKU ====== */
+    .sudoku-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .sudoku-container > h2 {
+        width: 100%;
+    }
+
+    .grid-9x9 {
+        max-height: 75vh;
+        width: auto;
+        aspect-ratio: 1;
+    }
+
+
+    /* ====== MATCH-3 ====== */
+    .jb-grid {
+        max-height: 70vh;
+        width: auto;
+        aspect-ratio: 1;
+    }
+
+    .jb-header {
+        padding: 0.2rem;
+    }
+
+
+    /* ====== SCRABBLE ====== */
+    .scr-board {
+        max-height: 65vh;
+        width: auto;
+        aspect-ratio: 1;
+    }
+
+    .scr-header {
+        padding: 0.2rem;
+        font-size: 0.85rem;
+    }
+
+
+    /* ====== TETRIS ====== */
+    /* Forcer le portrait — message rotatif */
+    .tetris-game-container::before {
+        content: '📱 Pour une meilleure expérience, jouez en mode portrait';
+        display: block;
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        padding: 0.25rem;
+        background: var(--glass-bg);
+        border-radius: 6px;
+        margin-bottom: 0.25rem;
+    }
+
+    .tetris-main-area {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .tetris-grid {
+        max-height: 75vh;
+    }
+
+
+    /* ====== OBJETS CACHÉS ====== */
+    /* L'espace est mieux utilisé en paysage */
+    .oc-header {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0.25rem;
+        gap: 0.5rem;
+    }
+
+    .oc-scene {
+        max-height: 70vh;
+    }
+
+
+    /* ====== SNAKE ====== */
+    .sk-game-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .sk-game-container > h2 {
+        width: 100%;
+    }
+
+    .sk-grid {
+        max-height: 75vh;
+        aspect-ratio: 1;
+    }
+
+    .sk-controls {
+        display: flex;
+        align-items: center;
+    }
+}

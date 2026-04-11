@@ -165,6 +165,7 @@ class ScrabbleGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="scr-game-container">
+                <h2>📝 Scrabble</h2>
                 <div class="scr-header">
                     <div class="scr-score-box">
                         <span class="scr-score-label">Vous</span>

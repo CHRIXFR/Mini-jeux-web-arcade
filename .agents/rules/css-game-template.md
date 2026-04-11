@@ -215,6 +215,7 @@ Si un composant utilise `var(--card-bg-alt)` (fond légèrement plus clair en mo
 - [ ] Les boutons utilisent `.btn-primary` ou `.btn-secondary`
 - [ ] L'en-tête de section `/* === N. JEU : ... === */` est ajouté dans `style.css`
 - [ ] Les styles desktop sont dans `style.css`, les media queries mobiles dans `mobile.css`
+- [ ] Le `<h2>` titre du jeu est visible et centré sur mobile (portrait + paysage)
 - [ ] Le jeu fonctionne en thème sombre ET clair
 - [ ] Test sur mobile (F12 → Device Toolbar) : le jeu rentre dans le viewport sans scroll
 - [ ] Test du jeu en mode manuel

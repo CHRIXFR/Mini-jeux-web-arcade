@@ -110,6 +110,7 @@
         renderLayout() {
             this.container.innerHTML = `
                 <div class="oc-game-container fade-in">
+                    <h2>🕵️ Objets Cachés</h2>
                     <div class="oc-landscape-prompt">
                         📱 Veuillez pivoter votre appareil en mode paysage pour jouer dans de bonnes conditions.
                     </div>
