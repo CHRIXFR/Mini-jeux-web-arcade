@@ -35,6 +35,9 @@ class NeonPulseGame {
         
         this.defineLevels();
 
+        // Détection mobile (doit être avant renderLayout)
+        this.isMobile = window.innerWidth <= 950 || ('ontouchstart' in window);
+
         this.renderLayout();
         this.bindEvents();
     }
@@ -131,7 +134,7 @@ class NeonPulseGame {
                 </div>
                 
                 <div class="np-controls-help">
-                    <p>⌨️ Flèches G/D ou Q/D | 🖱️ Glisser pour déplacer le paddle</p>
+                    <p>${this.isMobile !== undefined && this.isMobile ? '👆 Glissez pour déplacer | 🔥 Bouton laser' : '⌨️ Flèches G/D ou Q/D | 🖱️ Souris | Espace/Clic = Laser'}</p>
                 </div>
             </div>
         `;
@@ -157,6 +160,17 @@ class NeonPulseGame {
     }
 
     bindEvents() {
+        // --- Détection mobile ---
+        this.isMobile = window.innerWidth <= 950 || ('ontouchstart' in window);
+
+        // --- Conversion coordonnées CSS vers coordonnées Canvas internes ---
+        this._touchToCanvasX = (clientX) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const ratio = this.width / rect.width;
+            return (clientX - rect.left) * ratio;
+        };
+
+        // --- Clavier (Desktop) ---
         this.keydownHandler = (e) => {
             if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'q') this.keys.ArrowLeft = true;
             if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') this.keys.ArrowRight = true;
@@ -165,34 +179,84 @@ class NeonPulseGame {
             if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'q') this.keys.ArrowLeft = false;
             if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') this.keys.ArrowRight = false;
         };
-        const move = (e) => {
-            e.preventDefault();
-            const rect = this.canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const x = clientX - rect.left;
-            this.paddle.x = Math.max(0, Math.min(this.width - this.paddle.w, x - this.paddle.w / 2));
-        };
-        this.canvas.addEventListener('mousemove', move);
-        this.canvas.addEventListener('touchmove', move);
-
-        const shootLaser = (e) => {
-            if (this.paddle.laser && this.gameState === 'playing') {
-                this.shootLaser();
-            }
-        };
-
         window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft' || e.key === 'q' || e.key === 'Q') this.keys.ArrowLeft = true;
             if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') this.keys.ArrowRight = true;
-            if (e.code === 'Space') shootLaser(e);
+            if (e.code === 'Space') {
+                if (this.paddle.laser && this.gameState === 'playing') this.shootLaser();
+            }
         });
         window.addEventListener('keyup', (e) => {
             if (e.key === 'ArrowLeft' || e.key === 'q' || e.key === 'Q') this.keys.ArrowLeft = false;
             if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') this.keys.ArrowRight = false;
         });
-        
-        this.canvas.addEventListener('mousedown', shootLaser);
-        this.canvas.addEventListener('touchstart', shootLaser);
+
+        // --- Souris (Desktop) ---
+        this.canvas.addEventListener('mousemove', (e) => {
+            const x = this._touchToCanvasX(e.clientX);
+            this.paddle.x = Math.max(0, Math.min(this.width - this.paddle.w, x - this.paddle.w / 2));
+        });
+        this.canvas.addEventListener('mousedown', () => {
+            if (this.paddle.laser && this.gameState === 'playing') this.shootLaser();
+        });
+
+        // --- Tactile (Mobile) ---
+        // Positionnement initial au toucher
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const x = this._touchToCanvasX(e.touches[0].clientX);
+            this.paddle.x = Math.max(0, Math.min(this.width - this.paddle.w, x - this.paddle.w / 2));
+        }, { passive: false });
+
+        // Suivi du glissement
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const x = this._touchToCanvasX(e.touches[0].clientX);
+            this.paddle.x = Math.max(0, Math.min(this.width - this.paddle.w, x - this.paddle.w / 2));
+        }, { passive: false });
+
+        // --- Bouton Laser Mobile ---
+        if (this.isMobile) {
+            this._setupMobileLaserBtn();
+        }
+    }
+
+    // Crée un bouton de tir laser flottant dédié au mobile
+    _setupMobileLaserBtn() {
+        const btn = document.createElement('button');
+        btn.id = 'np-mobile-laser-btn';
+        btn.textContent = '🔥';
+        btn.setAttribute('aria-label', 'Tirer le laser');
+        // Style en ligne pour garantir la visibilité
+        btn.style.cssText = `
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 60px; height: 60px; border-radius: 50%;
+            font-size: 1.8rem; border: 2px solid #ef4444;
+            background: rgba(239, 68, 68, 0.25); color: white;
+            backdrop-filter: blur(8px); z-index: 1000;
+            display: none; align-items: center; justify-content: center;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            user-select: none; touch-action: manipulation;
+        `;
+        document.body.appendChild(btn);
+        this._mobileLaserBtn = btn;
+
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (this.paddle.laser && this.gameState === 'playing') this.shootLaser();
+        }, { passive: false });
+
+        // Affichage conditionnel via le cycle de powerup
+        this._updateMobileLaserBtnVisibility();
+    }
+
+    // Gère l'affichage/masquage du bouton laser mobile
+    _updateMobileLaserBtnVisibility() {
+        if (this._mobileLaserBtn) {
+            this._mobileLaserBtn.style.display = this.paddle.laser ? 'flex' : 'none';
+        }
     }
 
     unbindEvents() {
@@ -533,8 +597,12 @@ class NeonPulseGame {
             this.paddleTimeout = setTimeout(() => { this.paddle.w = 100; }, 10000);
         } else if (type === 'laser') {
             this.paddle.laser = true;
+            this._updateMobileLaserBtnVisibility();
             clearTimeout(this.laserTimeout);
-            this.laserTimeout = setTimeout(() => { this.paddle.laser = false; }, 8000);
+            this.laserTimeout = setTimeout(() => {
+                this.paddle.laser = false;
+                this._updateMobileLaserBtnVisibility();
+            }, 8000);
         }
     }
 
@@ -719,6 +787,11 @@ class NeonPulseGame {
     stop() {
         this.gameState = 'stopped';
         cancelAnimationFrame(this.animationFrame);
+        // Nettoyage bouton laser mobile
+        if (this._mobileLaserBtn) {
+            this._mobileLaserBtn.remove();
+            this._mobileLaserBtn = null;
+        }
         this.unbindEvents();
     }
 }
