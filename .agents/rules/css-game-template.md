@@ -155,16 +155,20 @@ Les classes suivantes sont disponibles et déjà stylées dans `style.css` :
 
 ## Responsive — Media queries à respecter
 
+> [!IMPORTANT]
+> Les styles **desktop** vont dans `style.css`. Les styles **mobiles/responsifs** vont dans **`mobile.css`**.
+> Ne JAMAIS ajouter de `@media` query dans `style.css`.
+
 Le layout en jeu utilise 3 breakpoints :
 
-1. **Desktop ≥ 1200px** — Layout 2 colonnes (grille à gauche, contrôles à droite)
-2. **Mobile paysage ≤ 950px landscape** — Layout 2 colonnes compactes
-3. **Mobile portrait ≤ 600px** — Layout 1 colonne empilée
+1. **Desktop ≥ 1200px** — Layout 2 colonnes (grille à gauche, contrôles à droite) → `style.css`
+2. **Mobile paysage ≤ 950px landscape** — Layout compact → `mobile.css`
+3. **Mobile portrait ≤ 600px** — Layout 1 colonne empilée → `mobile.css`
 
-Pour chaque nouveau jeu, ajouter les sélecteurs dans les media queries existantes de la section 12 :
+Pour chaque nouveau jeu, ajouter les styles desktop dans `style.css` et les media queries dans `mobile.css` :
 
+**Dans `style.css` :**
 ```css
-/* Dans @media (min-width: 1200px) */
 .[prefix]-game-container {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 400px;
@@ -172,17 +176,28 @@ Pour chaque nouveau jeu, ajouter les sélecteurs dans les media queries existant
     align-items: start;
     max-width: 1600px;
 }
-
-.[prefix]-grid {
-    grid-column: 1;
-    grid-row: 1 / 20;
-    height: min(80vh, 900px);
-    width: auto !important;
-}
-
-.[prefix]-header { grid-column: 2; }
-.[prefix]-controls { grid-column: 2; }
 ```
+
+**Dans `mobile.css` :**
+```css
+@media (max-width: 600px) {
+    .[prefix]-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+}
+```
+
+### Optimisations mobiles automatiques
+
+Grâce à `mobile.css`, les éléments suivants sont **automatiquement gérés** en mode jeu sur mobile :
+
+- Le **header global** est masqué (`body.in-game header { display: none }`)
+- Le **bouton retour** est transformé en icône compacte flottante
+- Le **footer** est masqué
+- Le **texte d'aide contrôles** (`[class$="-controls-help"]`) est masqué
+- Les **glass-panel** ont un padding réduit
 
 ## Thème clair
 
@@ -198,7 +213,8 @@ Si un composant utilise `var(--card-bg-alt)` (fond légèrement plus clair en mo
 
 - [ ] Toutes les couleurs utilisent des variables CSS (pas de `#hex` hardcodé)
 - [ ] Les boutons utilisent `.btn-primary` ou `.btn-secondary`
-- [ ] L'en-tête de section `/* === N. JEU : ... === */` est ajouté
-- [ ] Les media queries desktop/mobile sont prises en compte
+- [ ] L'en-tête de section `/* === N. JEU : ... === */` est ajouté dans `style.css`
+- [ ] Les styles desktop sont dans `style.css`, les media queries mobiles dans `mobile.css`
 - [ ] Le jeu fonctionne en thème sombre ET clair
+- [ ] Test sur mobile (F12 → Device Toolbar) : le jeu rentre dans le viewport sans scroll
 - [ ] Test du jeu en mode manuel

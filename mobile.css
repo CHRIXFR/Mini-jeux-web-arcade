@@ -1,0 +1,219 @@
+/* ==============================================
+   MOBILE.CSS — Media Queries Responsives
+   Séparation des styles mobiles du fichier principal.
+   Breakpoints : ≤ 600px (portrait), ≤ 950px (paysage)
+   ============================================== */
+
+/* -----------------------------------------------
+   1. MODE JEU — Header, Navigation & Viewport
+   ----------------------------------------------- */
+
+/* Portrait mobile : masquer le header et le footer en jeu */
+@media (max-width: 600px) {
+
+    /* --- Header masqué pendant le jeu --- */
+    body.in-game header {
+        display: none;
+    }
+
+    /* --- Footer masqué pendant le jeu --- */
+    body.in-game footer {
+        display: none;
+    }
+
+    /* --- Bouton Retour : icône compacte flottante --- */
+    body.in-game .game-view > .btn-secondary {
+        position: fixed;
+        top: 0.5rem;
+        left: 0.5rem;
+        z-index: 200;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 0;           /* Masquer le texte "← Retour" */
+        margin-bottom: 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    body.in-game .game-view > .btn-secondary::before {
+        content: '←';
+        font-size: 1.1rem;
+        color: var(--text-primary);
+    }
+
+    body.in-game .game-view > .btn-secondary:active {
+        transform: scale(0.9);
+    }
+
+    /* --- Conteneur de jeu plein viewport --- */
+    body.in-game #app-container {
+        padding: 0;
+    }
+
+    body.in-game .game-view {
+        padding: 0.25rem;
+        padding-top: 0;
+    }
+
+    /* Supprimer la marge entre le bouton retour et le contenu du jeu */
+    body.in-game .game-view > .btn-secondary + #game-mount {
+        margin-top: 0;
+    }
+}
+
+/* Paysage mobile : masquer header/footer en jeu aussi */
+@media (max-width: 950px) and (orientation: landscape) {
+
+    body.in-game header {
+        display: none;
+    }
+
+    body.in-game footer {
+        display: none;
+    }
+
+    /* Bouton retour compact en paysage aussi */
+    body.in-game .game-view > .btn-secondary {
+        position: fixed;
+        top: 0.5rem;
+        left: 0.5rem;
+        z-index: 200;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 0;
+        margin-bottom: 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    body.in-game .game-view > .btn-secondary::before {
+        content: '←';
+        font-size: 1.1rem;
+        color: var(--text-primary);
+    }
+}
+
+
+/* -----------------------------------------------
+   2. ACCUEIL — Layout compact mobile
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    /* Header plus compact */
+    header {
+        padding: 0.5rem;
+    }
+
+    .header-content {
+        gap: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.1rem;
+    }
+
+    /* Stats user compactes */
+    .user-stats {
+        padding: 0.25rem 0.5rem;
+        gap: 0.4rem;
+    }
+
+    .theme-toggle {
+        font-size: 0.9rem;
+    }
+
+    /* Grille de jeux compacte */
+    .games-grid {
+        gap: 0.75rem;
+        padding: 0.5rem;
+    }
+
+    /* Conteneur principal réduit en marge */
+    main {
+        padding: 0 0.5rem;
+    }
+
+    /* Footer compact */
+    footer {
+        padding: 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+
+/* -----------------------------------------------
+   3. EN JEU — Panneaux & conteneurs de jeux
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    /* Réduction du padding des panneaux glass en jeu */
+    body.in-game .glass-panel {
+        padding: 0.75rem;
+    }
+
+    /* Headers de jeux plus compacts */
+    body.in-game [class$="-header"] {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Stats en jeu plus petites */
+    body.in-game [class$="-stats"] {
+        font-size: 0.95rem;
+        padding: 0.3rem 0.8rem;
+        gap: 1rem;
+    }
+
+    /* Aide contrôles masquée sur mobile (économiser de l'espace) */
+    body.in-game [class$="-controls-help"] {
+        display: none;
+    }
+}
+
+
+/* -----------------------------------------------
+   4. MODALES — Adaptation mobile
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    /* Modale de jeu plus compacte */
+    .modal-content {
+        padding: 1.5rem 1rem;
+        margin: 0.5rem;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-game-icon {
+        font-size: 2.5rem;
+    }
+
+    .modal-description {
+        font-size: 0.85rem;
+    }
+
+    /* Boutons de modale empilés verticalement */
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .modal-actions .btn-primary,
+    .modal-actions .btn-secondary {
+        width: 100%;
+    }
+}
