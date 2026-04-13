@@ -26,11 +26,9 @@ module.exports = defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL: 'http://localhost:8080',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
@@ -59,7 +57,7 @@ module.exports = defineConfig({
     {
       name: 'mobile-samsung-a51-portrait',
       use: {
-        ...devices['Pixel 5'],
+        ...devices['Galaxy A51'],
         viewport: { width: 412, height: 914 },
         deviceScaleFactor: 2.625,
         isMobile: true,
@@ -69,9 +67,9 @@ module.exports = defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'node scripts/playwright-static-server.js',
+    url: 'http://localhost:8080',
+    reuseExistingServer: !process.env.CI,
+ },
 });

@@ -438,7 +438,13 @@
                     bgElement.classList.add('loaded');
                 };
             },
+            isTourDisabled: function () {
+                const params = new URLSearchParams(window.location.search);
+                const forcedDisable = params.get('tour') === 'off';
+                return forcedDisable || this.state.testMode || !!navigator.webdriver;
+            },
             startTour: function () {
+                if (this.isTourDisabled()) return;
                 if (!window.driver) return;
                 const isHome = this.state.currentView === 'home';
                 const steps = [
@@ -464,6 +470,7 @@
                 driverObj.drive();
             },
             checkFirstVisit: function () {
+                if (this.isTourDisabled()) return;
                 if (!localStorage.getItem('arcade_tour_done')) {
                     setTimeout(() => {
                         this.startTour();
