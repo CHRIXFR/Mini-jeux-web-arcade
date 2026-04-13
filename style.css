@@ -2061,10 +2061,10 @@ body.in-game .game-view {
     }
 
     body.in-game .game-view>.btn-secondary {
-        position: absolute;
-        top: 1rem;
-        left: 1.5rem;
-        z-index: 100;
+        position: fixed;
+        top: 5.1rem;
+        left: 1rem;
+        z-index: 110;
     }
 
     .scr-game-container,
@@ -2250,6 +2250,119 @@ body.in-game .game-view {
     }
 }
 
+@media (min-width: 1900px) {
+    body.in-game main {
+        max-width: 2100px;
+    }
+
+    body.in-game .game-view>.btn-secondary {
+        left: clamp(0.75rem, calc((100vw - 2100px) / 2 - 7rem), 10rem);
+    }
+
+    .scr-game-container,
+    .ws-game-container,
+    .sudoku-container,
+    .jb-game-container,
+    .hg-game-container,
+    .pa-game-container {
+        grid-template-columns: minmax(780px, 920px) minmax(350px, 430px);
+        gap: 3rem;
+        margin-top: 1.2rem;
+    }
+
+    .scr-board,
+    .grid-9x9,
+    .ws-grid,
+    .jb-grid {
+        height: min(74vh, 840px);
+    }
+
+    #game-mount {
+        max-width: 2100px;
+        margin: 0 auto;
+    }
+
+    .capitales-container,
+    .blindtest-container,
+    .tetris-game-container,
+    .oc-game-container,
+    .sk-game-container,
+    .np-container {
+        width: 100%;
+        max-width: 1600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .capitales-container {
+        max-width: 1300px;
+        gap: 1.25rem;
+        padding: 12px 18px;
+    }
+
+    .cap-game {
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    .cap-options-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .blindtest-container {
+        max-width: 1320px;
+    }
+
+    .bt-game {
+        gap: 1.2rem;
+    }
+
+    .bt-options-grid {
+        max-width: 1040px;
+        grid-template-columns: repeat(2, minmax(300px, 1fr));
+    }
+
+    .tetris-game-container {
+        max-width: 1220px;
+    }
+
+    .tetris-main-area {
+        gap: 3rem;
+    }
+
+    .tetris-grid {
+        width: min(35vw, 460px);
+    }
+
+    .oc-game-container {
+        max-width: 1500px;
+    }
+
+    .oc-scene {
+        max-width: 1460px;
+        margin: 0 auto;
+    }
+
+    .sk-game-container {
+        max-width: 980px;
+    }
+
+    .sk-grid {
+        max-width: 640px;
+    }
+
+    .np-container {
+        max-width: 1320px;
+        gap: 1.2rem;
+    }
+
+    .np-canvas-container {
+        max-height: 68vh;
+    }
+}
+
 
 /* =========================================
    Affichage Mobile Paysage
@@ -2273,11 +2386,11 @@ body.in-game .game-view {
 
     body.in-game .game-view>.btn-secondary {
         position: absolute;
-        top: 0;
+        top: 0.25rem;
         left: 0;
         z-index: 10;
-        padding: 0.3rem 0.5rem;
-        font-size: 0.8rem;
+        padding: 0.25rem 0.45rem;
+        font-size: 0.78rem;
     }
 
     .scr-game-container,
@@ -2287,12 +2400,12 @@ body.in-game .game-view {
     .hg-game-container,
     .pa-game-container {
         display: grid;
-        grid-template-columns: auto 220px;
-        gap: 1rem;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 24vw);
+        gap: 0.75rem;
         align-items: start;
         justify-content: center;
         height: 100%;
-        margin-top: 5px;
+        margin-top: 2px;
     }
 
     .scr-board,
@@ -2302,7 +2415,7 @@ body.in-game .game-view {
     .hg-drawing-container {
         grid-column: 1;
         grid-row: 1 / 10;
-        height: 85vh;
+        height: min(72vh, 520px);
         width: auto !important;
         max-width: 100%;
         margin: 0;
@@ -2313,7 +2426,7 @@ body.in-game .game-view {
         grid-row: 1 / 10;
         height: auto;
         width: 100%;
-        max-width: min(100%, 75vh);
+        max-width: min(100%, 82vh);
         margin: 0 auto;
     }
 
@@ -2325,8 +2438,8 @@ body.in-game .game-view {
         grid-column: 2;
         grid-row: 1;
         margin-bottom: 0;
-        padding: 0.5rem;
-        font-size: 0.8rem;
+        padding: 0.45rem;
+        font-size: 0.76rem;
     }
 
     .scr-rack,
@@ -2347,7 +2460,7 @@ body.in-game .game-view {
         grid-column: 2;
         grid-row: 3;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
     .number-pad {
@@ -2368,7 +2481,91 @@ body.in-game .game-view {
     }
 
     .hg-keyboard {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .capitales-container,
+    .blindtest-container,
+    .tetris-game-container,
+    .oc-game-container,
+    .sk-game-container,
+    .np-container {
+        gap: 0.55rem;
+        padding-top: 0.2rem;
+    }
+
+    .cap-game,
+    .bt-game {
+        gap: 0.7rem;
+    }
+
+    .cap-flag-container,
+    .bt-player-container {
+        min-height: 120px;
+        padding: 0.8rem;
+    }
+
+    .cap-question,
+    .bt-question {
+        margin: 0.2rem 0;
+        font-size: 1.1rem;
+    }
+
+    .cap-options-grid,
+    .bt-options-grid {
+        gap: 0.6rem;
+    }
+
+    .cap-option-btn,
+    .bt-option-btn {
+        padding: 0.75rem 0.65rem;
+        font-size: 0.92rem;
+    }
+
+    .oc-header {
+        gap: 0.5rem;
+        padding: 0.6rem;
+    }
+
+    .oc-targets-list {
+        gap: 0.6rem;
+        font-size: 1.5rem;
+    }
+
+    .oc-scene {
+        aspect-ratio: 16 / 7.5;
+    }
+
+    .tetris-main-area {
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .tetris-grid {
+        width: min(240px, 46vw);
+    }
+
+    .sk-grid {
+        max-width: min(58vh, 340px);
+    }
+
+    .np-canvas-container {
+        max-height: 56vh;
+    }
+}
+
+@media (max-width: 950px) and (orientation: portrait) {
+    body.in-game .game-view>.btn-secondary {
+        position: sticky;
+        top: calc(env(safe-area-inset-top, 0px) + 0.2rem);
+        z-index: 30;
+        align-self: flex-start;
+        margin: 0 0 0.45rem 0.1rem;
+        padding: 0.4rem 0.75rem;
+    }
+
+    body.in-game main {
+        padding-top: 0.6rem;
     }
 }
 
@@ -2798,13 +2995,206 @@ body:not(.light-mode) .cap-option-btn {
 
 /* Reponsive */
 @media (max-width: 600px) {
+    .blindtest-container {
+        padding: 0.5rem 0.45rem 0.35rem;
+    }
+
+    .bt-game {
+        gap: 0.5rem;
+        padding-bottom: 4.1rem;
+    }
+
+    .bt-player-container {
+        min-height: 104px;
+        max-width: 100%;
+        padding: 0.7rem 0.65rem;
+    }
+
+    .bt-status {
+        margin-top: 0.7rem;
+        font-size: 0.92rem;
+    }
+
+    .bt-question {
+        font-size: 1rem;
+        margin: 0.1rem 0;
+        line-height: 1.25;
+    }
+
+    .bt-options-grid {
+        gap: 0.45rem;
+    }
+
+    .bt-option-btn {
+        min-height: 44px;
+        padding: 0.65rem 0.6rem;
+        font-size: 0.92rem;
+    }
+
+    .bt-next,
+    .bt-replay {
+        position: fixed;
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 0.45rem);
+        width: auto;
+        margin: 0;
+        min-height: 46px;
+        padding: 0 0.8rem;
+        font-size: 0.95rem;
+        z-index: 220;
+        border-radius: 12px;
+        justify-content: center;
+    }
+
+    .oc-game-container {
+        gap: 0.45rem;
+        padding: 0.5rem 0.45rem 0.35rem;
+    }
+
+    .oc-landscape-prompt {
+        padding: 0.4rem 0.55rem;
+        font-size: 0.78rem;
+        line-height: 1.2;
+        border-radius: 10px;
+    }
+
+    .oc-header {
+        gap: 0.45rem;
+        padding: 0.55rem;
+    }
+
+    .oc-targets-list {
+        gap: 0.45rem;
+        font-size: 1.4rem;
+    }
+
+    .oc-scene {
+        border-width: 2px;
+        aspect-ratio: 4 / 3;
+    }
+
+    .capitales-container {
+        padding: 0.5rem 0.45rem 0.35rem;
+        gap: 0.45rem;
+    }
+
+    .cap-game {
+        gap: 0.7rem;
+        padding-bottom: 4.1rem;
+    }
+
+    .cap-flag-container {
+        min-height: 182px;
+        max-width: 100%;
+        padding: 1rem 0.85rem;
+        border-radius: 14px;
+    }
+
+    .cap-flag-img {
+        height: clamp(120px, 31vw, 154px);
+        width: auto;
+    }
+
+    .cap-question {
+        margin: 0.24rem 0 0.3rem;
+        font-size: 1.08rem;
+        line-height: 1.25;
+    }
+
     .cap-options-grid {
         grid-template-columns: 1fr;
+        gap: 0.52rem;
+    }
+
+    .cap-option-btn {
+        padding: 0.72rem 0.65rem;
+        font-size: 0.95rem;
+        min-height: 48px;
+    }
+
+    .cap-next {
+        position: fixed;
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 0.45rem);
+        width: auto;
+        max-width: none;
+        margin: 0;
+        height: 46px;
+        padding: 0 0.8rem;
+        font-size: 0.95rem;
+        z-index: 220;
+        border-radius: 12px;
     }
 
     .cap-header {
         flex-direction: column;
         gap: 10px;
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+    .blindtest-container {
+        gap: 0.5rem;
+    }
+
+    .bt-game {
+        gap: 0.55rem;
+    }
+
+    .bt-player-container {
+        min-height: 102px;
+        padding: 0.65rem;
+    }
+
+    .bt-status {
+        margin-top: 0.55rem;
+        font-size: 0.86rem;
+    }
+
+    .bt-question {
+        font-size: 1rem;
+    }
+
+    .bt-option-btn {
+        padding: 0.7rem 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .bt-next,
+    .bt-replay {
+        margin-top: 0.25rem;
+        min-height: 40px;
+        font-size: 0.86rem;
+    }
+
+    .oc-game-container {
+        gap: 0.5rem;
+    }
+
+    .oc-landscape-prompt {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.6rem;
+    }
+
+    .oc-scene {
+        aspect-ratio: 16 / 7.8;
+    }
+
+    .cap-game {
+        gap: 0.55rem;
+    }
+
+    .cap-options-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cap-next {
+        height: 42px;
+        margin-top: 0.3rem;
+        font-size: 0.88rem;
+        padding: 0 0.7rem;
     }
 }
 
@@ -3695,4 +4085,4 @@ body:not(.light-mode) .cap-option-btn {
 
 .np-shake-active {
     animation: np-shake 0.3s ease-in-out;
-}
+}

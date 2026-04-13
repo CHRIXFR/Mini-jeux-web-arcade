@@ -13,9 +13,9 @@
         style.textContent = `
             .game-topbar {
                 display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.6rem;
                 padding: 0.9rem 1rem;
                 margin-bottom: 1rem;
                 border: 1px solid var(--border);
@@ -40,23 +40,20 @@
                 white-space: normal;
                 word-break: break-word;
                 overflow-wrap: anywhere;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                max-width: 28ch;
+                max-width: 100%;
             }
             .game-topbar-right {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                flex-wrap: wrap;
-                justify-content: flex-end;
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.45rem;
+                width: 100%;
             }
             .game-topbar-difficulty {
-                display: inline-flex;
+                display: flex;
                 align-items: center;
                 gap: 0.5rem;
+                justify-content: space-between;
+                width: 100%;
             }
             .game-topbar-difficulty label {
                 font-size: 0.78rem;
@@ -74,9 +71,11 @@
                 padding: 0 0.6rem;
             }
             .game-topbar-stat {
-                display: inline-flex;
+                display: flex;
                 align-items: center;
                 gap: 0.5rem;
+                justify-content: space-between;
+                width: 100%;
             }
             .game-topbar-stat-label {
                 font-size: 0.78rem;
@@ -88,6 +87,22 @@
                 font-weight: 700;
                 color: var(--accent);
                 font-variant-numeric: tabular-nums;
+            }
+            @media (max-width: 520px) {
+                .game-topbar {
+                    padding: 0.8rem 0.75rem;
+                }
+                .game-topbar-title {
+                    font-size: 1rem;
+                }
+                .game-topbar-right {
+                    gap: 0.4rem;
+                }
+                .game-topbar-difficulty,
+                .game-topbar-stat {
+                    justify-content: space-between;
+                    width: 100%;
+                }
             }
         `;
         document.head.appendChild(style);
