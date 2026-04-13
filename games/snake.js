@@ -33,14 +33,6 @@ class SnakeGame {
         this.container.innerHTML = `
             <div class="sk-game-container">
                 <div id="sk-topbar"></div>
-                <div class="sk-header">
-                    <div class="sk-stats">
-                        <div class="sk-stat">
-                            <div class="sk-stat-label">POMMES</div>
-                            <div class="sk-stat-value" id="sk-apples">0/5</div>
-                        </div>
-                    </div>
-                </div>
                 <div id="sk-grid" class="sk-grid"></div>
                 <div class="sk-controls">
                     <div class="sk-dpad">
@@ -56,8 +48,8 @@ class SnakeGame {
             id: 'snake-topbar',
             icon: '🐍',
             title: 'Snake',
-            statLabel: 'Niveau',
-            statValue: this.level
+            statLabel: 'Niveau / Pommes',
+            statValue: `${this.level} • ${this.applesInLevel}/${this.applesToNextLevel}`
         });
         this.createGridCells();
         this.bindEvents();
@@ -367,8 +359,7 @@ class SnakeGame {
     }
 
     updateStatsUI() {
-        window.arcade.updateGameTopbarStat('snake-topbar', this.level);
-        document.getElementById('sk-apples').textContent = `${this.applesInLevel}/${this.applesToNextLevel}`;
+        window.arcade.updateGameTopbarStat('snake-topbar', `${this.level} • ${this.applesInLevel}/${this.applesToNextLevel}`);
     }
 
     gameOver() {

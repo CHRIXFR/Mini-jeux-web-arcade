@@ -24,7 +24,7 @@
             }
             .game-topbar-left {
                 display: flex;
-                align-items: center;
+                align-items: flex-start;
                 gap: 0.6rem;
                 min-width: 0;
             }
@@ -36,9 +36,15 @@
                 margin: 0;
                 font-size: 1.1rem;
                 color: var(--text-primary);
-                white-space: nowrap;
+                line-height: 1.15;
+                white-space: normal;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
                 overflow: hidden;
-                text-overflow: ellipsis;
+                max-width: 28ch;
             }
             .game-topbar-right {
                 display: flex;

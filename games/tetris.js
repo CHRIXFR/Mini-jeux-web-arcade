@@ -31,6 +31,8 @@ window.arcade.tetris = {
     lastTime: 0,
     dropCounter: 0,
     dropInterval: 1000,
+    orientationLocked: false,
+    resizeHandler: null,
 
     // ---- Constants ----
     COLS: 10,
@@ -97,6 +99,9 @@ window.arcade.tetris = {
                 
                 <div class="tetris-main-area">
                     <div id="tetris-grid" class="tetris-grid"></div>
+                    <div id="tetris-orientation-lock" class="tetris-orientation-lock" style="display:none;">
+                        Tournez votre téléphone en vertical pour jouer a Tetris.
+                    </div>
                     
                     <div class="tetris-side-panel">
                         <div class="tetris-stat-label">Suivant</div>
@@ -141,6 +146,9 @@ window.arcade.tetris = {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         document.addEventListener('keydown', this.handleKeyDown);
 
+        this.resizeHandler = this.handleOrientationChange.bind(this);
+        window.addEventListener('resize', this.resizeHandler);
+
         // Boutons tactiles
         const btnLeft = document.getElementById('btn-tetris-left');
         const btnRight = document.getElementById('btn-tetris-right');
@@ -155,6 +163,10 @@ window.arcade.tetris = {
 
     cleanup: function () {
         document.removeEventListener('keydown', this.handleKeyDown);
+        if (this.resizeHandler) {
+            window.removeEventListener('resize', this.resizeHandler);
+            this.resizeHandler = null;
+        }
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
             this.animationId = null;
@@ -210,7 +222,38 @@ window.arcade.tetris = {
         this.lastTime = 0;
         this.dropCounter = 0;
         this.gameLoopWrapper = this.gameLoop.bind(this); // bind une seule fois
-        this.animationId = requestAnimationFrame(this.gameLoopWrapper);
+        this.handleOrientationChange();
+        if (!this.orientationLocked) {
+            this.animationId = requestAnimationFrame(this.gameLoopWrapper);
+        }
+    },
+
+    isMobileLandscape: function () {
+        return window.innerWidth <= 950 && window.innerWidth > window.innerHeight;
+    },
+
+    handleOrientationChange: function () {
+        const lockEl = document.getElementById('tetris-orientation-lock');
+        const shouldLock = this.isMobileLandscape();
+        this.orientationLocked = shouldLock;
+
+        if (lockEl) {
+            lockEl.style.display = shouldLock ? 'flex' : 'none';
+        }
+
+        if (shouldLock) {
+            if (this.animationId) {
+                cancelAnimationFrame(this.animationId);
+                this.animationId = null;
+            }
+            return;
+        }
+
+        if (!this.isGameOver && !this.animationId && this.currentPiece) {
+            this.lastTime = 0;
+            this.dropCounter = 0;
+            this.animationId = requestAnimationFrame(this.gameLoopWrapper);
+        }
     },
 
     // ==========================================
@@ -248,7 +291,7 @@ window.arcade.tetris = {
 
     // Réalise la translation de la pièce
     movePiece: function (dirX, dirY) {
-        if (this.isGameOver) return false; // Return false to indicate no move happened
+        if (this.isGameOver || this.orientationLocked) return false; // Return false to indicate no move happened
 
         // Check collision virtuelle
         if (!this.checkCollision(this.currentPiece.matrix, this.currentPiece.x + dirX, this.currentPiece.y + dirY)) {
@@ -275,7 +318,7 @@ window.arcade.tetris = {
     },
 
     rotatePiece: function () {
-        if (this.isGameOver) return;
+        if (this.isGameOver || this.orientationLocked) return;
 
         const originalMatrix = this.currentPiece.matrix;
         const rotatedMatrix = this.rotateMatrix(originalMatrix);
@@ -326,7 +369,7 @@ window.arcade.tetris = {
     },
 
     hardDrop: function () {
-        if (this.isGameOver) return;
+        if (this.isGameOver || this.orientationLocked) return;
         let dropDistance = 0;
         while (!this.checkCollision(this.currentPiece.matrix, this.currentPiece.x, this.currentPiece.y + 1)) {
             this.currentPiece.y++;
@@ -557,7 +600,7 @@ window.arcade.tetris = {
     // ==========================================
 
     gameLoop: function (time = 0) {
-        if (this.isGameOver) return;
+        if (this.isGameOver || this.orientationLocked) return;
 
         const dt = time - this.lastTime;
         this.lastTime = time;
@@ -577,7 +620,7 @@ window.arcade.tetris = {
     },
 
     handleKeyDown: function (e) {
-        if (this.isGameOver) return;
+        if (this.isGameOver || this.orientationLocked) return;
 
         switch (e.key) {
             case 'ArrowLeft':

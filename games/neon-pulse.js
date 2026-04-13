@@ -122,12 +122,6 @@ class NeonPulseGame {
         this.container.innerHTML = `
             <div class="np-container glass-panel">
                 <div id="np-topbar"></div>
-                <div class="np-header">
-                    <div class="np-stats">
-                        <span id="np-lives">Vies: ❤️❤️❤️</span>
-                    </div>
-                </div>
-                
                 <div class="np-canvas-container" id="np-canvas-container">
                     <canvas id="np-canvas" width="${this.width}" height="${this.height}"></canvas>
                 </div>
@@ -142,8 +136,8 @@ class NeonPulseGame {
             id: 'neon-pulse-topbar',
             icon: '☄️',
             title: 'Neon Pulse',
-            statLabel: 'Niveau',
-            statValue: this.level
+            statLabel: 'Niveau / Vies',
+            statValue: `${this.level} • ${'❤️'.repeat(this.lives)}`
         });
 
         this.canvas = document.getElementById('np-canvas');
@@ -348,9 +342,7 @@ class NeonPulseGame {
     }
 
     updateHUD() {
-        const hLives = document.getElementById('np-lives');
-        window.arcade.updateGameTopbarStat('neon-pulse-topbar', this.level);
-        if (hLives) hLives.textContent = `Vies: ${'❤️'.repeat(this.lives)}`;
+        window.arcade.updateGameTopbarStat('neon-pulse-topbar', `${this.level} • ${'❤️'.repeat(this.lives)}`);
     }
 
     loop(timestamp) {
