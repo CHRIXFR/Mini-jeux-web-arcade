@@ -1,0 +1,33 @@
+{
+  "name": "mini-jeux-web-arcade",
+  "version": "1.0.0",
+  "description": "Une collection de mini-jeux classiques, élégants et entièrement gratuits — jouables directement dans le navigateur, sans installation.",
+  "main": "playwright.config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:resolutions": "playwright test tests/resolutions.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CHRIXFR/Mini-jeux-web-arcade.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CHRIXFR/Mini-jeux-web-arcade/issues"
+  },
+  "homepage": "https://github.com/CHRIXFR/Mini-jeux-web-arcade#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
+  },
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}
