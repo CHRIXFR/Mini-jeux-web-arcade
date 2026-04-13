@@ -64,25 +64,15 @@ class PairesGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="pa-game-container">
+                <div id="pa-topbar"></div>
                 <div class="pa-header">
-                    <h2>Jeu de Paires</h2>
                     <div class="pa-stats">
-                        <div class="pa-stat-item">
-                            <span class="pa-stat-label">Temps</span>
-                            <span id="pa-timer" class="pa-stat-value">00:00</span>
-                        </div>
                         <div class="pa-stat-item">
                             <span class="pa-stat-label">Essais</span>
                             <span id="pa-moves" class="pa-stat-value">0</span>
                         </div>
                     </div>
                     <div class="pa-controls">
-                        <label for="pa-diff-select" class="sr-only">Difficulté</label>
-                        <select id="pa-diff-select" class="diff-select">
-                            <option value="easy">Facile (4x3)</option>
-                            <option value="medium" selected>Moyen (4x4)</option>
-                            <option value="hard">Difficile (6x6)</option>
-                        </select>
                         <button id="pa-btn-new" class="btn-secondary">Nouveau</button>
                     </div>
                 </div>
@@ -90,11 +80,28 @@ class PairesGame {
             </div>
         `;
 
+        window.arcade.renderGameTopbar('#pa-topbar', {
+            id: 'paires-topbar',
+            icon: '🃏',
+            title: 'Jeu de Paires',
+            statLabel: 'Temps',
+            statValue: this.formatTime(this.timer),
+            difficulty: {
+                selectId: 'pa-diff-select',
+                value: this.difficulty,
+                options: [
+                    { value: 'easy', label: 'Facile (4x3)' },
+                    { value: 'medium', label: 'Moyen (4x4)' },
+                    { value: 'hard', label: 'Difficile (6x6)' }
+                ],
+                onChange: (newDiff) => {
+                    this.difficulty = newDiff;
+                    this.newGame();
+                }
+            }
+        });
+
         document.getElementById('pa-btn-new').onclick = () => this.newGame();
-        document.getElementById('pa-diff-select').onchange = (e) => {
-            this.difficulty = e.target.value;
-            this.newGame();
-        };
     }
 
     newGame() {
@@ -244,12 +251,7 @@ class PairesGame {
     }
 
     updateTimerDisplay() {
-        const timerEl = document.getElementById('pa-timer');
-        if (timerEl) {
-            timerEl.textContent = this.formatTime(this.timer);
-        } else {
-            clearInterval(this.timerInterval);
-        }
+        window.arcade.updateGameTopbarStat('paires-topbar', this.formatTime(this.timer));
     }
 
     formatTime(seconds) {

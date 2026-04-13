@@ -1,71 +1,75 @@
+// @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// import dotenv from 'dotenv';
+// import path from 'path';
+// dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+/**
+ * @see https://playwright.dev/docs/test-configuration
+ */
 module.exports = defineConfig({
   testDir: './tests',
+  /* Run tests in files in parallel */
   fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  workers: 1, // Limiter les workers en local pour plus de stabilite
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
-
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: 'http://localhost:8080',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
 
-  expect: {
-    toHaveScreenshot: {
-      maxDiffPixelRatio: 0.05, // Tolérer 5% de pixels différents (antialiasing, etc)
-      animations: 'disabled', // Figer les animations pour les captures
-    },
-  },
-
+  /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Desktop PC Plein Écran',
+      name: 'desktop-chrome-1080p',
       use: {
         ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 }
+        viewport: { width: 1920, height: 1080 },
       },
     },
     {
-      name: 'Desktop PC Fenêtré large',
+      name: 'desktop-chrome-1440p',
       use: {
         ...devices['Desktop Chrome'],
-        viewport: { width: 1366, height: 768 }
+        viewport: { width: 2560, height: 1440 },
       },
     },
     {
-      name: 'Desktop PC Fenêtré standard',
+      name: 'desktop-chrome-2160p',
       use: {
         ...devices['Desktop Chrome'],
-        viewport: { width: 1280, height: 720 }
+        viewport: { width: 3840, height: 2160 },
       },
     },
     {
-      name: 'Tablette iPad (Portrait)',
-      use: { ...devices['iPad Pro 11'] },
-    },
-    {
-      name: 'Tablette iPad (Paysage)',
+      name: 'mobile-samsung-a51-portrait',
       use: {
-        ...devices['iPad Pro 11 landscape'],
+        ...devices['Galaxy A51'],
+        viewport: { width: 412, height: 914 },
+        deviceScaleFactor: 2.625,
+        isMobile: true,
+        hasTouch: true,
       },
-    },
-    {
-      name: 'Mobile Galaxy S9+ (Portrait)',
-      use: { ...devices['Galaxy S9+'] },
-    },
-    {
-      name: 'Mobile Galaxy S9+ (Paysage)',
-      use: { ...devices['Galaxy S9+ landscape'] },
     },
   ],
 
+  /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npx http-server -p 8080 .',
+    command: 'node scripts/playwright-static-server.js',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
-  },
+ },
 });

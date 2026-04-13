@@ -58,12 +58,12 @@
 
     body.in-game .game-view {
         padding: 0.25rem;
-        padding-top: 0;
+        padding-top: 0.35rem;
     }
 
     /* Supprimer la marge entre le bouton retour et le contenu du jeu */
     body.in-game .game-view > .btn-secondary + #game-mount {
-        margin-top: 0;
+        margin-top: 0.35rem;
     }
 }
 
@@ -102,6 +102,15 @@
         content: '←';
         font-size: 1.1rem;
         color: var(--text-primary);
+    }
+
+    body.in-game .game-view {
+        padding: 0.25rem;
+        padding-top: 0.35rem;
+    }
+
+    body.in-game .game-view > .btn-secondary + #game-mount {
+        margin-top: 0.35rem;
     }
 }
 
@@ -180,6 +189,131 @@
     /* Aide contrôles masquée sur mobile (économiser de l'espace) */
     body.in-game [class$="-controls-help"] {
         display: none;
+    }
+
+    .game-topbar {
+        padding: 0.65rem 0.75rem;
+        margin-top: 0.45rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .game-topbar-title {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+
+    .game-topbar-right {
+        width: 100%;
+        gap: 0.4rem;
+    }
+
+    .game-topbar-difficulty label,
+    .game-topbar-stat-label {
+        font-size: 0.72rem;
+    }
+
+    .game-topbar-difficulty select {
+        max-width: 165px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+    body.in-game #app-container {
+        padding: 0 0.15rem;
+    }
+
+    body.in-game .game-view {
+        padding: 0.2rem;
+    }
+
+    .game-topbar {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 0.35rem;
+        margin-top: 0.2rem;
+        margin-bottom: 0.5rem;
+        padding: 0.45rem 0.6rem 0.45rem 2.1rem;
+    }
+
+    .game-topbar-left,
+    .game-topbar-right {
+        width: 100%;
+    }
+
+    .game-topbar-title {
+        font-size: 0.92rem;
+        line-height: 1.1;
+        max-width: 100%;
+    }
+
+    .game-topbar-right {
+        gap: 0.4rem;
+    }
+
+    .game-topbar-difficulty label,
+    .game-topbar-stat-label {
+        font-size: 0.68rem;
+    }
+
+    .game-topbar-difficulty select {
+        height: 34px;
+        font-size: 0.8rem;
+        max-width: 170px;
+    }
+
+    .ws-game-container,
+    .pa-game-container,
+    .sudoku-container,
+    .jb-game-container,
+    .scr-game-container,
+    .capitales-container,
+    .blindtest-container,
+    .hg-game-container,
+    .sk-game-container,
+    .np-container,
+    .oc-game-container,
+    .tetris-game-container {
+        width: 100%;
+        max-width: none;
+    }
+
+    .ws-grid,
+    .pa-grid,
+    .grid-9x9,
+    .jb-grid {
+        margin-bottom: 0.6rem;
+    }
+
+    .hg-keyboard {
+        gap: 4px;
+    }
+
+    .hg-key {
+        min-width: 26px;
+        padding: 0.35rem;
+        font-size: 0.78rem;
+    }
+
+    .tetris-orientation-lock {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 1rem;
+        z-index: 6;
+        background: rgba(9, 9, 11, 0.88);
+        color: var(--text-primary);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        font-weight: 600;
+    }
+
+    .tetris-main-area {
+        position: relative;
     }
 }
 

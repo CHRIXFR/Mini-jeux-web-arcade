@@ -99,6 +99,7 @@ class ScrabbleGame {
         this.renderRack();
         const bagEl = document.getElementById('scr-bag-count');
         if (bagEl) bagEl.textContent = this.bag.length;
+        this.updateStats();
         window.arcade.showToast('Partie commencée !');
     }
 
@@ -165,6 +166,7 @@ class ScrabbleGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="scr-game-container">
+                <div id="scr-topbar"></div>
                 <div class="scr-header">
                     <div class="scr-score-box">
                         <span class="scr-score-label">Vous</span>
@@ -203,6 +205,29 @@ class ScrabbleGame {
                 </div>
             </div>
         `;
+
+        const diffOptions = [
+            { value: 'beginner', label: 'Débutant' },
+            { value: 'intermediate', label: 'Intermédiaire' },
+            { value: 'confirmed', label: 'Confirmé' },
+            { value: 'pro', label: 'Pro' }
+        ];
+
+        window.arcade.renderGameTopbar('#scr-topbar', {
+            id: 'scrabble-topbar',
+            icon: '🔡',
+            title: 'Scrabble',
+            statLabel: 'Score joueur',
+            statValue: this.playerScore,
+            difficulty: {
+                selectId: 'scr-diff-select',
+                value: this.difficulty,
+                options: diffOptions,
+                onChange: (newDiff) => {
+                    this.difficulty = newDiff;
+                }
+            }
+        });
 
         document.getElementById('scr-btn-play').onclick = () => this.validateMove();
         document.getElementById('scr-btn-cancel').onclick = () => this.cancelTempMove();
@@ -676,6 +701,8 @@ class ScrabbleGame {
     updateStats() {
         document.getElementById('scr-score-player').textContent = this.playerScore;
         document.getElementById('scr-score-ai').textContent = this.aiScore;
+        window.arcade.updateGameTopbarStat('scrabble-topbar', this.playerScore);
+        window.arcade.updateGameTopbarDifficulty('scrabble-topbar', this.difficulty);
         const bagEl = document.getElementById('scr-bag-count');
         if (bagEl) bagEl.textContent = this.bag.length;
     }

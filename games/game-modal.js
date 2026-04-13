@@ -6,6 +6,174 @@
 (function () {
     if (!window.arcade) window.arcade = {};
 
+    function ensureGameTopbarStyles() {
+        if (document.getElementById('arcade-game-topbar-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'arcade-game-topbar-styles';
+        style.textContent = `
+            .game-topbar {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.6rem;
+                padding: 0.9rem 1rem;
+                margin-bottom: 1rem;
+                border: 1px solid var(--border);
+                background: var(--card-bg);
+                border-radius: var(--radius);
+            }
+            .game-topbar-left {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.6rem;
+                min-width: 0;
+            }
+            .game-topbar-icon {
+                font-size: 1.3rem;
+                line-height: 1;
+            }
+            .game-topbar-title {
+                margin: 0;
+                font-size: 1.1rem;
+                color: var(--text-primary);
+                line-height: 1.15;
+                white-space: normal;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+                max-width: 100%;
+            }
+            .game-topbar-right {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.45rem;
+                width: 100%;
+            }
+            .game-topbar-difficulty {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .game-topbar-difficulty label {
+                font-size: 0.78rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--text-secondary);
+            }
+            .game-topbar-difficulty select {
+                background: var(--card-bg-alt);
+                color: var(--text-primary);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-family: inherit;
+                height: var(--btn-height);
+                padding: 0 0.6rem;
+            }
+            .game-topbar-stat {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .game-topbar-stat-label {
+                font-size: 0.78rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--text-secondary);
+            }
+            .game-topbar-stat-value {
+                font-weight: 700;
+                color: var(--accent);
+                font-variant-numeric: tabular-nums;
+            }
+            @media (max-width: 520px) {
+                .game-topbar {
+                    padding: 0.8rem 0.75rem;
+                }
+                .game-topbar-title {
+                    font-size: 1rem;
+                }
+                .game-topbar-right {
+                    gap: 0.4rem;
+                }
+                .game-topbar-difficulty,
+                .game-topbar-stat {
+                    justify-content: space-between;
+                    width: 100%;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    /**
+     * Crée une topbar standardisée de jeu.
+     * @param {HTMLElement|string} target - Node ou sélecteur CSS de montage.
+     * @param {Object} config
+     */
+    window.arcade.renderGameTopbar = function (target, config) {
+        ensureGameTopbarStyles();
+        const mountNode = typeof target === 'string' ? document.querySelector(target) : target;
+        if (!mountNode || !config) return null;
+
+        const barId = config.id || `topbar-${Date.now()}`;
+        const difficulty = config.difficulty || null;
+        const hasDifficulty = !!(difficulty && Array.isArray(difficulty.options) && difficulty.options.length > 0);
+        const diffSelectId = hasDifficulty ? (difficulty.selectId || `${barId}-difficulty`) : null;
+
+        const difficultyHTML = hasDifficulty
+            ? `
+                <div class="game-topbar-difficulty">
+                    <label for="${diffSelectId}">Difficulté</label>
+                    <select id="${diffSelectId}" data-role="difficulty-select">
+                        ${difficulty.options.map(opt => `<option value="${opt.value}" ${opt.value === difficulty.value ? 'selected' : ''}>${opt.label}</option>`).join('')}
+                    </select>
+                </div>
+              `
+            : '';
+
+        mountNode.innerHTML = `
+            <div class="game-topbar card" data-topbar-id="${barId}">
+                <div class="game-topbar-left">
+                    <span class="game-topbar-icon">${config.icon || '🎮'}</span>
+                    <h2 class="game-topbar-title">${config.title || 'Jeu'}</h2>
+                </div>
+                <div class="game-topbar-right">
+                    ${difficultyHTML}
+                    <div class="game-topbar-stat">
+                        <span class="game-topbar-stat-label" data-role="stat-label">${config.statLabel || 'Score'}</span>
+                        <span class="game-topbar-stat-value" data-role="stat-value">${config.statValue || '0'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        if (hasDifficulty && typeof difficulty.onChange === 'function') {
+            const diffSelect = mountNode.querySelector(`#${diffSelectId}`);
+            if (diffSelect) {
+                diffSelect.addEventListener('change', (e) => difficulty.onChange(e.target.value));
+            }
+        }
+
+        return mountNode.querySelector(`[data-topbar-id="${barId}"]`);
+    };
+
+    window.arcade.updateGameTopbarStat = function (barId, value) {
+        const bar = document.querySelector(`[data-topbar-id="${barId}"]`);
+        if (!bar) return;
+        const statNode = bar.querySelector('[data-role="stat-value"]');
+        if (statNode) statNode.textContent = value;
+    };
+
+    window.arcade.updateGameTopbarDifficulty = function (barId, value) {
+        const bar = document.querySelector(`[data-topbar-id="${barId}"]`);
+        if (!bar) return;
+        const select = bar.querySelector('[data-role="difficulty-select"]');
+        if (select) select.value = value;
+    };
+
     /**
      * Affiche la modale de démarrage d'un jeu.
      * @param {Object} config

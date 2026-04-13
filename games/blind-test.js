@@ -15,10 +15,7 @@
     function initBlindTest(mountPoint) {
         mountPoint.innerHTML = `
             <div id="blindtest-app" class="blindtest-container fade-in">
-                <div class="blindtest-header">
-                    <h2>🎵 Blind Test Musical</h2>
-                    <div class="score-board">Score: <span id="bt-score">0</span> / <span id="bt-total">5</span></div>
-                </div>
+                <div id="bt-topbar"></div>
 
                 <div id="bt-game" class="bt-game" style="display: none;">
                     <div class="card bt-player-container">
@@ -40,10 +37,9 @@
         DOM.waves = document.getElementById('bt-audio-waves');
         DOM.statusText = document.getElementById('bt-status-text');
         DOM.optionsContainer = document.getElementById('bt-options');
-        DOM.score = document.getElementById('bt-score');
-        DOM.total = document.getElementById('bt-total');
         DOM.nextBtn = document.getElementById('bt-next-btn');
         DOM.replayBtn = document.getElementById('bt-replay-btn');
+        DOM.topbar = document.getElementById('bt-topbar');
 
         DOM.nextBtn.addEventListener('click', generateQuestion);
         DOM.replayBtn.addEventListener('click', () => playCurrentMelody());
@@ -106,7 +102,13 @@
         STATE.score = 0;
         STATE.questionsAsked = 0;
 
-        DOM.total.textContent = STATE.totalQuestions;
+        window.arcade.renderGameTopbar(DOM.topbar, {
+            id: 'blind-test-topbar',
+            icon: '🎵',
+            title: 'Blind Test Musical',
+            statLabel: 'Score',
+            statValue: `0 / ${STATE.totalQuestions}`
+        });
         DOM.nextBtn.textContent = "Musique Suivante ➡️"; // Réinitialisation du bouton
         updateScoreBoard();
 
@@ -226,14 +228,7 @@
     }
 
     function updateScoreBoard() {
-        DOM.score.textContent = STATE.score;
-        // Animation du score
-        DOM.score.style.transform = 'scale(1.5)';
-        DOM.score.style.color = 'var(--success)';
-        setTimeout(() => {
-            DOM.score.style.transform = 'scale(1)';
-            DOM.score.style.color = 'var(--accent)';
-        }, 300);
+        window.arcade.updateGameTopbarStat('blind-test-topbar', `${STATE.score} / ${STATE.totalQuestions}`);
     }
 
     function endGame() {

@@ -282,7 +282,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 24. Phase 24 : Conception et implémentation Snake (glassmorphism + contrôles hybrides) (terminé).
 25. Phase 25 : Création Neon Pulse (casse-briques), stabilisation audio, progression par niveaux/bonus (terminé).
 26. Phase 26 : Optimisation mobile avec `mobile.css` (media queries, header masqué en jeu, bouton retour compact flottant, viewport maximisé) (terminé).
-27. Phase 27 : Standardisation des titres et menus des jeux (en cours).
+27. Phase 27 : Standardisation des titres et menus des jeux (terminé) : topbar unifiée sur les 12 jeux (`icône + titre + difficulté (si applicable) + score/stat`), optimisations responsive mobile portrait/paysage, validation Playwright multi-résolutions (1080p/1440p/2160p + Samsung A51 412x914).
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
@@ -292,7 +292,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26.
 
 #### Phases orientées optimisation / qualité
-- 10, 11, 15, 16, 20, 25, 26.
+- 10, 11, 15, 16, 20, 25, 26, 27.
 
 ## 10. Idées futures (backlog)
 ### 10.1 Idées de nouveaux jeux

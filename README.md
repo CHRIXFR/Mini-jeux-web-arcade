@@ -32,6 +32,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub pour vous tenir au courant.
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
+- **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
 - **Respect de la Vie Privée** : Analytique légère (GoatCounter) sans cookies et stockage local uniquement.
 
 ## Stack technique
@@ -43,6 +44,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
 - **Playwright** — Tests automatisés (non-régression visuelle et fonctionnelle).
+- **Suites multi-résolutions** — Validation desktop 1080p/1440p/2160p + mobile Samsung A51 (412x914).
 
 ## Lancer en local
 

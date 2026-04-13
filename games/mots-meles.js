@@ -238,15 +238,9 @@ class WordSearchGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="ws-game-container">
+                <div id="ws-topbar"></div>
                 <div class="ws-header">
-                    <h2>Mots Mêlés</h2>
                     <div class="ws-controls">
-                        <label for="ws-diff-select" class="sr-only">Choisir la difficulté</label>
-                        <select id="ws-diff-select" class="diff-select">
-                            <option value="easy">Facile</option>
-                            <option value="medium" selected>Moyen</option>
-                            <option value="hard">Difficile</option>
-                        </select>
                         <button id="ws-btn-new" class="btn-secondary">Nouveau</button>
                     </div>
                 </div>
@@ -260,8 +254,28 @@ class WordSearchGame {
             </div>
         `;
 
+        window.arcade.renderGameTopbar('#ws-topbar', {
+            id: 'mots-meles-topbar',
+            icon: '🔍',
+            title: 'Mots Mêlés',
+            statLabel: 'Mots trouvés',
+            statValue: `${this.foundWords.size} / ${this.wordsToFind.length || this.wordCount}`,
+            difficulty: {
+                selectId: 'ws-diff-select',
+                value: this.difficulty,
+                options: [
+                    { value: 'easy', label: 'Facile' },
+                    { value: 'medium', label: 'Moyen' },
+                    { value: 'hard', label: 'Difficile' }
+                ],
+                onChange: (newDiff) => {
+                    this.difficulty = newDiff;
+                    this.newGame();
+                }
+            }
+        });
+
         document.getElementById('ws-btn-new').onclick = () => this.newGame();
-        document.getElementById('ws-diff-select').onchange = () => this.newGame();
     }
 
     renderGrid() {
@@ -301,6 +315,7 @@ class WordSearchGame {
     renderWordList() {
         const listEl = document.getElementById('ws-word-list');
         listEl.innerHTML = this.wordsToFind.map(w => `<span class="ws-word ${this.foundWords.has(w) ? 'found' : ''}">${w}</span>`).join('');
+        window.arcade.updateGameTopbarStat('mots-meles-topbar', `${this.foundWords.size} / ${this.wordsToFind.length}`);
     }
 
     handleStart(r, c) {
