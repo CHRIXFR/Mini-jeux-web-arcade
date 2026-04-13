@@ -145,17 +145,7 @@ class SudokuGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="sudoku-container">
-                <div class="sudoku-header">
-                    <div id="sudoku-timer">00:00</div>
-                    <div class="difficulty-picker">
-                        <label for="diff-select" class="sr-only">Difficulté</label>
-                        <select id="diff-select">
-                            <option value="easy">Facile</option>
-                            <option value="medium" selected>Moyen</option>
-                            <option value="hard">Difficile</option>
-                        </select>
-                    </div>
-                </div>
+                <div id="sdk-topbar"></div>
                 <div id="sudoku-grid" class="grid-9x9"></div>
                 <div class="sudoku-controls">
                     <button id="btn-note" class="control-btn">📝 Notes: OFF</button>
@@ -168,15 +158,31 @@ class SudokuGame {
             </div>
         `;
 
+        window.arcade.renderGameTopbar('#sdk-topbar', {
+            id: 'sudoku-topbar',
+            icon: '🧩',
+            title: 'Sudoku',
+            statLabel: 'Temps',
+            statValue: window.arcade.formatTime(this.timer),
+            difficulty: {
+                selectId: 'diff-select',
+                value: this.difficulty,
+                options: [
+                    { value: 'easy', label: 'Facile' },
+                    { value: 'medium', label: 'Moyen' },
+                    { value: 'hard', label: 'Difficile' }
+                ],
+                onChange: (newDiff) => {
+                    this.difficulty = newDiff;
+                    this.newGame();
+                }
+            }
+        });
+
         document.getElementById('btn-note').addEventListener('click', (e) => {
             this.isNoteMode = !this.isNoteMode;
             e.target.textContent = `📝 Notes: ${this.isNoteMode ? 'ON' : 'OFF'}`;
             e.target.classList.toggle('active', this.isNoteMode);
-        });
-
-        document.getElementById('diff-select').addEventListener('change', (e) => {
-            this.difficulty = e.target.value;
-            this.newGame();
         });
 
         document.querySelectorAll('.num-btn').forEach(btn => {
@@ -345,10 +351,7 @@ class SudokuGame {
     }
 
     updateTimerDisplay() {
-        const min = Math.floor(this.timer / 60).toString().padStart(2, '0');
-        const sec = (this.timer % 60).toString().padStart(2, '0');
-        const el = document.getElementById('sudoku-timer');
-        if (el) el.textContent = `${min}:${sec}`;
+        window.arcade.updateGameTopbarStat('sudoku-topbar', window.arcade.formatTime(this.timer));
     }
 
     checkWin() {

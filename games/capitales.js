@@ -15,10 +15,7 @@
     function initCapitales(mountPoint) {
         mountPoint.innerHTML = `
             <div id="capitales-app" class="capitales-container fade-in">
-                <div class="capitales-header">
-                    <h2>🌍 Jeu des Capitales</h2>
-                    <div class="score-board">Score: <span id="cap-score">0</span> / <span id="cap-total">10</span></div>
-                </div>
+                <div id="cap-topbar"></div>
 
                 <div id="cap-game" class="cap-game" style="display: none;">
                     <div class="card cap-flag-container">
@@ -38,9 +35,8 @@
         DOM.flagPic = document.getElementById('cap-flag-pic');
         DOM.questionText = document.getElementById('cap-question-text');
         DOM.optionsContainer = document.getElementById('cap-options');
-        DOM.score = document.getElementById('cap-score');
-        DOM.total = document.getElementById('cap-total');
         DOM.nextBtn = document.getElementById('cap-next-btn');
+        DOM.topbar = document.getElementById('cap-topbar');
 
         DOM.nextBtn.addEventListener('click', generateQuestion);
         loadData();
@@ -89,8 +85,23 @@
         STATE.mode = mode;
         STATE.score = 0;
         STATE.questionsAsked = 0;
-
-        DOM.total.textContent = STATE.totalQuestions;
+        window.arcade.renderGameTopbar(DOM.topbar, {
+            id: 'capitales-topbar',
+            icon: '🌍',
+            title: 'Jeu des Capitales',
+            statLabel: 'Score',
+            statValue: `0 / ${STATE.totalQuestions}`,
+            difficulty: {
+                selectId: 'cap-diff-select',
+                value: STATE.mode,
+                options: [
+                    { value: 'pays', label: 'Nommer le Pays' },
+                    { value: 'capitale', label: 'Nommer la Capitale' },
+                    { value: 'mixte', label: 'Mode Mixte' }
+                ],
+                onChange: (newMode) => startGame(newMode)
+            }
+        });
         updateScoreBoard();
 
         DOM.game.style.display = 'flex';
@@ -182,7 +193,8 @@
     }
 
     function updateScoreBoard() {
-        DOM.score.textContent = STATE.score;
+        window.arcade.updateGameTopbarStat('capitales-topbar', `${STATE.score} / ${STATE.totalQuestions}`);
+        window.arcade.updateGameTopbarDifficulty('capitales-topbar', STATE.mode);
     }
 
     function endGame() {

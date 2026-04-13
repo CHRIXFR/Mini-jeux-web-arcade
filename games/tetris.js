@@ -93,20 +93,7 @@ window.arcade.tetris = {
     renderLayout: function () {
         this.mountNode.innerHTML = `
             <div id="view-tetris" class="tetris-game-container">
-                <div class="tetris-header">
-                    <div class="tetris-stat-box">
-                        <span class="tetris-stat-label">Score</span>
-                        <span id="tetris-score" class="tetris-stat-value">0</span>
-                    </div>
-                    <div class="tetris-stat-box">
-                        <span class="tetris-stat-label">Lignes</span>
-                        <span id="tetris-lines" class="tetris-stat-value">0</span>
-                    </div>
-                    <div class="tetris-stat-box">
-                        <span class="tetris-stat-label">Niveau</span>
-                        <span id="tetris-level" class="tetris-stat-value">1</span>
-                    </div>
-                </div>
+                <div id="tetris-topbar"></div>
                 
                 <div class="tetris-main-area">
                     <div id="tetris-grid" class="tetris-grid"></div>
@@ -114,6 +101,14 @@ window.arcade.tetris = {
                     <div class="tetris-side-panel">
                         <div class="tetris-stat-label">Suivant</div>
                         <div id="tetris-next-grid" class="tetris-next-piece"></div>
+                        <div class="tetris-stat-box" style="margin-top: 1rem;">
+                            <span class="tetris-stat-label">Lignes</span>
+                            <span id="tetris-lines" class="tetris-stat-value">0</span>
+                        </div>
+                        <div class="tetris-stat-box" style="margin-top: 0.75rem;">
+                            <span class="tetris-stat-label">Niveau</span>
+                            <span id="tetris-level" class="tetris-stat-value">1</span>
+                        </div>
                         
                         <div class="tetris-controls-mobile">
                             <button id="btn-tetris-left" class="btn-secondary">◀</button>
@@ -125,6 +120,13 @@ window.arcade.tetris = {
                 </div>
             </div>
         `;
+        window.arcade.renderGameTopbar('#tetris-topbar', {
+            id: 'tetris-topbar',
+            icon: '🧱',
+            title: 'Tetris',
+            statLabel: 'Score',
+            statValue: this.score
+        });
     },
 
     init: function (mountNode) {
@@ -132,7 +134,6 @@ window.arcade.tetris = {
         this.renderLayout();
         this.gridElement = document.getElementById('tetris-grid');
         this.nextGridElement = document.getElementById('tetris-next-grid');
-        this.scoreElement = document.getElementById('tetris-score');
         this.linesElement = document.getElementById('tetris-lines');
         this.levelElement = document.getElementById('tetris-level');
 
@@ -546,7 +547,7 @@ window.arcade.tetris = {
     },
 
     updateStatsUI: function () {
-        if (this.scoreElement) this.scoreElement.textContent = this.score;
+        window.arcade.updateGameTopbarStat('tetris-topbar', this.score);
         if (this.linesElement) this.linesElement.textContent = this.lines;
         if (this.levelElement) this.levelElement.textContent = this.level;
     },

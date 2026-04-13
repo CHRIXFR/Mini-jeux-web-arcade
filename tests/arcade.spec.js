@@ -90,3 +90,42 @@ test.describe('Scrabble - Tests fonctionnels', () => {
   });
 
 });
+
+test.describe('Phase 27 - Topbar standardisée', () => {
+  async function launchGame(page, gameName) {
+    const gameCard = page.locator('.game-card').filter({ hasText: gameName });
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('.game-topbar')).toBeVisible({ timeout: 10000 });
+  }
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+  });
+
+  test('Topbar - Capitales (avec difficulté)', async ({ page }) => {
+    await launchGame(page, 'Capitales');
+    const topbar = page.locator('[data-topbar-id="capitales-topbar"]');
+    await expect(topbar).toContainText('Jeu des Capitales');
+    await expect(topbar).toContainText('Score');
+    await expect(topbar.locator('[data-role="difficulty-select"]')).toBeVisible();
+  });
+
+  test('Topbar - Blind Test (sans difficulté)', async ({ page }) => {
+    await launchGame(page, 'Blind Test 8-Bits');
+    const topbar = page.locator('[data-topbar-id="blind-test-topbar"]');
+    await expect(topbar).toContainText('Blind Test Musical');
+    await expect(topbar).toContainText('Score');
+    await expect(topbar.locator('[data-role="difficulty-select"]')).toHaveCount(0);
+  });
+
+  test('Topbar - Snake (stat niveau)', async ({ page }) => {
+    await launchGame(page, 'Snake');
+    const topbar = page.locator('[data-topbar-id="snake-topbar"]');
+    await expect(topbar).toContainText('Snake');
+    await expect(topbar).toContainText('Niveau');
+    await expect(topbar.locator('[data-role="difficulty-select"]')).toHaveCount(0);
+  });
+});

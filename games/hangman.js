@@ -92,6 +92,7 @@ class HangmanGame {
     renderLayout() {
         this.container.innerHTML = `
             <div class="hg-game-container">
+                <div id="hg-topbar"></div>
                 <div class="hg-drawing-container">
                     <div class="hg-part hg-gallows-v" data-step="1"></div>
                     <div class="hg-part hg-gallows-h" data-step="2"></div>
@@ -113,6 +114,14 @@ class HangmanGame {
                 </div>
             </div>
         `;
+
+        window.arcade.renderGameTopbar('#hg-topbar', {
+            id: 'hangman-topbar',
+            icon: '😵',
+            title: 'Le Pendu',
+            statLabel: 'Erreurs',
+            statValue: `${this.wrongGuesses} / ${this.maxWrong}`
+        });
 
         this.renderKeyboard();
         document.getElementById('hg-btn-reset').onclick = () => this.start();
@@ -144,6 +153,7 @@ class HangmanGame {
         } else {
             btn.classList.add('wrong');
             this.wrongGuesses++;
+            window.arcade.updateGameTopbarStat('hangman-topbar', `${this.wrongGuesses} / ${this.maxWrong}`);
             this.updateDrawing();
             this.checkLoss();
         }

@@ -110,13 +110,13 @@
         renderLayout() {
             this.container.innerHTML = `
                 <div class="oc-game-container fade-in">
+                    <div id="oc-topbar"></div>
                     <div class="oc-landscape-prompt">
                         📱 Veuillez pivoter votre appareil en mode paysage pour jouer dans de bonnes conditions.
                     </div>
                     <div class="oc-header card">
                         <div class="oc-infos">
                             <span class="oc-stat-label">NIVEAU <span id="oc-level-disp">1</span></span>
-                            <span class="oc-stat-label">SCORE: <span id="oc-score-disp">0</span></span>
                         </div>
                         <div class="oc-timer-container">
                             <div id="oc-timer-bar" class="oc-timer-bar"></div>
@@ -129,8 +129,14 @@
             this.sceneEl = document.getElementById('oc-scene');
             this.targetsListEl = document.getElementById('oc-targets-list');
             this.timerBarEl = document.getElementById('oc-timer-bar');
-            this.scoreDisp = document.getElementById('oc-score-disp');
             this.levelDisp = document.getElementById('oc-level-disp');
+            window.arcade.renderGameTopbar('#oc-topbar', {
+                id: 'objets-caches-topbar',
+                icon: '🕵️',
+                title: 'Objets Cachés',
+                statLabel: 'Score',
+                statValue: this.score
+            });
         }
 
         showStartScreen() {
@@ -160,7 +166,7 @@
             this.maxTime = lvlData.baseTime;
             this.timeRemaining = this.maxTime;
 
-            this.scoreDisp.textContent = this.score;
+            window.arcade.updateGameTopbarStat('objets-caches-topbar', this.score);
             this.levelDisp.textContent = (this.levelIndex + 1);
 
             // Choix du thème aléatoire
@@ -297,7 +303,7 @@
 
                 this.addTime(2); // +2 secondes bonus
                 this.score += 10;
-                this.scoreDisp.textContent = this.score;
+                window.arcade.updateGameTopbarStat('objets-caches-topbar', this.score);
 
                 this.foundTargets++;
                 if (this.foundTargets >= this.targets.length) {
@@ -401,6 +407,7 @@
             // Bonus de temps
             const timeBonus = Math.floor(this.timeRemaining);
             this.score += timeBonus * 2;
+            window.arcade.updateGameTopbarStat('objets-caches-topbar', this.score);
 
             this.levelIndex++;
             setTimeout(() => this.startLevel(), 1500);

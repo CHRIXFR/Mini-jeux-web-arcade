@@ -181,6 +181,38 @@
     body.in-game [class$="-controls-help"] {
         display: none;
     }
+
+    .game-topbar {
+        padding: 0.65rem 0.75rem;
+        padding-left: 2.6rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .game-topbar-title {
+        font-size: 1rem;
+    }
+
+    .game-topbar-right {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .game-topbar-difficulty label,
+    .game-topbar-stat-label {
+        font-size: 0.72rem;
+    }
+
+    .game-topbar-difficulty select {
+        max-width: 165px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+    .game-topbar {
+        padding-left: 2.6rem;
+    }
 }
 
 

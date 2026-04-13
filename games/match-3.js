@@ -108,24 +108,12 @@ class Match3Game {
     renderLayout() {
         this.container.innerHTML = `
             <div class="jb-game-container">
+                <div id="jb-topbar"></div>
                 <div class="jb-header">
                     <div class="jb-stats">
                         <div class="jb-stat-item">
-                            <span class="jb-stat-label">Score</span>
-                            <span id="jb-score" class="jb-stat-value">0</span>
-                        </div>
-                        <div class="jb-stat-item">
                             <span class="jb-stat-label">Coups</span>
                             <span id="jb-moves" class="jb-stat-value">20</span>
-                        </div>
-                        <div class="stats-divider"></div>
-                        <div class="jb-stat-item">
-                            <span class="jb-stat-label">Difficulté</span>
-                            <select id="jb-diff-select" class="jb-diff-select">
-                                <option value="easy">Facile</option>
-                                <option value="medium">Moyen</option>
-                                <option value="hard">Difficile</option>
-                            </select>
                         </div>
                         <div class="stats-divider"></div>
                         <div class="jb-combos-mini">
@@ -144,16 +132,29 @@ class Match3Game {
             </div>
         `;
 
+        window.arcade.renderGameTopbar('#jb-topbar', {
+            id: 'match3-topbar',
+            icon: '💎',
+            title: 'Match-3',
+            statLabel: 'Score',
+            statValue: this.score,
+            difficulty: {
+                selectId: 'jb-diff-select',
+                value: this.difficulty || 'medium',
+                options: [
+                    { value: 'easy', label: 'Facile' },
+                    { value: 'medium', label: 'Moyen' },
+                    { value: 'hard', label: 'Difficile' }
+                ],
+                onChange: (newDiff) => {
+                    this.difficulty = newDiff;
+                    this.newGame();
+                }
+            }
+        });
+
         const btnNew = document.getElementById('jb-btn-new');
         if (btnNew) btnNew.onclick = () => this.newGame();
-
-        const select = document.getElementById('jb-diff-select');
-        if (select) {
-            select.onchange = (e) => {
-                this.difficulty = e.target.value;
-                this.newGame();
-            };
-        }
     }
 
     renderGrid() {
@@ -472,9 +473,8 @@ class Match3Game {
     }
 
     updateStats() {
-        const s = document.getElementById('jb-score');
         const m = document.getElementById('jb-moves');
-        if (s) s.textContent = this.score;
+        window.arcade.updateGameTopbarStat('match3-topbar', this.score);
         if (m) m.textContent = this.moves;
 
         const cl = document.getElementById('count-line');
