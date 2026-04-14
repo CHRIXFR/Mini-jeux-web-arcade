@@ -27,7 +27,6 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 
 ## Fonctionnalités Clés
 
-- **Accès Libre (Sans XP)** : Plus de barrières ! Tous les jeux sont débloqués par défaut pour un plaisir immédiat.
 - **Tableau des Records Locaux** : Battez vos propres records (scores ou temps) sauvegardés directement dans votre navigateur (mode solo).
 - **Thèmes & Fonds Dynamiques** : 4 modes (Sombre, Clair, Néon, Océan) avec des fonds d'écran haute qualité via l'API d'**Unsplash**.
 - **Guide Interactif (Driver.js)** : Un tour d'onboarding accompagne les nouveaux joueurs pour découvrir l'interface.
