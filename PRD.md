@@ -171,6 +171,20 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
   - Gestion audio dynamique via Web Audio API pour limiter latence et crashs.
 - Statut : terminé.
 
+### 5.13 Jeu de dés 421
+- Gameplay : optimiser 3 dés sur un maximum de 3 lancers par manche.
+- Modes :
+  - Solo score-attack (10 manches, objectif 30 points).
+  - Duel local 2 joueurs en pass-and-play (alternance par ronde sur le même appareil).
+- Fonctionnalités :
+  - Verrouillage manuel des dés (hold) entre les lancers.
+  - Validation volontaire de manche + bonus "sec" x2 si validation au 1er lancer.
+  - Évaluation déterministe des combinaisons (`421`, `Mac 1`, `Fiche`, `Baraque`, `Suite`, `Nénette`).
+  - Tie-break décisif en duel en cas d'égalité (bonus sec désactivé pendant le tie-break).
+  - Topbar standardisée (manche/score), panneau comparatif J1/J2, modales start/end unifiées.
+  - Persistance record local conservée uniquement pour le mode solo.
+- Statut : terminé.
+
 ## 6. Fonctionnalités transverses (hors ajout de jeu)
 ### 6.1 Gestion des thèmes
 - Commutateur manuel disponible dans l'interface.
@@ -255,7 +269,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Valider la stabilité sur mobile.
 
 ## 9. Historique des décisions & roadmap
-### 9.1 Vue chronologique complète (phases 1 à 26)
+### 9.1 Vue chronologique complète (phases 1 à 29)
 1. Phase 1 : Initialisation et design system (terminé).
 2. Phase 2 : Mise en place du socle de progression initial + Sudoku (terminé).
 3. Phase 3 : Développement de Mots Mêlés (terminé).
@@ -283,10 +297,12 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 25. Phase 25 : Création Neon Pulse (casse-briques), stabilisation audio, progression par niveaux/bonus (terminé).
 26. Phase 26 : Optimisation mobile avec `mobile.css` (media queries, header masqué en jeu, bouton retour compact flottant, viewport maximisé) (terminé).
 27. Phase 27 : Standardisation des titres et menus des jeux (terminé) : topbar unifiée sur les 12 jeux (`icône + titre + difficulté (si applicable) + score/stat`), optimisations responsive mobile portrait/paysage, validation Playwright multi-résolutions (1080p/1440p/2160p + Samsung A51 412x914).
+28. Phase 28 : Ajout du jeu de dés 421 (terminé) : mode solo arcade en 10 manches, système hold + bonus sec, topbar/manches-score, intégration responsive desktop/mobile, scénario Playwright ciblé.
+29. Phase 29 : Évolution 421 en mode 2 joueurs local (terminé) : alternance Joueur 1/Joueur 2 par ronde, sélection de mode dans la modale de départ, tie-break décisif sans bonus sec, tests Playwright duo + tie-break.
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
-- 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25.
+- 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29.
 
 #### Phases orientées fonctionnalités transverses / plateforme
 - 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26.
@@ -298,7 +314,6 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 ### 10.1 Idées de nouveaux jeux
 - Priorité en fonction de la complémentarité avec le catalogue actuel.
 - Favoriser les concepts jouables en sessions courtes.
-- Jeu de dé le 421
 - Jeu de carte le UNO
 - Jeu de suite logique
 
