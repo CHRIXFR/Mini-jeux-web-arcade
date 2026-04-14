@@ -306,6 +306,12 @@
      * @param {Function} [config.onQuit] - Callback "Menu Principal"
      */
     window.arcade.showGameOverModal = function (config) {
+        const activeGameId = window.arcade && window.arcade.state ? window.arcade.state.currentView : null;
+        const modalGameId = config && (config.gameId || config.title);
+        if (activeGameId && activeGameId !== 'home' && modalGameId && modalGameId !== activeGameId) {
+            return;
+        }
+
         const existingModal = document.getElementById('game-over-modal');
         if (existingModal) existingModal.remove();
 

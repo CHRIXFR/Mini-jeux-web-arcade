@@ -5,7 +5,7 @@ trigger: always_on
 # Template CSS — Ajout d'un nouveau jeu
 
 > [!IMPORTANT]
-> Ce document doit être utilisé en complément de [js-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Antigravity/Mini-jeux-web-arcade/.agents/rules/js-game-template.md) pour garantir un fonctionnement et un design cohérents.
+> Ce document doit être utilisé en complément de [js-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Codex/Mini-jeux-web-arcade/.agents/rules/js-game-template.md) pour garantir un fonctionnement et un design cohérents.
 
 Ce document sert de guide pour maintenir la cohérence du style lors de l'ajout d'un nouveau jeu ou composant dans l'Arcade.
 
@@ -198,6 +198,7 @@ Grâce à `mobile.css`, les éléments suivants sont **automatiquement gérés**
 - Le **footer** est masqué
 - Le **texte d'aide contrôles** (`[class$="-controls-help"]`) est masqué
 - Les **glass-panel** ont un padding réduit
+- Les **modales de jeu** (`.modal-content`) sont contraintes en mobile paysage (largeur/hauteur + scroll interne)
 
 ## Thème clair
 

@@ -5,7 +5,7 @@ trigger: always_on
 # Template JS — Ajout d'un nouveau jeu
 
 > [!IMPORTANT]
-> Ce document doit être utilisé en complément de [css-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Antigravity/Mini-jeux-web-arcade/.agents/rules/css-game-template.md) pour garantir une intégration visuelle et structurelle parfaite.
+> Ce document doit être utilisé en complément de [css-game-template.md](file:///c:/Users/chjeu/Documents/Codes/Codex/Mini-jeux-web-arcade/.agents/rules/css-game-template.md) pour garantir une intégration visuelle et structurelle parfaite.
 
 Guide pour le cycle de vie JavaScript et l'API de modales standardisées.
 
@@ -28,11 +28,30 @@ Chaque jeu expose une fonction globale `window.initMonJeu(container)` :
 ```javascript
 window.initMonJeu = function (container) {
     const game = new MonJeu(container);
+    // Optionnel mais recommandé : cleanup explicite pour ressources non standard
+    window.arcade.registerGameCleanup(() => {
+        if (typeof game.stop === 'function') game.stop();
+        if (typeof game.destroy === 'function') game.destroy();
+    }, 'mon-jeu');
     game.showStartScreen();
 };
 ```
 
 > **Important :** Appeler `showStartScreen()` et NON `start()` à l'initialisation.
+
+## Nettoyage & sortie de jeu (obligatoire)
+
+Le shell Arcade nettoie automatiquement `setInterval`, `setTimeout`, `requestAnimationFrame` et les listeners `window/document` quand on quitte un jeu.
+
+Pour les ressources non couvertes (WebSocket, AudioContext custom, workers, observers, etc.), enregistrez un cleanup explicite :
+
+```javascript
+window.arcade.registerGameCleanup(() => {
+    game.stop(); // ou destroy(), cleanup(), dispose()
+}, 'mon-jeu');
+```
+
+Si votre classe possède déjà `stop()`/`destroy()`, conservez-la et rendez-la idempotente (appel multiple sans erreur).
 
 ## Modale de démarrage — `arcade.showStartModal(config)`
 
@@ -128,6 +147,9 @@ showGameOverModal() {
 | `onReplay` | function | ✅ | Callback "Rejouer" |
 | `onQuit` | function | ✅ | Callback "Menu Principal" |
 
+> [!IMPORTANT]
+> `title` doit rester l'ID technique du jeu (ex: `sudoku`, `snake`, `mon-jeu`) pour éviter les collisions de score et filtrer les modales obsolètes.
+
 ## Gestion de l'Audio — `window.arcade.audio`
 
 Le moteur audio gère les playlists (BGM) et les effets synthétiques.
@@ -195,6 +217,7 @@ Le développeur doit seulement s'assurer que son jeu **s'adapte au viewport** vi
 - [ ] La modale de fin utilise `arcade.showGameOverModal()` avec `score` et `scoreType`
 - [ ] Pas de modale HTML inline pour start/end (sauf cas spécifique)
 - [ ] Callbacks `onReplay` et `onQuit` fonctionnels
+- [ ] Cleanup enregistré via `window.arcade.registerGameCleanup()` pour les ressources non standard
 - [ ] Pas d'appels à `addXP()` (système supprimé)
 - [ ] Difficulté synchronisée entre modale et select in-game (si applicable)
 - [ ] Meilleur score local affiché sur la carte du jeu (automatique via `title`)

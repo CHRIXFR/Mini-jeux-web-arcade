@@ -67,6 +67,36 @@
     }
 }
 
+@media (max-width: 950px) and (orientation: landscape) {
+
+    .modal-content {
+        width: min(92vw, 560px);
+        max-height: 88vh;
+        padding: 1.15rem 1rem;
+        margin: 0.35rem;
+        overflow-y: auto;
+    }
+
+    .modal-content h2 {
+        font-size: 1.35rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .modal-game-icon {
+        font-size: 2.2rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .modal-description {
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .modal-actions {
+        gap: 0.5rem;
+    }
+}
+
 /* Paysage mobile : masquer header/footer en jeu aussi */
 @media (max-width: 950px) and (orientation: landscape) {
 

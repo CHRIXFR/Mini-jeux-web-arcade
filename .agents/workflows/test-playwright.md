@@ -57,9 +57,8 @@ npx playwright test --project="Desktop PC Plein Écran"
 ## 7. Résolutions et Composants Testés
 Les tests sont configurés (avec 1 worker local pour la stabilité) pour capturer spécifiquement le Header (`.header-content`) et la grille de jeux (`.game-wrapper`), à la fois en thème Sombre (défaut) et en thème Clair.
 
-Les 7 résolutions couvertes sont :
-- **Desktop PC Plein Écran** (1920x1080)
-- **Desktop PC Fenêtré large** (1366x768)
-- **Desktop PC Fenêtré standard** (1280x720)
-- **Tablette iPad** (Portrait / Paysage : 768x1024 / 1024x768)
-- **Mobile Galaxy S9+** (Portrait / Paysage : 414x896 / 896x414)
+Les résolutions couvertes sont :
+- **Desktop-chrome-1080p** (1920x1080)
+- **Desktop-chrome-1440p** (2560x1440)
+- **Desktop-chrome-2160** (3840x2160)
+- **Mobile Galaxy A51** (Portrait / Paysage : 414x914 / 914x414)

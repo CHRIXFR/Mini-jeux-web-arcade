@@ -236,6 +236,11 @@
                 currentView: 'home',
                 testMode: new URLSearchParams(window.location.search).has('test')
             },
+            lifecycle: {
+                installed: false,
+                buckets: {},
+                native: {}
+            },
             themes: [
                 { id: 'dark', icon: '🌙', bg: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1920&auto=format' },
                 { id: 'light', icon: '☀️', bg: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1920&auto=format' },
@@ -263,12 +268,177 @@
                 document.body.appendChild(t);
                 setTimeout(() => { t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2000); }, 100);
             },
+            _getTrackedGameId: function () {
+                const currentView = this.state && this.state.currentView;
+                if (!currentView || currentView === 'home') return null;
+                return currentView;
+            },
+            _ensureLifecycleBucket: function (gameId) {
+                if (!gameId) return null;
+                if (!this.lifecycle.buckets[gameId]) {
+                    this.lifecycle.buckets[gameId] = {
+                        intervals: new Set(),
+                        timeouts: new Set(),
+                        rafs: new Set(),
+                        listeners: [],
+                        cleanups: []
+                    };
+                }
+                return this.lifecycle.buckets[gameId];
+            },
+            _trackHandle: function (type, handle, gameId) {
+                if (!gameId || handle == null) return;
+                const bucket = this._ensureLifecycleBucket(gameId);
+                if (!bucket || !bucket[type]) return;
+                bucket[type].add(handle);
+            },
+            _untrackHandle: function (type, handle) {
+                if (handle == null) return;
+                const buckets = this.lifecycle.buckets;
+                Object.keys(buckets).forEach((gameId) => {
+                    const bucket = buckets[gameId];
+                    if (bucket && bucket[type]) {
+                        bucket[type].delete(handle);
+                    }
+                });
+            },
+            _registerTrackedListener: function (target, type, listener, options, gameId) {
+                if (!gameId || !target || !type || !listener) return;
+                const bucket = this._ensureLifecycleBucket(gameId);
+                if (!bucket) return;
+                bucket.listeners.push({ target, type, listener, options });
+            },
+            _unregisterTrackedListener: function (target, type, listener) {
+                const buckets = this.lifecycle.buckets;
+                Object.keys(buckets).forEach((gameId) => {
+                    const bucket = buckets[gameId];
+                    if (!bucket || !bucket.listeners) return;
+                    bucket.listeners = bucket.listeners.filter((entry) => {
+                        return !(entry.target === target && entry.type === type && entry.listener === listener);
+                    });
+                });
+            },
+            installLifecycleGuards: function () {
+                if (this.lifecycle.installed) return;
+                this.lifecycle.installed = true;
+
+                const lc = this.lifecycle;
+                lc.native.setInterval = window.setInterval.bind(window);
+                lc.native.clearInterval = window.clearInterval.bind(window);
+                lc.native.setTimeout = window.setTimeout.bind(window);
+                lc.native.clearTimeout = window.clearTimeout.bind(window);
+                lc.native.requestAnimationFrame = window.requestAnimationFrame.bind(window);
+                lc.native.cancelAnimationFrame = window.cancelAnimationFrame.bind(window);
+
+                window.setInterval = (...args) => {
+                    const handle = lc.native.setInterval(...args);
+                    const gameId = this._getTrackedGameId();
+                    this._trackHandle('intervals', handle, gameId);
+                    return handle;
+                };
+                window.clearInterval = (handle) => {
+                    this._untrackHandle('intervals', handle);
+                    return lc.native.clearInterval(handle);
+                };
+                window.setTimeout = (...args) => {
+                    const handle = lc.native.setTimeout(...args);
+                    const gameId = this._getTrackedGameId();
+                    this._trackHandle('timeouts', handle, gameId);
+                    return handle;
+                };
+                window.clearTimeout = (handle) => {
+                    this._untrackHandle('timeouts', handle);
+                    return lc.native.clearTimeout(handle);
+                };
+                window.requestAnimationFrame = (callback) => {
+                    const handle = lc.native.requestAnimationFrame(callback);
+                    const gameId = this._getTrackedGameId();
+                    this._trackHandle('rafs', handle, gameId);
+                    return handle;
+                };
+                window.cancelAnimationFrame = (handle) => {
+                    this._untrackHandle('rafs', handle);
+                    return lc.native.cancelAnimationFrame(handle);
+                };
+
+                lc.native.windowAdd = window.addEventListener.bind(window);
+                lc.native.windowRemove = window.removeEventListener.bind(window);
+                lc.native.documentAdd = document.addEventListener.bind(document);
+                lc.native.documentRemove = document.removeEventListener.bind(document);
+
+                window.addEventListener = (type, listener, options) => {
+                    const gameId = this._getTrackedGameId();
+                    this._registerTrackedListener(window, type, listener, options, gameId);
+                    return lc.native.windowAdd(type, listener, options);
+                };
+                window.removeEventListener = (type, listener, options) => {
+                    this._unregisterTrackedListener(window, type, listener);
+                    return lc.native.windowRemove(type, listener, options);
+                };
+
+                document.addEventListener = (type, listener, options) => {
+                    const gameId = this._getTrackedGameId();
+                    this._registerTrackedListener(document, type, listener, options, gameId);
+                    return lc.native.documentAdd(type, listener, options);
+                };
+                document.removeEventListener = (type, listener, options) => {
+                    this._unregisterTrackedListener(document, type, listener);
+                    return lc.native.documentRemove(type, listener, options);
+                };
+            },
+            registerGameCleanup: function (cleanupFn, gameId) {
+                if (typeof cleanupFn !== 'function') return () => { };
+                const resolvedGameId = gameId || this._getTrackedGameId();
+                if (!resolvedGameId) return () => { };
+                const bucket = this._ensureLifecycleBucket(resolvedGameId);
+                bucket.cleanups.push(cleanupFn);
+                return () => {
+                    const idx = bucket.cleanups.indexOf(cleanupFn);
+                    if (idx >= 0) bucket.cleanups.splice(idx, 1);
+                };
+            },
+            cleanupGameResources: function (gameId) {
+                if (!gameId || gameId === 'home') return;
+                const bucket = this.lifecycle.buckets[gameId];
+                if (!bucket) return;
+
+                bucket.cleanups.forEach((cleanup) => {
+                    try { cleanup(); } catch (_err) { }
+                });
+                bucket.cleanups = [];
+
+                bucket.intervals.forEach((handle) => this.lifecycle.native.clearInterval(handle));
+                bucket.intervals.clear();
+                bucket.timeouts.forEach((handle) => this.lifecycle.native.clearTimeout(handle));
+                bucket.timeouts.clear();
+                bucket.rafs.forEach((handle) => this.lifecycle.native.cancelAnimationFrame(handle));
+                bucket.rafs.clear();
+
+                bucket.listeners.forEach((entry) => {
+                    try {
+                        if (entry.target === window) {
+                            this.lifecycle.native.windowRemove(entry.type, entry.listener, entry.options);
+                        } else if (entry.target === document) {
+                            this.lifecycle.native.documentRemove(entry.type, entry.listener, entry.options);
+                        } else if (entry.target && entry.target.removeEventListener) {
+                            entry.target.removeEventListener(entry.type, entry.listener, entry.options);
+                        }
+                    } catch (_err) { }
+                });
+                bucket.listeners = [];
+
+                delete this.lifecycle.buckets[gameId];
+            },
             formatTime: function (seconds) {
                 const mins = Math.floor(seconds / 60);
                 const secs = seconds % 60;
                 return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             },
             renderHome: function () {
+                const previousView = this.state.currentView;
+                if (previousView && previousView !== 'home') {
+                    this.cleanupGameResources(previousView);
+                }
                 document.body.classList.remove('in-game');
                 this.state.currentView = 'home';
 
@@ -479,6 +649,11 @@
                 }
             },
             loadGame: function (id) {
+                this.installLifecycleGuards();
+                const previousView = this.state.currentView;
+                if (previousView && previousView !== 'home' && previousView !== id) {
+                    this.cleanupGameResources(previousView);
+                }
                 document.body.classList.add('in-game');
                 this.state.currentView = id;
                 const avatar = document.getElementById('avatar-changelog');
@@ -521,6 +696,7 @@
         };
 
         window.onload = () => {
+            window.arcade.installLifecycleGuards();
             window.arcade.applyTheme();
             window.arcade.renderHome();
             window.arcade.checkFirstVisit();
