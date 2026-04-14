@@ -304,7 +304,8 @@
     .sk-game-container,
     .np-container,
     .oc-game-container,
-    .tetris-game-container {
+    .tetris-game-container,
+    .d421-game-container {
         width: 100%;
         max-width: none;
     }
@@ -379,5 +380,111 @@
     .modal-actions .btn-primary,
     .modal-actions .btn-secondary {
         width: 100%;
+    }
+}
+
+/* -----------------------------------------------
+   5. JEU 421 — Adaptation mobile
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+    .d421-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+        padding: 0.1rem;
+    }
+
+    .d421-main {
+        padding: 0.7rem;
+    }
+
+    .d421-scoreboard {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .d421-player-row {
+        padding: 0.45rem 0.55rem;
+    }
+
+    .d421-player-name {
+        font-size: 0.76rem;
+    }
+
+    .d421-player-score {
+        font-size: 0.9rem;
+    }
+
+    .d421-tiebreak-badge {
+        font-size: 0.74rem;
+        padding: 0.3rem 0.55rem;
+    }
+
+    .d421-dice-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.45rem;
+    }
+
+    .d421-die-btn {
+        min-height: 82px;
+        font-size: 2rem;
+        padding: 0;
+    }
+
+    .d421-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .d421-help {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+    .d421-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .d421-main {
+        padding: 0.65rem;
+    }
+
+    .d421-scoreboard {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.35rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .d421-player-row {
+        padding: 0.35rem 0.5rem;
+    }
+
+    .d421-player-name {
+        font-size: 0.7rem;
+    }
+
+    .d421-player-score {
+        font-size: 0.82rem;
+    }
+
+    .d421-tiebreak-badge {
+        font-size: 0.7rem;
+        padding: 0.26rem 0.5rem;
+    }
+
+    .d421-dice-row {
+        gap: 0.4rem;
+    }
+
+    .d421-die-btn {
+        min-height: 72px;
+        font-size: 1.75rem;
+    }
+
+    .d421-actions {
+        gap: 0.45rem;
     }
 }

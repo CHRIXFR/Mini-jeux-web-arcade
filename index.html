@@ -259,7 +259,8 @@
                 { id: 'objets-caches', name: 'Objets Cachés', icon: '🕵️', difficulty: 'Observation' },
                 { id: 'blind-test', name: 'Blind Test 8-Bits', icon: '🎵', difficulty: 'Musical' },
                 { id: 'snake', name: 'Snake', icon: '🐍', difficulty: 'Arcade' },
-                { id: 'neon-pulse', name: 'Neon Pulse', icon: '☄️', difficulty: 'Casse-briques (10 Niveaux)' }
+                { id: 'neon-pulse', name: 'Neon Pulse', icon: '☄️', difficulty: 'Casse-briques (10 Niveaux)' },
+                { id: '421', name: '421', icon: '🎲', difficulty: 'Arcade' }
             ],
             showToast: function (msg) {
                 const t = document.createElement('div');
@@ -553,7 +554,8 @@
                     'objets-caches': 'Retrouvez les objets cachés avant la fin du temps imparti.',
                     'blind-test': 'Devinez la musique jouée par le synthétiseur.',
                     'snake': 'Dirigez le serpent et mangez des pommes.',
-                    'neon-pulse': 'Détruisez les briques et accumulez les bonus dans ce casse-briques lumineux.'
+                    'neon-pulse': 'Détruisez les briques et accumulez les bonus dans ce casse-briques lumineux.',
+                    '421': 'Jeu de dés score-attack : 10 manches pour atteindre 30 points.'
                 };
                 return descriptions[id] || '';
             },
@@ -692,6 +694,7 @@
                 if (id === 'blind-test' && window.initBlindTest) window.initBlindTest(document.getElementById('game-mount'));
                 if (id === 'snake' && window.initSnake) window.initSnake(document.getElementById('game-mount'));
                 if (id === 'neon-pulse' && window.initNeonPulse) window.initNeonPulse(document.getElementById('game-mount'));
+                if (id === '421' && window.init421) window.init421(document.getElementById('game-mount'));
             }
         };
 
@@ -718,6 +721,7 @@
     <script src="games/blind-test.js"></script>
     <script src="games/snake.js"></script>
     <script src="games/neon-pulse.js"></script>
+    <script src="games/421.js"></script>
 </body>
 
 </html>

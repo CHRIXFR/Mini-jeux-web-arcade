@@ -129,3 +129,118 @@ test.describe('Phase 27 - Topbar standardisée', () => {
     await expect(topbar.locator('[data-role="difficulty-select"]')).toHaveCount(0);
   });
 });
+
+test.describe('Phase 28 - Jeu 421', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+  });
+
+  async function open421(page, mode = 'solo') {
+    const gameCard = page.locator('.game-card').filter({ hasText: '421' });
+    await expect(gameCard).toBeVisible();
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    if (mode === 'duo') {
+      await page.locator('.modal-diff-btn[data-diff="duo"]').click();
+    }
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('[data-topbar-id="421-topbar"]')).toBeVisible({ timeout: 10000 });
+  }
+
+  async function play421Turn(page) {
+    await page.locator('#d421-roll-btn').click();
+    await page.locator('#d421-validate-btn').click();
+    await page.locator('#d421-next-btn').click();
+  }
+
+  test('421 - boucle complète jusqu\'à la modale de fin', async ({ page }) => {
+    await open421(page, 'solo');
+
+    const topbar = page.locator('[data-topbar-id="421-topbar"]');
+    await expect(topbar).toContainText('421');
+
+    const rollBtn = page.locator('#d421-roll-btn');
+    const validateBtn = page.locator('#d421-validate-btn');
+    const nextBtn = page.locator('#d421-next-btn');
+    const die1 = page.locator('#d421-die-0');
+
+    await rollBtn.click();
+    await expect(page.locator('#d421-round-feedback')).toContainText('Combinaison');
+
+    await die1.click();
+    await expect(die1).toHaveClass(/is-held/);
+    await die1.click();
+    await expect(die1).not.toHaveClass(/is-held/);
+
+    await validateBtn.click();
+    await expect(nextBtn).toBeEnabled();
+    await nextBtn.click();
+
+    for (let i = 2; i <= 10; i++) {
+      await rollBtn.click();
+      await validateBtn.click();
+      await nextBtn.click();
+    }
+
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Score final');
+    await expect(page.locator('#game-over-modal')).toContainText('421 obtenus');
+  });
+
+  test('421 duo - alternance et victoire affichée', async ({ page }) => {
+    await open421(page, 'duo');
+
+    await expect(page.locator('#d421-scoreboard')).toBeVisible();
+    await expect(page.locator('[data-topbar-id="421-topbar"]')).toContainText('Duel local');
+    await expect(page.locator('#d421-round-feedback')).toContainText('Au tour de Joueur 1');
+
+    const queue = [];
+    for (let i = 0; i < 10; i++) {
+      queue.push(4, 2, 1); // J1
+      queue.push(3, 3, 2); // J2
+    }
+    await page.evaluate((vals) => window._d421Game.setTestDiceQueue(vals), queue);
+
+    await play421Turn(page); // J1
+    await expect(page.locator('#d421-round-feedback')).toContainText('Au tour de Joueur 2');
+    await play421Turn(page); // J2
+    await expect(page.locator('#d421-round-feedback')).toContainText('Ronde 2/10');
+
+    for (let i = 0; i < 18; i++) {
+      await play421Turn(page);
+    }
+
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Joueur 1');
+    await expect(page.locator('#game-over-modal')).toContainText('Mode');
+    await expect(page.locator('#game-over-modal')).not.toContainText('tie-break');
+  });
+
+  test('421 duo - tie-break déclenché et résolu', async ({ page }) => {
+    await open421(page, 'duo');
+
+    const queue = [];
+    for (let i = 0; i < 10; i++) {
+      queue.push(6, 5, 4); // J1 (suite)
+      queue.push(6, 5, 4); // J2 (suite)
+    }
+    queue.push(4, 2, 1); // Tie-break J1
+    queue.push(2, 2, 1); // Tie-break J2
+    await page.evaluate((vals) => window._d421Game.setTestDiceQueue(vals), queue);
+
+    for (let i = 0; i < 20; i++) {
+      await play421Turn(page);
+    }
+
+    await expect(page.locator('#d421-tiebreak-badge')).toBeVisible();
+    await expect(page.locator('#d421-round-feedback')).toContainText('Tie-break');
+
+    await play421Turn(page); // J1 tie-break
+    await play421Turn(page); // J2 tie-break
+
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('tie-break');
+    await expect(page.locator('#game-over-modal')).toContainText('Duel (tie-break');
+  });
+});

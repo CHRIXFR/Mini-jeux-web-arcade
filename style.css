@@ -4086,3 +4086,148 @@ body:not(.light-mode) .cap-option-btn {
 .np-shake-active {
     animation: np-shake 0.3s ease-in-out;
 }
+
+/* =========================================
+   13. JEU : 421 (DÉS)
+========================================= */
+
+.d421-game-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 1.25rem;
+    align-items: start;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.d421-main {
+    width: 100%;
+}
+
+.d421-scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    margin-bottom: 0.8rem;
+}
+
+.d421-player-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg-alt);
+    padding: 0.5rem 0.65rem;
+}
+
+.d421-player-row.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-glow) inset;
+}
+
+.d421-player-name {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.d421-player-score {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.d421-tiebreak-badge {
+    grid-column: 1 / -1;
+    border: 1px solid var(--warning);
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.12);
+    text-align: center;
+    font-weight: 600;
+}
+
+.d421-dice-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(108px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.65rem;
+    margin-bottom: 0.85rem;
+}
+
+.d421-die-btn {
+    min-height: 108px;
+    font-size: 2.8rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg-alt);
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.d421-die-btn.is-ready {
+    cursor: pointer;
+}
+
+.d421-die-btn.is-held {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow) inset;
+    background: var(--accent-glow);
+}
+
+.d421-roll-info {
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+
+.d421-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 0.9rem;
+}
+
+.d421-round-feedback {
+    min-height: 48px;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg-alt);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.d421-help {
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    padding: 1rem;
+}
+
+.d421-help h3 {
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+}
+
+.d421-help-list {
+    list-style: none;
+    display: grid;
+    gap: 0.42rem;
+    margin-bottom: 0.75rem;
+}
+
+.d421-help-list li {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.d421-help-note {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    padding-top: 0.65rem;
+}
