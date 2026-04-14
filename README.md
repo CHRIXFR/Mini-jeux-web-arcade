@@ -22,17 +22,19 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🎷 **Blind Test** | Musical | Devinez les musiques cultes jouées au synthétiseur 8-bits |
 | 🐍 **Snake** | Arcade | Surélevez le défi avec des paliers de vitesse et des murs aléatoires |
 | ☄️ **Neon Pulse** | Casse-briques | Détruisez les briques dans cette variante néon avec 10 niveaux et bonus |
+| 🎲 **421** | Dés / Arcade | Jouez en solo (score attack) ou en duel local 2 joueurs avec tie-break |
 
 ## Fonctionnalités Clés
 
 - **Accès Libre (Sans XP)** : Plus de barrières ! Tous les jeux sont débloqués par défaut pour un plaisir immédiat.
-- **Tableau des Records Locaux** : Battez vos propres records (scores ou temps) sauvegardés directement dans votre navigateur.
+- **Tableau des Records Locaux** : Battez vos propres records (scores ou temps) sauvegardés directement dans votre navigateur (mode solo).
 - **Thèmes & Fonds Dynamiques** : 4 modes (Sombre, Clair, Néon, Océan) avec des fonds d'écran haute qualité via l'API d'**Unsplash**.
 - **Guide Interactif (Driver.js)** : Un tour d'onboarding accompagne les nouveaux joueurs pour découvrir l'interface.
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub pour vous tenir au courant.
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
 - **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
+- **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
 - **Respect de la Vie Privée** : Analytique légère (GoatCounter) sans cookies et stockage local uniquement.
 
 ## Stack technique
@@ -44,6 +46,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
 - **Playwright** — Tests automatisés (non-régression visuelle et fonctionnelle).
+- **Tests dédiés 421** — Scénarios solo, duel local et tie-break validés en E2E.
 - **Suites multi-résolutions** — Validation desktop 1080p/1440p/2160p + mobile Samsung A51 (412x914).
 
 ## Lancer en local
