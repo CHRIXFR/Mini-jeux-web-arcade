@@ -305,7 +305,8 @@
     .np-container,
     .oc-game-container,
     .tetris-game-container,
-    .d421-game-container {
+    .d421-game-container,
+    .uno-game-container {
         width: 100%;
         max-width: none;
     }
@@ -486,5 +487,134 @@
 
     .d421-actions {
         gap: 0.45rem;
+    }
+}
+
+/* -----------------------------------------------
+   6. JEU UNO — Adaptation mobile
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+    .uno-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+        padding: 0.1rem;
+    }
+
+    .uno-main {
+        padding: 0.7rem;
+    }
+
+    .uno-players-strip {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.35rem;
+    }
+
+    .uno-player-name {
+        font-size: 0.68rem;
+    }
+
+    .uno-player-count {
+        font-size: 0.85rem;
+    }
+
+    .uno-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.45rem;
+    }
+
+    .uno-pile {
+        min-height: 100px;
+        font-size: 0.84rem;
+    }
+
+    .uno-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+    }
+
+    .uno-card-btn {
+        min-width: 88px;
+        min-height: 112px;
+        font-size: 0.82rem;
+    }
+
+    .uno-center {
+        font-size: 1.8rem;
+    }
+
+    .uno-corner {
+        font-size: 0.78rem;
+    }
+
+    .uno-help {
+        padding: 0.8rem;
+    }
+
+    .uno-overlay-content {
+        width: min(94vw, 420px);
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+    .uno-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .uno-main {
+        padding: 0.65rem;
+    }
+
+    .uno-status {
+        margin-top: 0.35rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.84rem;
+    }
+
+    .uno-players-strip {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.3rem;
+    }
+
+    .uno-player-pill {
+        padding: 0.3rem 0.4rem;
+    }
+
+    .uno-player-name {
+        font-size: 0.62rem;
+    }
+
+    .uno-player-count {
+        font-size: 0.76rem;
+    }
+
+    .uno-board {
+        grid-template-columns: repeat(2, minmax(0, 150px));
+        gap: 0.45rem;
+    }
+
+    .uno-pile {
+        min-height: 88px;
+        font-size: 0.78rem;
+    }
+
+    .uno-actions {
+        gap: 0.35rem;
+    }
+
+    .uno-card-btn {
+        min-width: 78px;
+        min-height: 96px;
+        font-size: 0.76rem;
+    }
+
+    .uno-center {
+        font-size: 1.45rem;
+    }
+
+    .uno-corner {
+        font-size: 0.68rem;
     }
 }

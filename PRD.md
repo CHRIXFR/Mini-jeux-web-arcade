@@ -182,7 +182,21 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
   - Évaluation déterministe des combinaisons (`421`, `Mac 1`, `Fiche`, `Baraque`, `Suite`, `Nénette`).
   - Tie-break décisif en duel en cas d'égalité (bonus sec désactivé pendant le tie-break).
   - Topbar standardisée (manche/score), panneau comparatif J1/J2, modales start/end unifiées.
-  - Persistance record local conservée uniquement pour le mode solo.
+- Persistance record local conservée uniquement pour le mode solo.
+- Statut : terminé.
+
+### 5.14 UNO
+- Gameplay : se défausser de toutes ses cartes avant les autres selon les règles UNO classiques.
+- Modes :
+  - Solo contre IA (1 joueur humain vs 1 IA).
+  - Multijoueur local pass-and-play (2, 3 ou 4 joueurs sur le même appareil).
+- Fonctionnalités :
+  - Deck UNO standard 108 cartes.
+  - Cartes action gérées : `skip`, `reverse`, `draw2`, `wild`, `wild draw4`.
+  - Règles v1 strictes : pas de stacking, pas de variantes 7-0/jump-in.
+  - Écran de passation obligatoire en multi local pour masquer les mains.
+  - Hook de test déterministe (`setTestDeck`) pour scénarios E2E.
+  - Stats solo persistées localement (`victoires / parties`) sans leaderboard multi.
 - Statut : terminé.
 
 ## 6. Fonctionnalités transverses (hors ajout de jeu)
@@ -269,7 +283,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Valider la stabilité sur mobile.
 
 ## 9. Historique des décisions & roadmap
-### 9.1 Vue chronologique complète (phases 1 à 29)
+### 9.1 Vue chronologique complète (phases 1 à 30)
 1. Phase 1 : Initialisation et design system (terminé).
 2. Phase 2 : Mise en place du socle de progression initial + Sudoku (terminé).
 3. Phase 3 : Développement de Mots Mêlés (terminé).
@@ -299,10 +313,11 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 27. Phase 27 : Standardisation des titres et menus des jeux (terminé) : topbar unifiée sur les 12 jeux (`icône + titre + difficulté (si applicable) + score/stat`), optimisations responsive mobile portrait/paysage, validation Playwright multi-résolutions (1080p/1440p/2160p + Samsung A51 412x914).
 28. Phase 28 : Ajout du jeu de dés 421 (terminé) : mode solo arcade en 10 manches, système hold + bonus sec, topbar/manches-score, intégration responsive desktop/mobile, scénario Playwright ciblé.
 29. Phase 29 : Évolution 421 en mode 2 joueurs local (terminé) : alternance Joueur 1/Joueur 2 par ronde, sélection de mode dans la modale de départ, tie-break décisif sans bonus sec, tests Playwright duo + tie-break.
+30. Phase 30 : Ajout du jeu UNO (terminé) : moteur unique règles classiques, mode solo contre IA, multi local 2/3/4 avec passation, intégration responsive et scénarios Playwright dédiés.
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
-- 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29.
+- 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30.
 
 #### Phases orientées fonctionnalités transverses / plateforme
 - 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26.
@@ -314,7 +329,6 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 ### 10.1 Idées de nouveaux jeux
 - Priorité en fonction de la complémentarité avec le catalogue actuel.
 - Favoriser les concepts jouables en sessions courtes.
-- Jeu de carte le UNO
 - Jeu de suite logique
 
 ### 10.2 Idées de fonctionnalités transverses
