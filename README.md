@@ -23,6 +23,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🐍 **Snake** | Arcade | Surélevez le défi avec des paliers de vitesse et des murs aléatoires |
 | ☄️ **Neon Pulse** | Casse-briques | Détruisez les briques dans cette variante néon avec 10 niveaux et bonus |
 | 🎲 **421** | Dés / Arcade | Jouez en solo (score attack) ou en duel local 2 joueurs avec tie-break |
+| 🃏 **UNO** | Cartes / Stratégie | Jouez en local 2/3/4 joueurs ou en solo contre une IA |
 
 ## Fonctionnalités Clés
 
@@ -35,6 +36,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
 - **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
 - **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
+- **UNO Multi + Solo IA** : UNO classique strict avec passation locale 2/3/4 joueurs et mode solo contre ordinateur.
 - **Respect de la Vie Privée** : Analytique légère (GoatCounter) sans cookies et stockage local uniquement.
 
 ## Stack technique
@@ -47,6 +49,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
 - **Playwright** — Tests automatisés (non-régression visuelle et fonctionnelle).
 - **Tests dédiés 421** — Scénarios solo, duel local et tie-break validés en E2E.
+- **Tests dédiés UNO** — Couverture des modes multi local, passation, carte action et tour IA.
 - **Suites multi-résolutions** — Validation desktop 1080p/1440p/2160p + mobile Samsung A51 (412x914).
 
 ## Lancer en local

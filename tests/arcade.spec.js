@@ -244,3 +244,79 @@ test.describe('Phase 28 - Jeu 421', () => {
     await expect(page.locator('#game-over-modal')).toContainText('Duel (tie-break');
   });
 });
+
+test.describe('Phase 30 - Jeu UNO', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+  });
+
+  async function openUno(page, mode = 'solo') {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'UNO' });
+    await expect(gameCard).toBeVisible();
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    if (mode !== 'solo') {
+      await page.locator(`.modal-diff-btn[data-diff="${mode}"]`).click();
+    }
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('[data-topbar-id="uno-topbar"]')).toBeVisible({ timeout: 10000 });
+  }
+
+  test('UNO multi local 3 joueurs - passation obligatoire', async ({ page }) => {
+    await openUno(page, 'multi3');
+    await expect(page.locator('#uno-players-strip')).toBeVisible();
+
+    await page.locator('#uno-btn-draw').click();
+    await page.locator('#uno-btn-pass').click();
+
+    const passOverlay = page.locator('#uno-pass-overlay');
+    await expect(passOverlay).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#uno-pass-message')).toContainText('Joueur 2');
+    await page.locator('#uno-btn-pass-continue').click();
+    await expect(passOverlay).toBeHidden();
+  });
+
+  test('UNO multi local 2 joueurs - carte +2 applique une pioche et skip', async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+    await page.locator('.game-card').filter({ hasText: 'UNO' }).click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    await page.locator('.modal-diff-btn[data-diff="multi2"]').click();
+    await page.evaluate(() => {
+      window._unoGame.setTestDeck([
+        'R:D2', 'B:5',
+        'G:1', 'Y:1',
+        'G:2', 'Y:2',
+        'G:3', 'Y:3',
+        'G:4', 'Y:4',
+        'G:5', 'Y:5',
+        'G:6', 'Y:6',
+        'R:9',
+        'B:7', 'B:8', 'B:9', 'Y:7'
+      ]);
+    });
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('[data-topbar-id="uno-topbar"]')).toBeVisible({ timeout: 10000 });
+
+    const cardBtn = page.locator('.uno-card-btn[data-card-code="R:D2"]').first();
+    await expect(cardBtn).toBeVisible();
+    const cardId = await cardBtn.getAttribute('data-card-id');
+    await page.evaluate((id) => window._unoGame.playCardById(id), cardId);
+
+    await expect(page.locator('#uno-player-count-1')).toHaveText('9');
+    await expect(page.locator('#uno-pass-overlay')).toBeHidden();
+    await expect(page.locator('[data-topbar-id="uno-topbar"]')).toContainText('Joueur 1');
+  });
+
+  test('UNO solo vs IA - enchainement tour joueur puis IA', async ({ page }) => {
+    await openUno(page, 'solo');
+    await expect(page.locator('#uno-pass-overlay')).toBeHidden();
+
+    await page.locator('#uno-btn-draw').click();
+    await page.locator('#uno-btn-pass').click();
+
+    await expect(page.locator('#uno-hand')).toContainText('Tour de l\'IA');
+    await expect(page.locator('#uno-status')).toContainText('IA');
+  });
+});
