@@ -42,6 +42,65 @@ test.describe('Mini-jeux-web Arcade - Tests de régression visuelle v2', () => {
 
 });
 
+test.describe('Phase 32 - Optimisation UI Globale', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+    await page.waitForTimeout(400);
+  });
+
+  async function openGameWithModal(page, gameName, selectedDiff = null) {
+    const card = page.locator('.game-card').filter({ hasText: gameName });
+    await expect(card).toBeVisible();
+    await card.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    if (selectedDiff) {
+      await page.locator(`.modal-diff-btn[data-diff="${selectedDiff}"]`).click();
+    }
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('.game-topbar')).toBeVisible({ timeout: 10000 });
+  }
+
+  test('Home - hero et grille optimisés', async ({ page }) => {
+    await expect(page.locator('.hero')).toHaveScreenshot('ui-hero-optimized.png');
+    await expect(page.locator('.games-grid .game-card').first()).toHaveScreenshot('ui-game-card-optimized.png');
+  });
+
+  test('Topbar - Capitales optimisée', async ({ page }) => {
+    await openGameWithModal(page, 'Capitales');
+    await expect(page.locator('[data-topbar-id="capitales-topbar"]')).toHaveScreenshot('ui-topbar-capitales.png');
+  });
+
+  test('Topbar - 421 optimisée', async ({ page }) => {
+    await openGameWithModal(page, '421', 'solo');
+    await expect(page.locator('[data-topbar-id="421-topbar"]')).toHaveScreenshot('ui-topbar-421.png');
+  });
+
+  test('Topbar - Suite Logique optimisée', async ({ page }) => {
+    await openGameWithModal(page, 'Suite Logique', 'mixte');
+    await expect(page.locator('[data-topbar-id="suite-logique-topbar"]')).toHaveScreenshot('ui-topbar-suite-logique.png');
+  });
+
+  test('Modal - actions alignées sur desktop/mobile', async ({ page }) => {
+    await page.evaluate(() => {
+      window.arcade.showGameOverModal({
+        title: 'capitales',
+        gameStatus: 'Partie Terminée !',
+        icon: '🌍',
+        stats: [
+          { label: 'Score final', value: '4 / 10' },
+          { label: 'Mode', value: 'Mixte' }
+        ],
+        score: 4,
+        scoreType: 'points',
+        onReplay: () => {},
+        onQuit: () => {}
+      });
+    });
+    await expect(page.locator('#game-over-modal .modal-actions')).toHaveScreenshot('ui-modal-actions-aligned.png');
+  });
+});
+
 test.describe('Scrabble - Tests fonctionnels', () => {
 
   test.beforeEach(async ({ page }) => {

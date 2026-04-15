@@ -283,7 +283,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Valider la stabilité sur mobile.
 
 ## 9. Historique des décisions & roadmap
-### 9.1 Vue chronologique complète (phases 1 à 31)
+### 9.1 Vue chronologique complète (phases 1 à 32)
 1. Phase 1 : Initialisation et design system (terminé).
 2. Phase 2 : Mise en place du socle de progression initial + Sudoku (terminé).
 3. Phase 3 : Développement de Mots Mêlés (terminé).
@@ -315,22 +315,22 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 29. Phase 29 : Évolution 421 en mode 2 joueurs local (terminé) : alternance Joueur 1/Joueur 2 par ronde, sélection de mode dans la modale de départ, tie-break décisif sans bonus sec, tests Playwright duo + tie-break.
 30. Phase 30 : Ajout du jeu UNO (terminé) : moteur unique règles classiques, mode solo contre IA, multi local 2/3/4 avec passation, intégration responsive et scénarios Playwright dédiés.
 31. Phase 31 : Ajout du jeu Suite Logique (terminé) : modes `forme`, `chiffre` et `mixte` (alternance déterministe), session courte en 10 questions, 3 erreurs max, difficulté progressive, indice avec réduction de score, topbar/stat standardisée, record local et scénarios Playwright dédiés.
+32. Phase 32 : Optimisation UI globale (terminé) : consolidation des tokens UI, refonte du hero et des cartes hub, normalisation topbar/shell in-game, harmonisation responsive desktop/mobile, extension des captures Playwright (hub + topbar jeux représentatifs).
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
 - 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31.
 
 #### Phases orientées fonctionnalités transverses / plateforme
-- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26.
+- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 32.
 
 #### Phases orientées optimisation / qualité
-- 10, 11, 15, 16, 20, 25, 26, 27.
+- 10, 11, 15, 16, 20, 25, 26, 27, 32.
 
 ## 10. Idées futures (backlog)
 ### 10.1 Idées de nouveaux jeux
 - Priorité en fonction de la complémentarité avec le catalogue actuel.
 - Favoriser les concepts jouables en sessions courtes.
-- Jeu d'échecs contre ordinateur avec niveau et contre un autre joueur.
 
 ### 10.2 Idées de fonctionnalités transverses
 - Améliorations de navigation, personnalisation et confort de jeu.
