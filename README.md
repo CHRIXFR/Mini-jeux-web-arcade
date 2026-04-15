@@ -30,13 +30,14 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 ## Fonctionnalités Clés
 
 - **Tableau des Records Locaux** : Battez vos propres records (scores ou temps) sauvegardés directement dans votre navigateur (mode solo).
-- **Thèmes & Fonds Dynamiques** : 4 modes (Sombre, Clair, Néon, Océan) avec des fonds d'écran haute qualité via l'API d'**Unsplash**.
+- **Thèmes Étendus & Mode Dynamique** : 10 thèmes (Sombre, Clair, Néon, Océan, Volcanic, Forest, Sunset, Mono, Retro, Aurora) avec mode global `Fixe` / `Aléatoire`.
 - **Guide Interactif (Driver.js)** : Un tour d'onboarding accompagne les nouveaux joueurs pour découvrir l'interface.
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub pour vous tenir au courant.
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
 - **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
 - **UI globale optimisée (Phase 32)** : Hero d'accueil clarifié, cartes de jeux harmonisées, shell in-game stabilisé et responsive renforcé.
+- **Extension visuelle globale (Phase 34)** : Rotation aléatoire du thème au retour accueil + fonds 100% CSS gradients (sans dépendance externe).
 - **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
 - **UNO Multi + Solo IA** : UNO classique strict avec passation locale 2/3/4 joueurs et mode solo contre ordinateur.
 - **Suite Logique (Forme/Chiffre/Mixte)** : Session courte en 10 questions, difficulté progressive, indice optionnel et score local.
@@ -48,7 +49,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Vanilla JavaScript** (ES6+) — zéro dépendance, architecture modulaire par fichier.
 - **Modern CSS** — Design System robuste, Glassmorphism, thèmes adaptatifs et `mobile.css` dédié au responsive.
 - **Driver.js** — Moteur de visite guidée pour l'accueil.
-- **Unsplash API** — Chargement dynamique d'images de fond thématiques.
+- **Gradients CSS** — Fonds dynamiques locaux pour un rendu stable offline.
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
 - **js-chess-engine (MIT)** — Moteur d'échecs permissif (règles + IA) utilisé pour le mode Échecs.

@@ -232,7 +232,8 @@
         // Définition d'un store global simple pour remplacer Zustand/Imports
         window.arcade = {
             state: {
-                theme: localStorage.getItem('arcade_theme') || 'dark',
+                theme: localStorage.getItem('arcade_theme_fixed') || localStorage.getItem('arcade_theme') || 'dark',
+                themeMode: localStorage.getItem('arcade_theme_mode') || 'fixed',
                 currentView: 'home',
                 testMode: new URLSearchParams(window.location.search).has('test')
             },
@@ -242,10 +243,16 @@
                 native: {}
             },
             themes: [
-                { id: 'dark', icon: '🌙', bg: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1920&auto=format' },
-                { id: 'light', icon: '☀️', bg: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1920&auto=format' },
-                { id: 'neon', icon: '⚡', bg: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920&auto=format' },
-                { id: 'ocean', icon: '🌊', bg: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1920&auto=format' }
+                { id: 'dark', icon: '🌙', bg: 'radial-gradient(1200px 780px at 18% -8%, rgba(99,102,241,0.42) 0%, rgba(9,9,11,0) 58%), radial-gradient(1000px 640px at 92% 106%, rgba(217,70,239,0.24) 0%, rgba(9,9,11,0) 55%), linear-gradient(145deg, #09090b 0%, #111127 48%, #130d1f 100%)' },
+                { id: 'light', icon: '☀️', bg: 'radial-gradient(1200px 840px at 8% -15%, rgba(251,191,36,0.3) 0%, rgba(248,250,252,0) 52%), radial-gradient(980px 620px at 94% 115%, rgba(59,130,246,0.22) 0%, rgba(248,250,252,0) 52%), linear-gradient(155deg, #f8fafc 0%, #eef2ff 48%, #ecfeff 100%)' },
+                { id: 'neon', icon: '⚡', bg: 'radial-gradient(980px 700px at 12% 0%, rgba(217,70,239,0.52) 0%, rgba(11,9,20,0) 52%), radial-gradient(900px 620px at 92% 102%, rgba(6,182,212,0.34) 0%, rgba(11,9,20,0) 50%), linear-gradient(140deg, #090814 0%, #170c2a 45%, #0f1833 100%)' },
+                { id: 'ocean', icon: '🌊', bg: 'radial-gradient(1080px 760px at 10% -10%, rgba(56,189,248,0.46) 0%, rgba(8,47,73,0) 56%), radial-gradient(900px 620px at 92% 110%, rgba(20,184,166,0.3) 0%, rgba(8,47,73,0) 54%), linear-gradient(155deg, #06283f 0%, #0a4d70 52%, #0e7490 100%)' },
+                { id: 'volcanic', icon: '🌋', bg: 'radial-gradient(1050px 700px at 15% 0%, rgba(248,113,113,0.56) 0%, rgba(25,6,12,0) 56%), radial-gradient(940px 640px at 88% 110%, rgba(251,146,60,0.38) 0%, rgba(25,6,12,0) 54%), linear-gradient(145deg, #18070f 0%, #2a0d16 45%, #3a120f 100%)' },
+                { id: 'forest', icon: '🌲', bg: 'radial-gradient(1000px 700px at 12% 0%, rgba(52,211,153,0.44) 0%, rgba(6,24,20,0) 54%), radial-gradient(900px 620px at 92% 108%, rgba(163,230,53,0.26) 0%, rgba(6,24,20,0) 52%), linear-gradient(150deg, #061814 0%, #0a2a23 48%, #133a2c 100%)' },
+                { id: 'sunset', icon: '🌅', bg: 'radial-gradient(1040px 730px at 14% -8%, rgba(244,114,182,0.5) 0%, rgba(29,8,28,0) 54%), radial-gradient(920px 620px at 94% 114%, rgba(251,191,36,0.34) 0%, rgba(29,8,28,0) 52%), linear-gradient(150deg, #16081e 0%, #3a1433 46%, #4b1f2f 100%)' },
+                { id: 'mono', icon: '⚪', bg: 'radial-gradient(1200px 780px at 16% -10%, rgba(163,163,163,0.2) 0%, rgba(10,10,10,0) 56%), radial-gradient(860px 620px at 92% 108%, rgba(82,82,82,0.22) 0%, rgba(10,10,10,0) 52%), linear-gradient(150deg, #050505 0%, #151515 54%, #101010 100%)' },
+                { id: 'retro', icon: '🕹️', bg: 'radial-gradient(1020px 720px at 12% 0%, rgba(250,204,21,0.42) 0%, rgba(21,15,5,0) 54%), radial-gradient(900px 640px at 92% 112%, rgba(251,146,60,0.3) 0%, rgba(21,15,5,0) 52%), linear-gradient(145deg, #120d05 0%, #221208 42%, #2e1911 100%)' },
+                { id: 'aurora', icon: '🧊', bg: 'radial-gradient(1060px 740px at 14% -10%, rgba(45,212,191,0.45) 0%, rgba(7,12,30,0) 56%), radial-gradient(920px 620px at 92% 112%, rgba(125,211,252,0.3) 0%, rgba(7,12,30,0) 54%), linear-gradient(150deg, #060d22 0%, #0c1b3e 46%, #142d5e 100%)' }
             ],
             games: [
                 { id: 'hangman', name: 'Le Pendu', icon: '😵', difficulty: 'Normal' },
@@ -438,6 +445,58 @@
                 const secs = seconds % 60;
                 return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             },
+            getThemeById: function (themeId) {
+                return this.themes.find((theme) => theme.id === themeId) || this.themes[0];
+            },
+            getThemeModeLabel: function () {
+                return this.state.themeMode === 'random' ? 'Mode aléatoire actif' : 'Mode fixe actif';
+            },
+            setThemeMode: function (mode) {
+                this.state.themeMode = mode === 'random' ? 'random' : 'fixed';
+                localStorage.setItem('arcade_theme_mode', this.state.themeMode);
+                if (this.state.themeMode === 'random') {
+                    this.selectRandomTheme();
+                } else {
+                    const fixedTheme = this.getThemeById(localStorage.getItem('arcade_theme_fixed') || this.state.theme);
+                    this.state.theme = fixedTheme.id;
+                    localStorage.setItem('arcade_theme_fixed', fixedTheme.id);
+                    localStorage.setItem('arcade_theme', fixedTheme.id);
+                    this.applyTheme();
+                }
+                this.updateThemeModeUI();
+            },
+            toggleThemeMode: function () {
+                const nextMode = this.state.themeMode === 'fixed' ? 'random' : 'fixed';
+                this.setThemeMode(nextMode);
+            },
+            selectRandomTheme: function () {
+                if (!this.themes.length) return;
+                const lastRandom = localStorage.getItem('arcade_theme_last_random');
+                const candidates = this.themes.filter((theme) => theme.id !== lastRandom);
+                const pool = candidates.length ? candidates : this.themes;
+                const randomTheme = pool[Math.floor(Math.random() * pool.length)];
+                this.state.theme = randomTheme.id;
+                localStorage.setItem('arcade_theme_last_random', randomTheme.id);
+                localStorage.setItem('arcade_theme', randomTheme.id);
+                this.applyTheme();
+            },
+            updateThemeModeUI: function () {
+                const modeBtn = document.getElementById('theme-mode-btn');
+                const modeLabel = document.getElementById('theme-mode-label');
+                if (modeBtn) {
+                    modeBtn.textContent = this.state.themeMode === 'random' ? 'Mode: Aléatoire' : 'Mode: Fixe';
+                    modeBtn.setAttribute('aria-pressed', this.state.themeMode === 'random' ? 'true' : 'false');
+                }
+                if (modeLabel) {
+                    modeLabel.textContent = `${this.getThemeModeLabel()} · Thème actuel: ${this.getThemeById(this.state.theme).icon}`;
+                }
+                const themeBtn = document.getElementById('theme-btn');
+                if (themeBtn) {
+                    themeBtn.title = this.state.themeMode === 'random'
+                        ? 'Mode aléatoire actif (retour accueil = nouveau thème)'
+                        : 'Changer de thème';
+                }
+            },
             renderHome: function () {
                 const previousView = this.state.currentView;
                 if (previousView && previousView !== 'home') {
@@ -449,6 +508,11 @@
                     .join(' ');
                 document.body.classList.remove('in-game');
                 this.state.currentView = 'home';
+                if (this.state.themeMode === 'random') {
+                    this.selectRandomTheme();
+                } else {
+                    this.applyTheme();
+                }
 
                 // Nettoyage modales de jeu standardisées
                 const startModal = document.getElementById('game-start-modal');
@@ -520,6 +584,10 @@
                                 <button id="btn-scroll-games" class="btn-primary hero-btn-primary" aria-label="Voir les jeux" onclick="document.getElementById('games-grid-container').scrollIntoView({ behavior: 'smooth' })">Découvrir les jeux</button>
                                 ${lastGame ? `<button class="btn-secondary hero-btn-secondary" aria-label="Reprendre ${lastGame.name}" onclick="window.arcade.loadGame('${lastGame.id}')">Reprendre ${lastGame.name}</button>` : ''}
                             </div>
+                            <div class="hero-theme-controls">
+                                <button id="theme-mode-btn" class="btn-secondary hero-theme-mode-btn" aria-pressed="false" onclick="window.arcade.toggleThemeMode()"></button>
+                                <span id="theme-mode-label" class="hero-theme-mode-label"></span>
+                            </div>
                             <div class="hero-meta">
                                 <span class="hero-chip">🎮 ${orderedGames.length} jeux disponibles</span>
                                 <span class="hero-chip">📱 Desktop + mobile optimisé</span>
@@ -560,6 +628,7 @@
                         event: false
                     });
                 }
+                this.updateThemeModeUI();
             },
             getGameDescription: function (id) {
                 const descriptions = {
@@ -594,9 +663,15 @@
                 }
             },
             toggleTheme: function () {
-                const currentIndex = this.themes.findIndex(t => t.id === this.state.theme) || 0;
+                if (this.state.themeMode === 'random') {
+                    this.showToast('Mode aléatoire actif : passez en mode fixe pour choisir un thème.');
+                    return;
+                }
+                const foundIndex = this.themes.findIndex(t => t.id === this.state.theme);
+                const currentIndex = foundIndex >= 0 ? foundIndex : 0;
                 const nextIndex = (currentIndex + 1) % this.themes.length;
                 this.state.theme = this.themes[nextIndex].id;
+                localStorage.setItem('arcade_theme_fixed', this.state.theme);
                 localStorage.setItem('arcade_theme', this.state.theme);
                 this.applyTheme();
             },
@@ -612,7 +687,7 @@
             applyTheme: function () {
                 const current = this.themes.find(t => t.id === this.state.theme) || this.themes[0];
 
-                document.body.classList.remove('dark-mode', 'light-mode', 'neon-mode', 'ocean-mode');
+                this.themes.forEach((theme) => document.body.classList.remove(`${theme.id}-mode`));
                 document.body.classList.add(`${current.id}-mode`);
 
                 const themeBtn = document.getElementById('theme-btn');
@@ -625,13 +700,9 @@
                     document.body.prepend(bgElement);
                 }
 
-                bgElement.classList.remove('loaded');
-                const img = new Image();
-                img.src = current.bg;
-                img.onload = () => {
-                    bgElement.style.backgroundImage = `url(${current.bg})`;
-                    bgElement.classList.add('loaded');
-                };
+                bgElement.style.backgroundImage = current.bg;
+                bgElement.classList.add('loaded');
+                this.updateThemeModeUI();
             },
             isTourDisabled: function () {
                 const params = new URLSearchParams(window.location.search);
@@ -645,7 +716,7 @@
                 const steps = [
                     { element: '#main-title', popover: { title: 'Bienvenue', description: 'Ceci est l\'Arcade Minimaliste. Découvrez des mini-jeux classiques dans une enveloppe moderne !', side: "bottom" } },
                     { element: '#tour-btn', popover: { title: 'Aide', description: 'Cliquez ici à tout moment pour revoir ce guide.', side: "bottom" } },
-                    { element: '#theme-btn', popover: { title: 'Thèmes Dynamiques', description: 'Changez l\'apparence. Clair, sombre, néon ou avec un fond d\'écran dynamique (Unsplash !)', side: "bottom" } },
+                    { element: '#theme-btn', popover: { title: 'Thèmes Dynamiques', description: 'Parcourez les thèmes en mode fixe. Le mode aléatoire est disponible dans le panneau accueil.', side: "bottom" } },
                     { element: '#audio-btn', popover: { title: 'Sons & Musique', description: 'Activez l\'ambiance sonore pour une meilleure immersion (BGM et effets).', side: "bottom" } }
                 ];
 
@@ -732,6 +803,9 @@
 
         window.onload = () => {
             window.arcade.installLifecycleGuards();
+            if (window.arcade.state.themeMode !== 'random') {
+                localStorage.setItem('arcade_theme_fixed', window.arcade.state.theme);
+            }
             window.arcade.applyTheme();
             window.arcade.renderHome();
             window.arcade.checkFirstVisit();

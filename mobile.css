@@ -693,6 +693,26 @@
         min-height: 44px;
     }
 
+    .hero-theme-controls {
+        margin-top: 0.55rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.34rem;
+        width: 100%;
+    }
+
+    .hero-theme-mode-btn {
+        width: 100%;
+        min-height: 42px;
+        font-size: 0.78rem;
+    }
+
+    .hero-theme-mode-label {
+        width: 100%;
+        text-align: center;
+        font-size: 0.66rem;
+    }
+
     .hero-meta {
         margin-top: 0.6rem;
         gap: 0.35rem;
@@ -784,6 +804,10 @@
 
     .hero-actions {
         gap: 0.4rem;
+    }
+
+    .hero-theme-controls {
+        margin-top: 0.45rem;
     }
 
     .hero-chip {

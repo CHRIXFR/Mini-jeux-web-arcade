@@ -101,6 +101,123 @@ test.describe('Phase 32 - Optimisation UI Globale', () => {
   });
 });
 
+test.describe('Phase 33 - Themes et rendu global', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+    await page.waitForTimeout(350);
+  });
+
+  test('Mode fixe par defaut + theme sombre', async ({ page }) => {
+    const modeInfo = await page.evaluate(() => ({
+      mode: localStorage.getItem('arcade_theme_mode') || 'fixed',
+      bodyClass: document.body.className
+    }));
+    expect(modeInfo.mode).toBe('fixed');
+    expect(modeInfo.bodyClass).toContain('dark-mode');
+  });
+
+  test('Mode aleatoire : changement au retour accueil', async ({ page }) => {
+    await page.locator('#theme-mode-btn').click();
+    await page.waitForTimeout(200);
+
+    const firstTheme = await page.evaluate(() => {
+      const classes = document.body.className.split(' ');
+      return classes.find((c) => c.endsWith('-mode'));
+    });
+
+    const gameCard = page.locator('.game-card').filter({ hasText: 'Capitales' });
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('.game-topbar')).toBeVisible({ timeout: 10000 });
+    await page.locator('.game-view > .btn-secondary').click();
+    await expect(page.locator('.games-grid')).toBeVisible({ timeout: 10000 });
+    await page.waitForTimeout(200);
+
+    const secondTheme = await page.evaluate(() => {
+      const classes = document.body.className.split(' ');
+      return classes.find((c) => c.endsWith('-mode'));
+    });
+    const themeMode = await page.evaluate(() => localStorage.getItem('arcade_theme_mode'));
+
+    expect(themeMode).toBe('random');
+    expect(firstTheme).not.toBe(secondTheme);
+  });
+
+  test('Mode aleatoire : bouton theme bloque le cycle manuel', async ({ page }) => {
+    await page.locator('#theme-mode-btn').click();
+    await page.waitForTimeout(200);
+    const before = await page.evaluate(() => {
+      const classes = document.body.className.split(' ');
+      return classes.find((c) => c.endsWith('-mode'));
+    });
+    await page.locator('#theme-btn').click();
+    await page.waitForTimeout(220);
+    const after = await page.evaluate(() => {
+      const classes = document.body.className.split(' ');
+      return classes.find((c) => c.endsWith('-mode'));
+    });
+    expect(before).toBe(after);
+  });
+
+  test('Snapshots hub des 6 nouveaux themes (desktop 1080p)', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chrome-1080p', 'Snapshots thematiques limites a desktop 1080p');
+
+    const themeIds = ['volcanic', 'forest', 'sunset', 'mono', 'retro', 'aurora'];
+    for (const themeId of themeIds) {
+      await page.evaluate((id) => {
+        localStorage.setItem('arcade_theme_mode', 'fixed');
+        localStorage.setItem('arcade_theme_fixed', id);
+        localStorage.setItem('arcade_theme', id);
+        window.arcade.state.themeMode = 'fixed';
+        window.arcade.state.theme = id;
+        window.arcade.applyTheme();
+        window.arcade.renderHome();
+      }, themeId);
+      await page.waitForTimeout(200);
+      await expect(page.locator('.hero')).toHaveScreenshot(`ui-theme-${themeId}-hero.png`);
+    }
+  });
+
+  test('Snapshot topbar sur theme sunset (3 jeux, desktop 1080p)', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chrome-1080p', 'Snapshot topbar limite a desktop 1080p');
+
+    await page.evaluate(() => {
+      localStorage.setItem('arcade_theme_mode', 'fixed');
+      localStorage.setItem('arcade_theme_fixed', 'sunset');
+      localStorage.setItem('arcade_theme', 'sunset');
+      window.arcade.state.themeMode = 'fixed';
+      window.arcade.state.theme = 'sunset';
+      window.arcade.applyTheme();
+      window.arcade.renderHome();
+    });
+    await page.waitForTimeout(200);
+
+    async function openWithStart(gameName, diff = null) {
+      const card = page.locator('.game-card').filter({ hasText: gameName });
+      await card.click();
+      await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+      if (diff) await page.locator(`.modal-diff-btn[data-diff="${diff}"]`).click();
+      await page.locator('#modal-btn-start').click();
+      await expect(page.locator('.game-topbar')).toBeVisible({ timeout: 10000 });
+    }
+
+    await openWithStart('Capitales');
+    await expect(page.locator('[data-topbar-id="capitales-topbar"]')).toHaveScreenshot('ui-topbar-capitales-sunset.png');
+    await page.locator('.game-view > .btn-secondary').click();
+    await expect(page.locator('.games-grid')).toBeVisible({ timeout: 10000 });
+
+    await openWithStart('421', 'solo');
+    await expect(page.locator('[data-topbar-id="421-topbar"]')).toHaveScreenshot('ui-topbar-421-sunset.png');
+    await page.locator('.game-view > .btn-secondary').click();
+    await expect(page.locator('.games-grid')).toBeVisible({ timeout: 10000 });
+
+    await openWithStart('Suite Logique', 'mixte');
+    await expect(page.locator('[data-topbar-id="suite-logique-topbar"]')).toHaveScreenshot('ui-topbar-suite-logique-sunset.png');
+  });
+});
+
 test.describe('Scrabble - Tests fonctionnels', () => {
 
   test.beforeEach(async ({ page }) => {
