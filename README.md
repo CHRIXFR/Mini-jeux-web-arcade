@@ -6,7 +6,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 
 ---
 
-## Jeux disponibles (Accès Immédiat 🚀)
+## Jeux disponibles
 
 | Jeu | Style | Description |
 |---|---|---|
