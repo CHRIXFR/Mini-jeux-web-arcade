@@ -261,7 +261,8 @@
                 { id: 'snake', name: 'Snake', icon: '🐍', difficulty: 'Arcade' },
                 { id: 'neon-pulse', name: 'Neon Pulse', icon: '☄️', difficulty: 'Casse-briques (10 Niveaux)' },
                 { id: '421', name: '421', icon: '🎲', difficulty: 'Arcade' },
-                { id: 'uno', name: 'UNO', icon: '🃏', difficulty: 'Solo IA / Multi local' }
+                { id: 'uno', name: 'UNO', icon: '🃏', difficulty: 'Solo IA / Multi local' },
+                { id: 'suite-logique', name: 'Suite Logique', icon: '🧠', difficulty: 'Forme / Chiffre / Mixte' }
             ],
             showToast: function (msg) {
                 const t = document.createElement('div');
@@ -557,7 +558,8 @@
                     'snake': 'Dirigez le serpent et mangez des pommes.',
                     'neon-pulse': 'Détruisez les briques et accumulez les bonus dans ce casse-briques lumineux.',
                     '421': 'Jeu de dés score-attack : 10 manches pour atteindre 30 points.',
-                    'uno': 'UNO classique : solo contre IA ou multi local 2/3/4 joueurs.'
+                    'uno': 'UNO classique : solo contre IA ou multi local 2/3/4 joueurs.',
+                    'suite-logique': 'Complétez des suites logiques en mode forme, chiffre ou mixte.'
                 };
                 return descriptions[id] || '';
             },
@@ -698,6 +700,7 @@
                 if (id === 'neon-pulse' && window.initNeonPulse) window.initNeonPulse(document.getElementById('game-mount'));
                 if (id === '421' && window.init421) window.init421(document.getElementById('game-mount'));
                 if (id === 'uno' && window.initUno) window.initUno(document.getElementById('game-mount'));
+                if (id === 'suite-logique' && window.initSuiteLogique) window.initSuiteLogique(document.getElementById('game-mount'));
             }
         };
 
@@ -726,6 +729,7 @@
     <script src="games/neon-pulse.js"></script>
     <script src="games/421.js"></script>
     <script src="games/uno.js"></script>
+    <script src="games/suite-logique.js"></script>
 </body>
 
 </html>
