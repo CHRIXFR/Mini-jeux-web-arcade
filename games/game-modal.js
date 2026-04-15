@@ -266,7 +266,7 @@
                 ${bestScoreHTML}
                 ${controlsHTML}
                 ${difficultyHTML}
-                <div class="modal-actions" style="margin-top: 1.5rem;">
+                <div class="modal-actions">
                     <button id="modal-btn-start" class="btn-primary">Commencer</button>
                     <button id="modal-btn-quit" class="btn-secondary">Menu Principal</button>
                 </div>
@@ -388,8 +388,8 @@
                 ${statsHTML}
                 <div class="modal-actions">
                     <button id="modal-btn-replay" class="btn-primary">Rejouer</button>
-                    ${config.extraButton ? `<button id="modal-btn-extra" class="btn-secondary" style="margin-top: 10px;">${config.extraButton.label}</button>` : ''}
-                    <button id="modal-btn-home" class="btn-secondary" style="margin-top: 10px;">Menu Principal</button>
+                    ${config.extraButton ? `<button id="modal-btn-extra" class="btn-secondary">${config.extraButton.label}</button>` : ''}
+                    <button id="modal-btn-home" class="btn-secondary">Menu Principal</button>
                 </div>
             </div>
         `;

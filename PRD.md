@@ -215,8 +215,10 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 ## 6. Fonctionnalités transverses (hors ajout de jeu)
 ### 6.1 Gestion des thèmes
 - Commutateur manuel disponible dans l'interface.
+- Mode global `fixe` / `aléatoire` persistant (`localStorage`) avec bascule depuis le hero.
 - Variables CSS centralisées pour garantir la cohérence visuelle.
-- Catalogue des thèmes : Clair, Sombre, Violet Néon, Bleu Océan.
+- Catalogue des thèmes : Sombre, Clair, Néon, Océan, Volcanic, Forest, Sunset, Mono, Retro, Aurora.
+- Fonds 100% CSS gradients (sans dépendance image externe) pour stabilité offline et cohérence visuelle.
 
 ### 6.2 Audio global
 - Effets sonores contextuels dans plusieurs jeux.
@@ -330,16 +332,17 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 31. Phase 31 : Ajout du jeu Suite Logique (terminé) : modes `forme`, `chiffre` et `mixte` (alternance déterministe), session courte en 10 questions, 3 erreurs max, difficulté progressive, indice avec réduction de score, topbar/stat standardisée, record local et scénarios Playwright dédiés.
 32. Phase 32 : Ajout du jeu Échecs (terminé) : mode local 2 joueurs + mode IA 3 niveaux, moteur permissif `js-chess-engine` (MIT), échiquier interactif responsive, historique des coups, abandon/annulation locale, hooks E2E et scénarios Playwright dédiés.
 33. Phase 33 : Optimisation UI globale (terminé) : consolidation des tokens UI, refonte du hero et des cartes hub, normalisation topbar/shell in-game, harmonisation responsive desktop/mobile, extension des captures Playwright (hub + topbar jeux représentatifs).
+34. Phase 34 : Extension thèmes globaux (terminé) : ajout de 6 thèmes contrastés, mode global fixe/aléatoire, rotation aléatoire au retour accueil, gradients CSS unifiés et audit de conformité template/modales.
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
 - 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31, 32.
 
 #### Phases orientées fonctionnalités transverses / plateforme
-- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33.
+- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34.
 
 #### Phases orientées optimisation / qualité
-- 10, 11, 15, 16, 20, 25, 26, 27, 33.
+- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34.
 
 ## 10. Idées futures (backlog)
 ### 10.1 Idées de nouveaux jeux
