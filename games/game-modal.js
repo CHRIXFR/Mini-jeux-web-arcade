@@ -16,11 +16,13 @@
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0.6rem;
-                padding: 0.9rem 1rem;
-                margin-bottom: 1rem;
+                padding: 0.85rem 0.95rem;
+                margin-bottom: 0.75rem;
                 border: 1px solid var(--border);
-                background: var(--card-bg);
+                background: var(--glass-bg, var(--card-bg));
                 border-radius: var(--radius);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
             }
             .game-topbar-left {
                 display: flex;
@@ -56,10 +58,11 @@
                 width: 100%;
             }
             .game-topbar-difficulty label {
-                font-size: 0.78rem;
+                font-size: 0.74rem;
                 text-transform: uppercase;
-                letter-spacing: 0.04em;
+                letter-spacing: 0.06em;
                 color: var(--text-secondary);
+                font-weight: 600;
             }
             .game-topbar-difficulty select {
                 background: var(--card-bg-alt);
@@ -67,7 +70,7 @@
                 border: 1px solid var(--border);
                 border-radius: 8px;
                 font-family: inherit;
-                height: var(--btn-height);
+                height: var(--control-height, var(--btn-height));
                 padding: 0 0.6rem;
             }
             .game-topbar-stat {
@@ -78,15 +81,28 @@
                 width: 100%;
             }
             .game-topbar-stat-label {
-                font-size: 0.78rem;
+                font-size: 0.74rem;
                 text-transform: uppercase;
-                letter-spacing: 0.04em;
+                letter-spacing: 0.06em;
                 color: var(--text-secondary);
+                font-weight: 600;
             }
             .game-topbar-stat-value {
                 font-weight: 700;
                 color: var(--accent);
                 font-variant-numeric: tabular-nums;
+                max-width: 100%;
+                overflow-wrap: anywhere;
+                text-align: right;
+                line-height: 1.25;
+                min-height: 1.25rem;
+            }
+            @media (min-width: 900px) {
+                .game-topbar {
+                    grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
+                    display: grid;
+                    align-items: center;
+                }
             }
             @media (max-width: 520px) {
                 .game-topbar {

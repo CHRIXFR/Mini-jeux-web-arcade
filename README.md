@@ -36,6 +36,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
 - **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
+- **UI globale optimisée (Phase 32)** : Hero d'accueil clarifié, cartes de jeux harmonisées, shell in-game stabilisé et responsive renforcé.
 - **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
 - **UNO Multi + Solo IA** : UNO classique strict avec passation locale 2/3/4 joueurs et mode solo contre ordinateur.
 - **Suite Logique (Forme/Chiffre/Mixte)** : Session courte en 10 questions, difficulté progressive, indice optionnel et score local.

@@ -460,7 +460,9 @@
                 if (avatar) avatar.style.display = 'flex';
 
                 // Texte hero sans XP
-                const heroText = 'Choisissez un jeu et battez vos propres records ! 🏆';
+                const heroText = 'Choisissez un jeu, lancez une session rapide et battez vos records.';
+                const lastGameId = localStorage.getItem('arcade_last_game');
+                const lastGame = this.games.find((g) => g.id === lastGameId) || null;
 
                 // --- CHARGEMENT DE L'ORDRE PERSONNALISÉ DES JEUX FAVORIS ---
                 let orderedGames = [...this.games];
@@ -502,7 +504,10 @@
                             <div class="game-icon" role="img" aria-label="Icône du jeu ${game.name}">${game.icon}</div>
                             <h3>${game.name}</h3>
                             <p>${this.getGameDescription(game.id)}</p>
-                            <span class="difficulty">${game.difficulty}</span>
+                            <div class="game-meta">
+                                <span class="difficulty">${game.difficulty}</span>
+                                <span class="game-cta">Jouer</span>
+                            </div>
                         </div>
                     `;
                 }).join('');
@@ -511,7 +516,15 @@
                     <section id="home-page" class="view">
                         <div class="hero">
                             <p class="subtitle">${heroText}</p>
-                            <button id="btn-scroll-games" class="scroll-arrow" aria-label="Voir les jeux" onclick="document.getElementById('games-grid-container').scrollIntoView({ behavior: 'smooth' })">↓</button>
+                            <div class="hero-actions">
+                                <button id="btn-scroll-games" class="btn-primary hero-btn-primary" aria-label="Voir les jeux" onclick="document.getElementById('games-grid-container').scrollIntoView({ behavior: 'smooth' })">Découvrir les jeux</button>
+                                ${lastGame ? `<button class="btn-secondary hero-btn-secondary" aria-label="Reprendre ${lastGame.name}" onclick="window.arcade.loadGame('${lastGame.id}')">Reprendre ${lastGame.name}</button>` : ''}
+                            </div>
+                            <div class="hero-meta">
+                                <span class="hero-chip">🎮 ${orderedGames.length} jeux disponibles</span>
+                                <span class="hero-chip">📱 Desktop + mobile optimisé</span>
+                                <span class="hero-chip">🏆 Records locaux automatiques</span>
+                            </div>
                         </div>
                         <div id="games-grid-container" class="games-grid">${gridHtml}</div>
                     </section>
@@ -673,6 +686,7 @@
                 document.body.classList.add('in-game');
                 document.body.classList.add(`game-${id}`);
                 this.state.currentView = id;
+                localStorage.setItem('arcade_last_game', id);
                 const avatar = document.getElementById('avatar-changelog');
                 if (avatar) avatar.style.display = 'none';
                 document.getElementById('app-container').innerHTML = `
