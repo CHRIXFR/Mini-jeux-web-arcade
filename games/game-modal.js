@@ -198,7 +198,8 @@
      * @param {string} config.description - Phrase d'accroche
      * @param {Array} [config.controls] - Liste { icon, desktop, mobile }
      * @param {Object|null} [config.difficulty] - { options: [{value, label}], default: string }
-     * @param {Function} config.onStart - Callback(difficulty) au clic "Commencer"
+     * @param {Object|null} [config.settings] - { groups: [{ id, label, options: [{ key, label, default, help }] }] }
+     * @param {Function} config.onStart - Callback(difficulty, settings) au clic "Commencer"
      * @param {Function} [config.onQuit] - Callback au clic "Menu Principal"
      */
     window.arcade.showStartModal = function (config) {
@@ -239,6 +240,36 @@
             `;
         }
 
+        // Construction des réglages optionnels (toggles/checkbox)
+        let settingsHTML = '';
+        const selectedSettings = {};
+        if (config.settings && Array.isArray(config.settings.groups) && config.settings.groups.length > 0) {
+            const groupsHTML = config.settings.groups.map((group) => {
+                const options = Array.isArray(group.options) ? group.options : [];
+                const optionsHTML = options.map((opt) => {
+                    const key = String(opt.key || '').trim();
+                    if (!key) return '';
+                    const checked = opt.default === true;
+                    selectedSettings[key] = checked;
+                    const help = opt.help ? `<span class="modal-setting-help">${opt.help}</span>` : '';
+                    return `
+                        <label class="modal-setting-item">
+                            <input type="checkbox" class="modal-setting-checkbox" data-setting-key="${key}" ${checked ? 'checked' : ''}>
+                            <span class="modal-setting-label">${opt.label || key}</span>
+                            ${help}
+                        </label>
+                    `;
+                }).join('');
+                return `
+                    <div class="modal-settings-group" data-settings-group="${group.id || ''}">
+                        <span class="modal-section-label">${group.label || 'Réglages'}</span>
+                        <div class="modal-settings-options">${optionsHTML}</div>
+                    </div>
+                `;
+            }).join('');
+            settingsHTML = `<div class="modal-settings-section">${groupsHTML}</div>`;
+        }
+
         // Affichage du meilleur score si existant
         let bestScoreHTML = '';
         const savedScoreRaw = localStorage.getItem(`arcade_hs_${config.title}`);
@@ -266,6 +297,7 @@
                 ${bestScoreHTML}
                 ${controlsHTML}
                 ${difficultyHTML}
+                ${settingsHTML}
                 <div class="modal-actions">
                     <button id="modal-btn-start" class="btn-primary">Commencer</button>
                     <button id="modal-btn-quit" class="btn-secondary">Menu Principal</button>
@@ -285,9 +317,17 @@
             });
         }
 
+        modal.querySelectorAll('.modal-setting-checkbox').forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                const key = checkbox.dataset.settingKey;
+                if (!key) return;
+                selectedSettings[key] = !!checkbox.checked;
+            });
+        });
+
         document.getElementById('modal-btn-start').addEventListener('click', () => {
             modal.remove();
-            if (config.onStart) config.onStart(selectedDifficulty);
+            if (config.onStart) config.onStart(selectedDifficulty, selectedSettings);
         });
 
         document.getElementById('modal-btn-quit').addEventListener('click', () => {

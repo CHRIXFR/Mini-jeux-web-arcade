@@ -193,9 +193,10 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Fonctionnalités :
   - Deck UNO standard 108 cartes.
   - Cartes action gérées : `skip`, `reverse`, `draw2`, `wild`, `wild draw4`.
-  - Règles v1 strictes : pas de stacking, pas de variantes 7-0/jump-in.
+  - Règles strictes par défaut + menu de règles activables en pré-partie.
+  - Règles activables : `stackDraw`, `allowPlayAfterDraw`, `scoreLosersPoints`, `jumpIn`, `sevenZero`, `wild4Challenge`.
   - Écran de passation obligatoire en multi local pour masquer les mains.
-  - Hook de test déterministe (`setTestDeck`) pour scénarios E2E.
+  - Hooks de test déterministes (`setTestDeck`, `setRules`, `getRules`, `getState`) pour scénarios E2E.
   - Stats solo persistées localement (`victoires / parties`) sans leaderboard multi.
 - Statut : terminé.
 
@@ -333,16 +334,17 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 32. Phase 32 : Ajout du jeu Échecs (terminé) : mode local 2 joueurs + mode IA 3 niveaux, moteur permissif `js-chess-engine` (MIT), échiquier interactif responsive, historique des coups, abandon/annulation locale, hooks E2E et scénarios Playwright dédiés.
 33. Phase 33 : Optimisation UI globale (terminé) : consolidation des tokens UI, refonte du hero et des cartes hub, normalisation topbar/shell in-game, harmonisation responsive desktop/mobile, extension des captures Playwright (hub + topbar jeux représentatifs).
 34. Phase 34 : Extension thèmes globaux (terminé) : ajout de 6 thèmes contrastés, mode global fixe/aléatoire, rotation aléatoire au retour accueil, gradients CSS unifiés et audit de conformité template/modales.
+35. Phase 35 : UNO règles activables (terminé) : menu de variantes pré-partie (stacking, jeu après pioche, points perdants, jump-in, 7-0, contestation +4), moteur UNO adapté solo+multi, hooks tests enrichis et couverture Playwright dédiée.
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
 - 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31, 32.
 
 #### Phases orientées fonctionnalités transverses / plateforme
-- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34.
+- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34, 35.
 
 #### Phases orientées optimisation / qualité
-- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34.
+- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34, 35.
 
 ## 10. Idées futures (backlog)
 ### 10.1 Idées de nouveaux jeux

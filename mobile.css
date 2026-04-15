@@ -497,59 +497,149 @@
 @media (max-width: 600px) {
     .uno-game-container {
         grid-template-columns: 1fr;
-        gap: 0.65rem;
+        gap: 0.5rem;
         padding: 0.1rem;
+        min-width: 0;
+        overflow-x: clip;
     }
 
     .uno-main {
-        padding: 0.7rem;
+        padding: 0.55rem;
+        min-width: 0;
+    }
+
+    body.in-game.game-uno .game-view,
+    body.in-game.game-uno #game-mount {
+        overflow-x: clip;
+        min-width: 0;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] {
+        margin-top: 0.2rem;
+        margin-bottom: 0.45rem;
+        padding: 0.5rem 0.55rem 0.5rem 2.15rem;
+        min-height: 82px;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-title {
+        font-size: 0.88rem;
+        line-height: 1.08;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-stat-value {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        text-align: left;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-stat {
+        grid-template-columns: 1fr;
+        justify-items: start;
+        gap: 0.18rem;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-stat-label,
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-stat-value {
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .uno-players-strip {
         grid-template-columns: 1fr 1fr;
-        gap: 0.35rem;
+        gap: 0.28rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .uno-player-pill {
+        padding: 0.35rem 0.4rem;
     }
 
     .uno-player-name {
-        font-size: 0.68rem;
+        font-size: 0.62rem;
     }
 
     .uno-player-count {
-        font-size: 0.85rem;
+        font-size: 0.78rem;
+    }
+
+    .uno-status {
+        margin-bottom: 0.45rem;
+        min-height: 38px;
+        font-size: 0.78rem;
+        padding: 0.45rem 0.55rem;
     }
 
     .uno-board {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.45rem;
+        gap: 0.38rem;
+        margin-bottom: 0.5rem;
     }
 
     .uno-pile {
-        min-height: 100px;
-        font-size: 0.84rem;
+        min-height: 84px;
+        font-size: 0.76rem;
+        padding: 0.45rem;
     }
 
     .uno-actions {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.3rem;
+        margin-bottom: 0.45rem;
+    }
+
+    .uno-actions .btn-primary,
+    .uno-actions .btn-secondary {
+        min-height: 40px;
+        padding: 0.45rem 0.3rem;
+        font-size: 0.74rem;
+        line-height: 1.1;
+        white-space: nowrap;
     }
 
     .uno-card-btn {
-        min-width: 88px;
-        min-height: 112px;
-        font-size: 0.82rem;
+        min-width: 74px;
+        min-height: 96px;
+        font-size: 0.76rem;
+    }
+
+    .uno-hand {
+        gap: 0.35rem;
+        padding-bottom: 0.15rem;
     }
 
     .uno-center {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
     .uno-corner {
-        font-size: 0.78rem;
+        font-size: 0.66rem;
     }
 
     .uno-help {
-        padding: 0.8rem;
+        padding: 0.65rem;
+        max-height: clamp(220px, 32vh, 360px);
+        overflow: auto;
+    }
+
+    .uno-help h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.45rem;
+    }
+
+    .uno-help-list {
+        gap: 0.28rem;
+        margin-bottom: 0.42rem;
+    }
+
+    .uno-help-list li {
+        font-size: 0.72rem;
+        line-height: 1.25;
+    }
+
+    .uno-help-note {
+        font-size: 0.7rem;
+        padding-top: 0.45rem;
     }
 
     .uno-overlay-content {
@@ -559,63 +649,137 @@
 
 @media (max-width: 950px) and (orientation: landscape) {
     .uno-game-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 230px);
+        align-items: start;
         gap: 0.5rem;
+        min-width: 0;
+        overflow-x: clip;
     }
 
     .uno-main {
-        padding: 0.65rem;
+        padding: 0.55rem;
+        min-width: 0;
+    }
+
+    body.in-game.game-uno .game-view,
+    body.in-game.game-uno #game-mount {
+        overflow-x: clip;
+        min-width: 0;
     }
 
     .uno-status {
-        margin-top: 0.35rem;
-        margin-bottom: 0.5rem;
-        font-size: 0.84rem;
+        margin-top: 0.15rem;
+        margin-bottom: 0.4rem;
+        font-size: 0.76rem;
+        min-height: 34px;
+        padding: 0.35rem 0.5rem;
     }
 
     .uno-players-strip {
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 0.3rem;
+        margin-bottom: 0.35rem;
     }
 
     .uno-player-pill {
-        padding: 0.3rem 0.4rem;
+        padding: 0.26rem 0.34rem;
     }
 
     .uno-player-name {
-        font-size: 0.62rem;
+        font-size: 0.58rem;
     }
 
     .uno-player-count {
-        font-size: 0.76rem;
+        font-size: 0.72rem;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] {
+        margin-top: 0.08rem;
+        margin-bottom: 0.36rem;
+        padding: 0.38rem 0.52rem 0.38rem 2rem;
+        min-height: 68px;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-title {
+        font-size: 0.8rem;
+    }
+
+    body.in-game.game-uno [data-topbar-id="uno-topbar"] .game-topbar-stat-value {
+        font-size: 0.72rem;
+        line-height: 1.15;
     }
 
     .uno-board {
-        grid-template-columns: repeat(2, minmax(0, 150px));
-        gap: 0.45rem;
+        grid-template-columns: repeat(2, minmax(0, 130px));
+        gap: 0.35rem;
+        margin-bottom: 0.35rem;
     }
 
     .uno-pile {
-        min-height: 88px;
-        font-size: 0.78rem;
+        min-height: 74px;
+        font-size: 0.7rem;
+        padding: 0.3rem;
     }
 
     .uno-actions {
-        gap: 0.35rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.3rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .uno-actions .btn-primary,
+    .uno-actions .btn-secondary {
+        min-height: 34px;
+        padding: 0.3rem 0.2rem;
+        font-size: 0.68rem;
+        line-height: 1.05;
+        white-space: nowrap;
     }
 
     .uno-card-btn {
-        min-width: 78px;
-        min-height: 96px;
-        font-size: 0.76rem;
+        min-width: 66px;
+        min-height: 84px;
+        font-size: 0.66rem;
+    }
+
+    .uno-hand {
+        gap: 0.3rem;
+        padding-bottom: 0.1rem;
     }
 
     .uno-center {
-        font-size: 1.45rem;
+        font-size: 1.2rem;
     }
 
     .uno-corner {
-        font-size: 0.68rem;
+        font-size: 0.58rem;
+    }
+
+    .uno-help {
+        padding: 0.55rem;
+        max-height: calc(100vh - 120px);
+        overflow: auto;
+    }
+
+    .uno-help h3 {
+        font-size: 0.82rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .uno-help-list {
+        gap: 0.24rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .uno-help-list li {
+        font-size: 0.66rem;
+        line-height: 1.2;
+    }
+
+    .uno-help-note {
+        font-size: 0.62rem;
+        padding-top: 0.35rem;
     }
 }
 
@@ -769,6 +933,11 @@
         max-width: 100%;
         max-height: none;
         overflow: visible;
+    }
+
+    body.in-game.game-uno .uno-help {
+        max-height: clamp(220px, 32vh, 360px);
+        overflow: auto;
     }
 }
 
