@@ -447,3 +447,82 @@ test.describe('Phase 31 - Jeu Suite Logique', () => {
     await expect(page.locator('[data-topbar-id="suite-logique-topbar"]')).toContainText('7 pts');
   });
 });
+
+test.describe('Phase 32 - Jeu Échecs', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+  });
+
+  async function openEchecs(page, mode = 'ai-medium') {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'Échecs' });
+    await expect(gameCard).toBeVisible();
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    if (mode !== 'ai-medium') {
+      await page.locator(`.modal-diff-btn[data-diff="${mode}"]`).click();
+    }
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('[data-topbar-id="echecs-topbar"]')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('.ec-board .ec-square')).toHaveCount(64);
+  }
+
+  test('Échecs - modale de démarrage avec local et IA', async ({ page }) => {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'Échecs' });
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="local"]')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="ai-easy"]')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="ai-medium"]')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="ai-hard"]')).toBeVisible();
+  });
+
+  test('Échecs local - coup illégal refusé, alternance et mat détecté', async ({ page }) => {
+    await openEchecs(page, 'local');
+
+    const illegal = await page.evaluate(() => window._echecsGame.playMove('E2', 'E5'));
+    expect(illegal).toBe(false);
+    const turnAfterIllegal = await page.evaluate(() => window._echecsGame.getState().turn);
+    expect(turnAfterIllegal).toBe('white');
+
+    await page.evaluate(() => {
+      window._echecsGame.playMove('F2', 'F3');
+      window._echecsGame.playMove('E7', 'E5');
+      window._echecsGame.playMove('G2', 'G4');
+      window._echecsGame.playMove('D8', 'H4');
+    });
+
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Échec et mat');
+  });
+
+  test('Échecs IA - coup joueur, réponse IA et changement de niveau', async ({ page }) => {
+    await openEchecs(page, 'ai-medium');
+
+    await page.evaluate(() => window._echecsGame.playMove('E2', 'E4'));
+    await page.evaluate(() => window._echecsGame.forceAiMove());
+
+    const state = await page.evaluate(() => window._echecsGame.getState());
+    expect(state.mode).toBe('ai');
+    expect(state.turn).toBe('white');
+    expect(state.movesCount).toBe(2);
+
+    await page.selectOption('[data-topbar-id="echecs-topbar"] [data-role="difficulty-select"]', 'hard');
+    const level = await page.evaluate(() => window._echecsGame.getState().level);
+    expect(level).toBe('hard');
+  });
+
+  test('Échecs - abandon affiche la modale de fin', async ({ page }) => {
+    await openEchecs(page, 'local');
+    await page.locator('#ec-btn-resign').click();
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Abandon');
+  });
+
+  test('Échecs - smoke responsive mobile portrait', async ({ page }) => {
+    await page.setViewportSize({ width: 412, height: 914 });
+    await openEchecs(page, 'ai-easy');
+    await expect(page.locator('.ec-board')).toBeVisible();
+    await expect(page.locator('.ec-actions')).toBeVisible();
+  });
+});

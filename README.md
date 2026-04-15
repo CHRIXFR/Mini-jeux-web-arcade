@@ -25,6 +25,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🎲 **421** | Dés / Arcade | Jouez en solo (score attack) ou en duel local 2 joueurs avec tie-break |
 | 🃏 **UNO** | Cartes / Stratégie | Jouez en local 2/3/4 joueurs ou en solo contre une IA |
 | 🧠 **Suite Logique** | Réflexion | Complétez des suites en mode forme, chiffre ou mixte sur 10 questions |
+| ♟️ **Échecs** | Stratégie | Affrontez un joueur local ou une IA à 3 niveaux sur un échiquier interactif |
 
 ## Fonctionnalités Clés
 
@@ -38,6 +39,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
 - **UNO Multi + Solo IA** : UNO classique strict avec passation locale 2/3/4 joueurs et mode solo contre ordinateur.
 - **Suite Logique (Forme/Chiffre/Mixte)** : Session courte en 10 questions, difficulté progressive, indice optionnel et score local.
+- **Échecs (Local + IA)** : Mode 2 joueurs local pass-and-play, IA à 3 niveaux, historique des coups et fin de partie standardisée.
 - **Respect de la Vie Privée** : Analytique légère (GoatCounter) sans cookies et stockage local uniquement.
 
 ## Stack technique
@@ -48,6 +50,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Unsplash API** — Chargement dynamique d'images de fond thématiques.
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
+- **js-chess-engine (MIT)** — Moteur d'échecs permissif (règles + IA) utilisé pour le mode Échecs.
 - **Playwright** — Tests automatisés (non-régression visuelle et fonctionnelle).
 - **Tests dédiés 421** — Scénarios solo, duel local et tie-break validés en E2E.
 - **Tests dédiés UNO** — Couverture des modes multi local, passation, carte action et tour IA.

@@ -618,3 +618,74 @@
         font-size: 0.68rem;
     }
 }
+
+/* -----------------------------------------------
+   7. JEU ECHECS — Adaptation mobile
+   ----------------------------------------------- */
+
+@media (max-width: 600px) {
+    .ec-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+        padding: 0.1rem;
+    }
+
+    .ec-main {
+        padding: 0.7rem;
+    }
+
+    .ec-status {
+        margin-bottom: 0.55rem;
+        min-height: 42px;
+        font-size: 0.82rem;
+    }
+
+    .ec-board {
+        max-width: 100%;
+    }
+
+    .ec-square {
+        font-size: clamp(1rem, 6vw, 1.6rem);
+    }
+
+    .ec-coordinate-file,
+    .ec-coordinate-rank {
+        font-size: 0.55rem;
+    }
+
+    .ec-side {
+        padding: 0.75rem;
+    }
+
+    .ec-history-list {
+        max-height: 200px;
+    }
+
+    .ec-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+    .ec-game-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .ec-main {
+        padding: 0.65rem;
+    }
+
+    .ec-status {
+        font-size: 0.8rem;
+        min-height: 40px;
+    }
+
+    .ec-board {
+        max-width: min(84vh, 520px);
+    }
+
+    .ec-history-list {
+        max-height: 170px;
+    }
+}

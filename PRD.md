@@ -199,6 +199,19 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
   - Stats solo persistées localement (`victoires / parties`) sans leaderboard multi.
 - Statut : terminé.
 
+### 5.15 Échecs
+- Gameplay : jouer une partie d'échecs complète en local 2 joueurs ou contre l'ordinateur.
+- Modes :
+  - Duel local pass-and-play (2 joueurs sur le même appareil).
+  - Solo contre IA (3 niveaux : facile, moyen, difficile).
+- Fonctionnalités :
+  - Moteur d'échecs permissif `js-chess-engine` (MIT) pour validation des coups et calcul IA.
+  - Échiquier interactif 8x8 (sélection pièce + case cible), surbrillance des coups légaux et dernier coup.
+  - Topbar standardisée (mode, trait, niveau IA si actif).
+  - Historique des coups (notation simplifiée), action Annuler (mode local), Rejouer, Abandonner.
+  - Modale de fin de partie (`échec et mat`, `pat`, `abandon`) avec statistiques.
+- Statut : terminé.
+
 ## 6. Fonctionnalités transverses (hors ajout de jeu)
 ### 6.1 Gestion des thèmes
 - Commutateur manuel disponible dans l'interface.
@@ -315,10 +328,11 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 29. Phase 29 : Évolution 421 en mode 2 joueurs local (terminé) : alternance Joueur 1/Joueur 2 par ronde, sélection de mode dans la modale de départ, tie-break décisif sans bonus sec, tests Playwright duo + tie-break.
 30. Phase 30 : Ajout du jeu UNO (terminé) : moteur unique règles classiques, mode solo contre IA, multi local 2/3/4 avec passation, intégration responsive et scénarios Playwright dédiés.
 31. Phase 31 : Ajout du jeu Suite Logique (terminé) : modes `forme`, `chiffre` et `mixte` (alternance déterministe), session courte en 10 questions, 3 erreurs max, difficulté progressive, indice avec réduction de score, topbar/stat standardisée, record local et scénarios Playwright dédiés.
+32. Phase 32 : Ajout du jeu Échecs (terminé) : mode local 2 joueurs + mode IA 3 niveaux, moteur permissif `js-chess-engine` (MIT), échiquier interactif responsive, historique des coups, abandon/annulation locale, hooks E2E et scénarios Playwright dédiés.
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
-- 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31.
+- 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31, 32.
 
 #### Phases orientées fonctionnalités transverses / plateforme
 - 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26.
@@ -330,7 +344,6 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 ### 10.1 Idées de nouveaux jeux
 - Priorité en fonction de la complémentarité avec le catalogue actuel.
 - Favoriser les concepts jouables en sessions courtes.
-- Jeu d'échecs contre ordinateur avec niveau et contre un autre joueur.
 
 ### 10.2 Idées de fonctionnalités transverses
 - Améliorations de navigation, personnalisation et confort de jeu.

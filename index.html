@@ -262,7 +262,8 @@
                 { id: 'neon-pulse', name: 'Neon Pulse', icon: '☄️', difficulty: 'Casse-briques (10 Niveaux)' },
                 { id: '421', name: '421', icon: '🎲', difficulty: 'Arcade' },
                 { id: 'uno', name: 'UNO', icon: '🃏', difficulty: 'Solo IA / Multi local' },
-                { id: 'suite-logique', name: 'Suite Logique', icon: '🧠', difficulty: 'Forme / Chiffre / Mixte' }
+                { id: 'suite-logique', name: 'Suite Logique', icon: '🧠', difficulty: 'Forme / Chiffre / Mixte' },
+                { id: 'echecs', name: 'Échecs', icon: '♟️', difficulty: 'Local 2J / IA niveaux' }
             ],
             showToast: function (msg) {
                 const t = document.createElement('div');
@@ -442,6 +443,10 @@
                 if (previousView && previousView !== 'home') {
                     this.cleanupGameResources(previousView);
                 }
+                document.body.className = document.body.className
+                    .split(/\s+/)
+                    .filter((cls) => cls && !cls.startsWith('game-'))
+                    .join(' ');
                 document.body.classList.remove('in-game');
                 this.state.currentView = 'home';
 
@@ -559,7 +564,8 @@
                     'neon-pulse': 'Détruisez les briques et accumulez les bonus dans ce casse-briques lumineux.',
                     '421': 'Jeu de dés score-attack : 10 manches pour atteindre 30 points.',
                     'uno': 'UNO classique : solo contre IA ou multi local 2/3/4 joueurs.',
-                    'suite-logique': 'Complétez des suites logiques en mode forme, chiffre ou mixte.'
+                    'suite-logique': 'Complétez des suites logiques en mode forme, chiffre ou mixte.',
+                    'echecs': 'Jouez aux échecs en local 2 joueurs ou contre IA à difficulté réglable.'
                 };
                 return descriptions[id] || '';
             },
@@ -660,7 +666,12 @@
                 if (previousView && previousView !== 'home' && previousView !== id) {
                     this.cleanupGameResources(previousView);
                 }
+                document.body.className = document.body.className
+                    .split(/\s+/)
+                    .filter((cls) => cls && !cls.startsWith('game-'))
+                    .join(' ');
                 document.body.classList.add('in-game');
+                document.body.classList.add(`game-${id}`);
                 this.state.currentView = id;
                 const avatar = document.getElementById('avatar-changelog');
                 if (avatar) avatar.style.display = 'none';
@@ -701,6 +712,7 @@
                 if (id === '421' && window.init421) window.init421(document.getElementById('game-mount'));
                 if (id === 'uno' && window.initUno) window.initUno(document.getElementById('game-mount'));
                 if (id === 'suite-logique' && window.initSuiteLogique) window.initSuiteLogique(document.getElementById('game-mount'));
+                if (id === 'echecs' && window.initEchecs) window.initEchecs(document.getElementById('game-mount'));
             }
         };
 
@@ -730,6 +742,8 @@
     <script src="games/421.js"></script>
     <script src="games/uno.js"></script>
     <script src="games/suite-logique.js"></script>
+    <script src="games/vendor/js-chess-engine.js"></script>
+    <script src="games/echecs.js"></script>
 </body>
 
 </html>
