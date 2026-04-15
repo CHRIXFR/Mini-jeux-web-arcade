@@ -4739,3 +4739,237 @@ body:not(.light-mode) .cap-option-btn {
         grid-template-columns: 1fr;
     }
 }
+
+/* -----------------------------------------------
+   9. JEU ECHECS
+   ----------------------------------------------- */
+
+.ec-game-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 1rem;
+    align-items: start;
+}
+
+.ec-main {
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    align-items: start;
+}
+
+.ec-status {
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg-alt);
+    color: var(--text-secondary);
+    padding: 0.65rem 0.8rem;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+}
+
+.ec-board {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+    justify-self: center;
+    align-self: start;
+}
+
+.ec-square {
+    position: relative;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: clamp(1.15rem, 2.8vw, 2rem);
+    transition: box-shadow 0.15s ease, transform 0.08s ease;
+    padding: 0;
+}
+
+.ec-square.light {
+    background: #efe5d4;
+}
+
+.ec-square.dark {
+    background: #8c6a4a;
+}
+
+.ec-square:hover {
+    box-shadow: inset 0 0 0 2px rgba(99, 102, 241, 0.55);
+}
+
+.ec-square.is-selectable .ec-piece {
+    filter: drop-shadow(0 0 4px rgba(99, 102, 241, 0.25));
+}
+
+.ec-square.is-selected {
+    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.95);
+}
+
+.ec-square.is-legal-target::after {
+    content: '';
+    width: 34%;
+    height: 34%;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.45);
+    position: absolute;
+}
+
+.ec-square.is-last-move {
+    box-shadow: inset 0 0 0 3px rgba(250, 204, 21, 0.55);
+}
+
+.ec-piece {
+    line-height: 1;
+    z-index: 2;
+}
+
+.ec-piece.white {
+    color: #f8fafc;
+    text-shadow: 0 1px 0 #111827, 0 0 10px rgba(15, 23, 42, 0.22);
+}
+
+.ec-piece.black {
+    color: #111827;
+    text-shadow: 0 1px 0 #f8fafc, 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+.ec-coordinate-file,
+.ec-coordinate-rank {
+    position: absolute;
+    font-size: 0.63rem;
+    font-weight: 700;
+    opacity: 0.72;
+    pointer-events: none;
+    color: #111827;
+}
+
+.ec-coordinate-file {
+    right: 0.15rem;
+    bottom: 0.1rem;
+}
+
+.ec-coordinate-rank {
+    left: 0.15rem;
+    top: 0.1rem;
+}
+
+.ec-side {
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    padding: 0.9rem;
+}
+
+.ec-side h3 {
+    margin-bottom: 0.6rem;
+    font-size: 1rem;
+}
+
+.ec-history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg-alt);
+    max-height: 350px;
+    overflow: auto;
+}
+
+.ec-history-list li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    padding: 0.36rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 0.86rem;
+}
+
+.ec-history-list li:last-child {
+    border-bottom: none;
+}
+
+.ec-history-index {
+    color: var(--text-secondary);
+    min-width: 2.4rem;
+}
+
+.ec-history-empty {
+    color: var(--text-secondary);
+}
+
+.ec-actions {
+    margin-top: 0.8rem;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.ec-help-note {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+@media (min-width: 1200px) {
+    body.in-game.game-echecs main {
+        max-width: none;
+        width: 100%;
+        padding: 0.75rem 1rem;
+    }
+
+    body.in-game.game-echecs .game-view {
+        align-items: stretch;
+    }
+
+    body.in-game.game-echecs #game-mount {
+        justify-content: stretch;
+    }
+
+    body.in-game.game-echecs .ec-game-container {
+        width: 100%;
+        max-width: none;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    body.in-game.game-echecs .ec-main {
+        min-height: calc(100vh - 155px);
+    }
+
+    body.in-game.game-echecs .ec-status {
+        height: 56px;
+    }
+
+    body.in-game.game-echecs .ec-board {
+        width: min(100%, calc(100vh - 250px));
+        max-width: none;
+    }
+
+    body.in-game.game-echecs .ec-side {
+        max-height: calc(100vh - 155px);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    body.in-game.game-echecs .ec-history-list {
+        flex: 1;
+        max-height: none;
+        min-height: 0;
+    }
+}
