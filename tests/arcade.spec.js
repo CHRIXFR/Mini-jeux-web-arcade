@@ -320,3 +320,130 @@ test.describe('Phase 30 - Jeu UNO', () => {
     await expect(page.locator('#uno-status')).toContainText('IA');
   });
 });
+
+test.describe('Phase 31 - Jeu Suite Logique', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+  });
+
+  async function openSuiteLogique(page, mode = 'mixte', beforeStart = null) {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'Suite Logique' });
+    await expect(gameCard).toBeVisible();
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    if (beforeStart) {
+      await beforeStart();
+    }
+    if (mode !== 'mixte') {
+      await page.locator(`.modal-diff-btn[data-diff="${mode}"]`).click();
+    }
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('[data-topbar-id="suite-logique-topbar"]')).toBeVisible({ timeout: 10000 });
+  }
+
+  test('Suite Logique - modale de démarrage avec 3 modes', async ({ page }) => {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'Suite Logique' });
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="forme"]')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="chiffre"]')).toBeVisible();
+    await expect(page.locator('.modal-diff-btn[data-diff="mixte"]')).toBeVisible();
+  });
+
+  test('Suite Logique - mode mixte alterne forme puis chiffre', async ({ page }) => {
+    await openSuiteLogique(page, 'mixte');
+
+    await expect(page.locator('#sl-mode-value')).toContainText('Mixte');
+    const firstMode = await page.evaluate(() => window._suiteLogiqueGame.state.currentQuestion.mode);
+    expect(firstMode).toBe('shape');
+
+    await page.locator('.sl-option-btn').first().click();
+    await page.locator('#sl-next-btn').click();
+
+    const secondMode = await page.evaluate(() => window._suiteLogiqueGame.state.currentQuestion.mode);
+    expect(secondMode).toBe('number');
+  });
+
+  test('Suite Logique - partie complète 10 questions + record local', async ({ page }) => {
+    await openSuiteLogique(page, 'chiffre', async () => {
+      await page.evaluate(() => {
+        const questions = Array.from({ length: 10 }).map((_, idx) => {
+          const start = 2 + idx;
+          return {
+            mode: 'number',
+            difficulty: idx < 3 ? 'easy' : (idx < 7 ? 'medium' : 'hard'),
+            sequence: [start, start + 2, start + 4, start + 6, start + 8],
+            answer: start + 10,
+            options: [start + 10, start + 11, start + 9, start + 12],
+            explanation: 'Règle: +2',
+            hint: 'Écart constant'
+          };
+        });
+        window._suiteLogiqueGame.setTestQuestionQueue(questions);
+        window._suiteLogiqueGame.setTestElapsedQueue(Array(10).fill(2));
+      });
+    });
+
+    for (let i = 0; i < 10; i++) {
+      await page.locator('.sl-option-btn').first().click();
+      await page.locator('#sl-next-btn').click();
+    }
+
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Score final');
+
+    const saved = await page.evaluate(() => {
+      const raw = localStorage.getItem('arcade_hs_suite-logique');
+      return raw ? JSON.parse(raw) : null;
+    });
+    expect(saved).not.toBeNull();
+    expect(saved.score).toBe(150);
+  });
+
+  test('Suite Logique - fin anticipée après 3 erreurs', async ({ page }) => {
+    await openSuiteLogique(page, 'chiffre', async () => {
+      await page.evaluate(() => {
+        const questions = Array.from({ length: 5 }).map(() => ({
+          mode: 'number',
+          sequence: [10, 12, 14, 16, 18],
+          answer: 20,
+          options: [20, 21, 22, 23],
+          explanation: 'Règle: +2',
+          hint: 'Écart constant'
+        }));
+        window._suiteLogiqueGame.setTestQuestionQueue(questions);
+        window._suiteLogiqueGame.setTestElapsedQueue([2, 2, 2, 2, 2]);
+      });
+    });
+
+    for (let i = 0; i < 3; i++) {
+      await page.locator('.sl-option-btn').nth(1).click();
+      await page.locator('#sl-next-btn').click();
+    }
+
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Erreurs');
+    await expect(page.locator('#game-over-modal')).toContainText('3 / 3');
+  });
+
+  test('Suite Logique - indice réduit le gain de points', async ({ page }) => {
+    await openSuiteLogique(page, 'chiffre', async () => {
+      await page.evaluate(() => {
+        window._suiteLogiqueGame.setTestQuestionQueue([{
+          mode: 'number',
+          sequence: [1, 3, 5, 7, 9],
+          answer: 11,
+          options: [11, 12, 13, 14],
+          explanation: 'Règle: +2',
+          hint: 'Écart constant'
+        }]);
+        window._suiteLogiqueGame.setTestElapsedQueue([2]);
+      });
+    });
+    await page.locator('#sl-hint-btn').click();
+    await page.locator('.sl-option-btn').first().click();
+
+    await expect(page.locator('[data-topbar-id="suite-logique-topbar"]')).toContainText('7 pts');
+  });
+});
