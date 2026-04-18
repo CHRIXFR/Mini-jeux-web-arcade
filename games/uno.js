@@ -9,6 +9,7 @@ class UnoGame {
     constructor(container) {
         this.container = container;
         this.mode = 'solo';
+        this.rules = this.getDefaultRules();
         this.players = [];
         this.drawPile = [];
         this.discardPile = [];
@@ -25,6 +26,9 @@ class UnoGame {
         this.passOverlayFor = '';
         this.statsSolo = this.getSoloStats();
         this.testDeckCodes = null;
+        this.pendingDrawStack = 0;
+        this.lastWild4Meta = null;
+        this.roundPoints = 0;
     }
 
     showStartScreen() {
@@ -47,8 +51,24 @@ class UnoGame {
                 ],
                 default: 'solo'
             },
-            onStart: function (selectedMode) {
-                self.startGame(selectedMode || 'solo');
+            settings: {
+                groups: [
+                    {
+                        id: 'uno-rules',
+                        label: 'Règles activables',
+                        options: [
+                            { key: 'stackDraw', label: 'Cumul de +2/+4', default: false, help: 'Le joueur ciblé peut répondre avec +2 ou +4 pour cumuler la pénalité.' },
+                            { key: 'allowPlayAfterDraw', label: 'Autoriser le jeu après pioche', default: true, help: 'Si désactivé: après avoir pioché, le tour doit se terminer par passer.' },
+                            { key: 'scoreLosersPoints', label: 'Compter les points des perdants', default: false, help: 'Affiche les points restants des perdants en fin de manche.' },
+                            { key: 'jumpIn', label: 'Jump-In (auto)', default: false, help: 'Une carte exactement identique peut être jouée immédiatement.' },
+                            { key: 'sevenZero', label: 'Règle 7-0', default: false, help: '7 échange de main, 0 rotation des mains.' },
+                            { key: 'wild4Challenge', label: 'Contestation du +4', default: false, help: 'Le +4 peut être contesté avec résolution standard simplifiée.' }
+                        ]
+                    }
+                ]
+            },
+            onStart: function (selectedMode, selectedSettings) {
+                self.startGame(selectedMode || 'solo', selectedSettings || {});
             },
             onQuit: function () { window.arcade.renderHome(); }
         });
@@ -79,14 +99,8 @@ class UnoGame {
                 </section>
 
                 <aside class="uno-help card">
-                    <h3>Règles UNO v1</h3>
-                    <ul class="uno-help-list">
-                        <li>Deck standard 108 cartes</li>
-                        <li>Pas de stacking (+2/+4)</li>
-                        <li>Pas de variantes 7-0 / jump-in</li>
-                        <li><code>reverse</code> = <code>skip</code> à 2 joueurs</li>
-                        <li>UNO non annoncé: +2 cartes</li>
-                    </ul>
+                    <h3>Règles UNO</h3>
+                    <ul id="uno-help-rules" class="uno-help-list"></ul>
                     <p class="uno-help-note">Objectif: vider sa main avant les autres joueurs.</p>
                 </aside>
             </div>
@@ -134,6 +148,7 @@ class UnoGame {
         this.passContinueBtn = this.container.querySelector('#uno-btn-pass-continue');
         this.colorOverlayNode = this.container.querySelector('#uno-color-overlay');
         this.colorChoiceBtns = Array.from(this.container.querySelectorAll('.uno-color-btn'));
+        this.helpRulesNode = this.container.querySelector('#uno-help-rules');
 
         this.drawBtn.addEventListener('click', () => this.handleDrawClick());
         this.passBtn.addEventListener('click', () => this.handlePassClick());
@@ -143,12 +158,14 @@ class UnoGame {
         this.colorChoiceBtns.forEach((btn) => {
             btn.addEventListener('click', () => this.confirmWildColor(btn.dataset.color));
         });
+        this.renderRulesHelp();
     }
 
-    startGame(selectedMode) {
+    startGame(selectedMode, selectedSettings = {}) {
         if (window.arcade.audio) window.arcade.audio.setContext('uno');
 
         this.mode = selectedMode === 'solo' ? 'solo' : selectedMode;
+        this.rules = this.normalizeRules(selectedSettings);
         this.players = this.createPlayers(this.mode);
         this.drawPile = this.createDeck();
         this.discardPile = [];
@@ -161,6 +178,9 @@ class UnoGame {
         this.isPlaying = true;
         this.turnCount = 1;
         this.passOverlayVisible = false;
+        this.pendingDrawStack = 0;
+        this.lastWild4Meta = null;
+        this.roundPoints = 0;
 
         this.players.forEach((player) => {
             player.hand = [];
@@ -170,6 +190,7 @@ class UnoGame {
 
         this.dealCards();
         this.initDiscardPile();
+        this.renderRulesHelp();
         this.startTurn(this.activeIndex, true);
     }
 
@@ -188,6 +209,50 @@ class UnoGame {
             saidUno: false,
             unoPending: false
         }));
+    }
+
+    getDefaultRules() {
+        return {
+            stackDraw: false,
+            allowPlayAfterDraw: true,
+            scoreLosersPoints: false,
+            jumpIn: false,
+            sevenZero: false,
+            wild4Challenge: false
+        };
+    }
+
+    normalizeRules(partialRules) {
+        const defaults = this.getDefaultRules();
+        const merged = { ...defaults };
+        if (!partialRules || typeof partialRules !== 'object') return merged;
+        Object.keys(defaults).forEach((key) => {
+            if (typeof partialRules[key] === 'boolean') {
+                merged[key] = partialRules[key];
+            }
+        });
+        return merged;
+    }
+
+    activeRulesCount() {
+        return Object.keys(this.rules).reduce((count, key) => count + (this.rules[key] ? 1 : 0), 0);
+    }
+
+    renderRulesHelp() {
+        if (!this.helpRulesNode) return;
+        const baseRules = [
+            'Deck standard 108 cartes',
+            '<code>reverse</code> = <code>skip</code> à 2 joueurs',
+            'UNO non annoncé: +2 cartes'
+        ];
+        const toggles = [];
+        toggles.push(this.rules.stackDraw ? '✅ Cumul +2/+4 actif' : '❌ Cumul +2/+4 désactivé');
+        toggles.push(this.rules.allowPlayAfterDraw ? '✅ Jeu après pioche autorisé' : '❌ Jeu après pioche interdit');
+        toggles.push(this.rules.scoreLosersPoints ? '✅ Points des perdants affichés' : '❌ Points des perdants désactivés');
+        toggles.push(this.rules.jumpIn ? '✅ Jump-In actif' : '❌ Jump-In désactivé');
+        toggles.push(this.rules.sevenZero ? '✅ Règle 7-0 active' : '❌ Règle 7-0 désactivée');
+        toggles.push(this.rules.wild4Challenge ? '✅ Contestation +4 active' : '❌ Contestation +4 désactivée');
+        this.helpRulesNode.innerHTML = [...baseRules, ...toggles].map((line) => `<li>${line}</li>`).join('');
     }
 
     createDeck() {
@@ -269,8 +334,27 @@ class UnoGame {
         if (!isNewGame) {
             this.status(`${player.name} doit jouer.`);
         }
+        if (this.resolvePendingDrawForActive(player)) {
+            return;
+        }
         this.updateUI();
         this.triggerAIIfNeeded();
+    }
+
+    resolvePendingDrawForActive(player) {
+        if (!this.rules.stackDraw || this.pendingDrawStack <= 0 || !player) return false;
+        const stackable = this.getStackableCards(player);
+        if (stackable.length > 0) {
+            this.status(`${player.name} peut cumuler la pioche (${this.pendingDrawStack}).`);
+            return false;
+        }
+        this.drawForPlayer(player, this.pendingDrawStack);
+        this.status(`${player.name} pioche ${this.pendingDrawStack} cartes (cumul).`);
+        this.pendingDrawStack = 0;
+        const next = this.getNextIndex(this.activeIndex, 1);
+        this.requestPassOverlayIfNeeded(next);
+        this.startTurn(next);
+        return true;
     }
 
     status(message) {
@@ -289,13 +373,21 @@ class UnoGame {
         if (!this.isPlaying || this.passOverlayVisible) return;
         const player = this.players[this.activeIndex];
         if (!player || player.isAI) return;
+        if (this.rules.stackDraw && this.pendingDrawStack > 0) {
+            window.arcade.showToast('Répondez avec +2/+4 ou subissez la pioche cumulée.');
+            return;
+        }
         if (this.hasDrawnThisTurn) {
             window.arcade.showToast('Vous avez déjà pioché ce tour.');
             return;
         }
         this.drawForPlayer(player, 1);
         this.hasDrawnThisTurn = true;
-        this.status(`${player.name} a pioché. Jouez une carte ou passez.`);
+        if (this.rules.allowPlayAfterDraw) {
+            this.status(`${player.name} a pioché. Jouez une carte ou passez.`);
+        } else {
+            this.status(`${player.name} a pioché. Passe obligatoire.`);
+        }
         this.updateUI();
     }
 
@@ -303,6 +395,13 @@ class UnoGame {
         if (!this.isPlaying || this.passOverlayVisible) return;
         const player = this.players[this.activeIndex];
         if (!player || player.isAI) return;
+        if (this.rules.stackDraw && this.pendingDrawStack > 0) {
+            this.drawForPlayer(player, this.pendingDrawStack);
+            this.status(`${player.name} subit ${this.pendingDrawStack} cartes.`);
+            this.pendingDrawStack = 0;
+            this.advanceAfterTurn(player, null);
+            return;
+        }
         if (!this.hasDrawnThisTurn && this.hasPlayableCard(player)) {
             window.arcade.showToast('Vous avez un coup possible. Jouez ou piochez avant de passer.');
             return;
@@ -322,11 +421,26 @@ class UnoGame {
         const ai = this.players[this.activeIndex];
         if (!ai || !ai.isAI) return;
 
+        if (this.rules.stackDraw && this.pendingDrawStack > 0) {
+            const stackable = this.getStackableCards(ai);
+            if (stackable.length > 0) {
+                const card = stackable[0];
+                const chosenColor = card.color === 'wild' ? this.chooseAIWildColor(ai, card) : null;
+                this.playCardById(card.id, chosenColor);
+                return;
+            }
+            this.drawForPlayer(ai, this.pendingDrawStack);
+            this.status(`IA subit ${this.pendingDrawStack} cartes.`);
+            this.pendingDrawStack = 0;
+            this.advanceAfterTurn(ai, null);
+            return;
+        }
+
         const playable = ai.hand.filter((card) => this.isPlayable(card));
         if (playable.length === 0) {
             this.drawForPlayer(ai, 1);
             const drawn = ai.hand[ai.hand.length - 1];
-            if (drawn && this.isPlayable(drawn)) {
+            if (this.rules.allowPlayAfterDraw && drawn && this.isPlayable(drawn)) {
                 this.playCardById(drawn.id, this.chooseAIWildColor(ai, drawn));
             } else {
                 this.status('IA passe son tour.');
@@ -373,6 +487,17 @@ class UnoGame {
         if (idx === -1) return;
         const card = player.hand[idx];
         if (!this.isPlayable(card)) return;
+        if (!player.isAI && this.hasDrawnThisTurn && !this.rules.allowPlayAfterDraw) {
+            window.arcade.showToast('Règle active: après pioche, vous devez passer.');
+            return;
+        }
+        if (this.rules.stackDraw && this.pendingDrawStack > 0) {
+            const stackable = this.getStackableCards(player);
+            if (!stackable.some((c) => c.id === card.id)) {
+                window.arcade.showToast('Vous ne pouvez répondre qu\'avec +2/+4.');
+                return;
+            }
+        }
 
         if (!player.isAI && card.color === 'wild' && !forcedColor) {
             this.pendingWildCard = card;
@@ -381,10 +506,18 @@ class UnoGame {
             return;
         }
 
+        const wild4HadColorMatch = card.value === 'wild4'
+            ? player.hand.some((c, handIdx) => handIdx !== idx && c.color !== 'wild' && c.color === this.currentColor)
+            : false;
+
         player.hand.splice(idx, 1);
         this.discardPile.push(card);
         this.currentColor = card.color === 'wild' ? (forcedColor || 'red') : card.color;
         this.hasDrawnThisTurn = false;
+        this.lastWild4Meta = null;
+        if (card.value === 'wild4') {
+            this.lastWild4Meta = { attackerIndex: this.activeIndex, hadColorMatch: wild4HadColorMatch };
+        }
 
         if (window.arcade.audio) {
             window.arcade.audio.playTone(460, 'triangle', 0.07, 0.12);
@@ -413,6 +546,24 @@ class UnoGame {
     }
 
     advanceAfterTurn(player, playedCard) {
+        if (playedCard && this.rules.jumpIn) {
+            const jumpInMeta = this.findJumpInCandidate(playedCard, this.activeIndex);
+            if (jumpInMeta) {
+                const jumper = this.players[jumpInMeta.playerIndex];
+                const jumpCard = jumper.hand.splice(jumpInMeta.cardIndex, 1)[0];
+                this.discardPile.push(jumpCard);
+                this.currentColor = jumpCard.color === 'wild' ? (this.currentColor || 'red') : jumpCard.color;
+                this.activeIndex = jumpInMeta.playerIndex;
+                player = jumper;
+                playedCard = jumpCard;
+                this.status(`${jumper.name} coupe la manche (Jump-In).`);
+                if (jumper.hand.length === 0) {
+                    this.finishGame(jumper);
+                    return;
+                }
+            }
+        }
+
         let next = this.getNextIndex(this.activeIndex, 1);
 
         if (playedCard) {
@@ -430,16 +581,39 @@ class UnoGame {
                 }
             } else if (playedCard.value === 'draw2') {
                 const target = next;
-                this.drawForPlayer(this.players[target], 2);
-                next = this.getNextIndex(target, 1);
-                this.status(`${player.name} inflige +2.`);
+                if (this.rules.stackDraw) {
+                    this.pendingDrawStack += 2;
+                    this.status(`${player.name} lance un cumul +2 (${this.pendingDrawStack}).`);
+                } else {
+                    this.drawForPlayer(this.players[target], 2);
+                    next = this.getNextIndex(target, 1);
+                    this.status(`${player.name} inflige +2.`);
+                }
             } else if (playedCard.value === 'wild4') {
                 const target = next;
-                this.drawForPlayer(this.players[target], 4);
-                next = this.getNextIndex(target, 1);
-                this.status(`${player.name} joue +4.`);
+                if (this.rules.stackDraw) {
+                    this.pendingDrawStack += 4;
+                    this.status(`${player.name} lance un cumul +4 (${this.pendingDrawStack}).`);
+                } else if (this.rules.wild4Challenge) {
+                    const resolution = this.resolveWild4Challenge(target);
+                    this.status(resolution.message);
+                    if (resolution.skipTarget) {
+                        next = this.getNextIndex(target, 1);
+                    }
+                } else {
+                    this.drawForPlayer(this.players[target], 4);
+                    next = this.getNextIndex(target, 1);
+                    this.status(`${player.name} joue +4.`);
+                }
             } else if (playedCard.value === 'wild') {
                 this.status(`${player.name} change la couleur en ${this.colorLabel(this.currentColor)}.`);
+            } else if (this.rules.sevenZero && playedCard.value === '7') {
+                const swapTarget = this.getSevenSwapTargetIndex(this.activeIndex);
+                this.swapHands(this.activeIndex, swapTarget);
+                this.status(`${player.name} joue 7 et échange sa main avec ${this.players[swapTarget].name}.`);
+            } else if (this.rules.sevenZero && playedCard.value === '0') {
+                this.rotateHands();
+                this.status(`${player.name} joue 0: rotation des mains.`);
             }
         }
 
@@ -471,6 +645,7 @@ class UnoGame {
     finishGame(winner) {
         this.isPlaying = false;
         clearTimeout(this.aiTimeout);
+        this.pendingDrawStack = 0;
 
         if (this.mode === 'solo') {
             const humanWon = winner && winner.name === 'Vous';
@@ -483,6 +658,18 @@ class UnoGame {
 
         const self = this;
         const statsRows = this.players.map((p) => ({ label: p.name, value: `${p.hand.length} carte(s)` }));
+        let roundPoints = 0;
+        if (this.rules.scoreLosersPoints && winner) {
+            this.players.forEach((p) => {
+                if (p !== winner) {
+                    const points = this.getPlayerHandPoints(p);
+                    roundPoints += points;
+                    statsRows.push({ label: `Points ${p.name}`, value: String(points) });
+                }
+            });
+            statsRows.push({ label: 'Points manche', value: String(roundPoints) });
+        }
+        this.roundPoints = roundPoints;
         if (this.mode === 'solo') {
             statsRows.push({ label: 'Bilan solo', value: `${this.statsSolo.wins}/${this.statsSolo.played}` });
         }
@@ -584,15 +771,16 @@ class UnoGame {
         const player = this.players[this.activeIndex];
         const canAct = this.isPlaying && !this.passOverlayVisible && player && !player.isAI;
         const hasPlayable = player ? this.hasPlayableCard(player) : false;
-        this.drawBtn.disabled = !canAct || this.hasDrawnThisTurn;
+        this.drawBtn.disabled = !canAct || this.hasDrawnThisTurn || (this.rules.stackDraw && this.pendingDrawStack > 0);
         this.unoBtn.disabled = !canAct;
         this.passBtn.disabled = !canAct || (!this.hasDrawnThisTurn && hasPlayable);
     }
 
     updateTopbar() {
         const active = this.players[this.activeIndex];
+        const rulesTag = this.activeRulesCount() > 0 ? ` • Règles: ${this.activeRulesCount()}` : '';
         const stat = active
-            ? `${active.name} • ${this.modeLabel()} • Couleur: ${this.colorLabel(this.currentColor)}`
+            ? `${active.name} • ${this.modeLabel()} • Couleur: ${this.colorLabel(this.currentColor)}${rulesTag}`
             : 'UNO';
         window.arcade.updateGameTopbarStat('uno-topbar', stat);
         const titleNode = document.querySelector('[data-topbar-id="uno-topbar"] .game-topbar-title');
@@ -646,7 +834,15 @@ class UnoGame {
         return player.hand.some((card) => this.isPlayable(card));
     }
 
+    getStackableCards(player) {
+        if (!player || !this.rules.stackDraw || this.pendingDrawStack <= 0) return [];
+        return player.hand.filter((card) => card.value === 'draw2' || card.value === 'wild4');
+    }
+
     isPlayable(card) {
+        if (this.rules.stackDraw && this.pendingDrawStack > 0) {
+            return card.value === 'draw2' || card.value === 'wild4';
+        }
         const top = this.getTopDiscard();
         if (!top) return true;
         if (card.color === 'wild') return true;
@@ -663,6 +859,104 @@ class UnoGame {
         for (let i = 0; i < count; i++) {
             player.hand.push(this.drawOneCard());
         }
+    }
+
+    resolveWild4Challenge(targetIndex) {
+        const meta = this.lastWild4Meta;
+        const target = this.players[targetIndex];
+        if (!meta || !target) {
+            this.drawForPlayer(target, 4);
+            return { message: `${target.name} pioche 4 cartes.`, skipTarget: true };
+        }
+        const challengeSuccessful = meta.hadColorMatch === true;
+        if (challengeSuccessful) {
+            const attacker = this.players[meta.attackerIndex];
+            this.drawForPlayer(attacker, 4);
+            return { message: `Contestation réussie: ${attacker.name} pioche 4 cartes.`, skipTarget: false };
+        }
+        this.drawForPlayer(target, 6);
+        return { message: `Contestation ratée: ${target.name} pioche 6 cartes.`, skipTarget: true };
+    }
+
+    findJumpInCandidate(card, excludePlayerIndex) {
+        if (!card || card.color === 'wild') return null;
+        for (let i = 0; i < this.players.length; i++) {
+            if (i === excludePlayerIndex) continue;
+            const player = this.players[i];
+            if (!player || !Array.isArray(player.hand) || player.hand.length === 0) continue;
+            const cardIndex = player.hand.findIndex((c) => c.color === card.color && c.value === card.value);
+            if (cardIndex >= 0) return { playerIndex: i, cardIndex };
+        }
+        return null;
+    }
+
+    getSevenSwapTargetIndex(playerIndex) {
+        let target = this.getNextIndex(playerIndex, 1);
+        if (target === playerIndex) target = (playerIndex + 1) % this.players.length;
+        return target;
+    }
+
+    swapHands(a, b) {
+        if (a === b) return;
+        const temp = this.players[a].hand;
+        this.players[a].hand = this.players[b].hand;
+        this.players[b].hand = temp;
+    }
+
+    rotateHands() {
+        if (this.players.length <= 1) return;
+        if (this.direction === 1) {
+            const last = this.players[this.players.length - 1].hand;
+            for (let i = this.players.length - 1; i > 0; i--) {
+                this.players[i].hand = this.players[i - 1].hand;
+            }
+            this.players[0].hand = last;
+        } else {
+            const first = this.players[0].hand;
+            for (let i = 0; i < this.players.length - 1; i++) {
+                this.players[i].hand = this.players[i + 1].hand;
+            }
+            this.players[this.players.length - 1].hand = first;
+        }
+    }
+
+    getCardPoint(card) {
+        if (!card) return 0;
+        if (/^[0-9]$/.test(card.value)) return Number(card.value);
+        if (card.value === 'skip' || card.value === 'reverse' || card.value === 'draw2') return 20;
+        if (card.value === 'wild' || card.value === 'wild4') return 50;
+        return 0;
+    }
+
+    getPlayerHandPoints(player) {
+        if (!player || !Array.isArray(player.hand)) return 0;
+        return player.hand.reduce((sum, card) => sum + this.getCardPoint(card), 0);
+    }
+
+    setRules(partialRules) {
+        this.rules = this.normalizeRules({ ...this.rules, ...(partialRules || {}) });
+        this.renderRulesHelp();
+        this.updateUI();
+    }
+
+    getRules() {
+        return { ...this.rules };
+    }
+
+    getState() {
+        const active = this.players[this.activeIndex] || null;
+        return {
+            mode: this.mode,
+            activeIndex: this.activeIndex,
+            activePlayer: active ? active.name : null,
+            players: this.players.map((p) => ({ name: p.name, handSize: p.hand.length, isAI: p.isAI })),
+            currentColor: this.currentColor,
+            topCard: this.getTopDiscard() ? this.cardCode(this.getTopDiscard()) : null,
+            pendingDrawStack: this.pendingDrawStack,
+            rules: this.getRules(),
+            roundPoints: this.roundPoints,
+            hasDrawnThisTurn: this.hasDrawnThisTurn
+        };
     }
 
     drawOneCard() {

@@ -456,13 +456,24 @@ test.describe('Phase 30 - Jeu UNO', () => {
     await page.waitForSelector('.games-grid', { state: 'visible' });
   });
 
-  async function openUno(page, mode = 'solo') {
+  async function openUno(page, mode = 'solo', rules = null) {
     const gameCard = page.locator('.game-card').filter({ hasText: 'UNO' });
     await expect(gameCard).toBeVisible();
     await gameCard.click();
     await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
     if (mode !== 'solo') {
       await page.locator(`.modal-diff-btn[data-diff="${mode}"]`).click();
+    }
+    if (rules) {
+      for (const [key, value] of Object.entries(rules)) {
+        const checkbox = page.locator(`.modal-setting-checkbox[data-setting-key="${key}"]`);
+        await expect(checkbox).toBeVisible();
+        if (value) {
+          await checkbox.check();
+        } else {
+          await checkbox.uncheck();
+        }
+      }
     }
     await page.locator('#modal-btn-start').click();
     await expect(page.locator('[data-topbar-id="uno-topbar"]')).toBeVisible({ timeout: 10000 });
@@ -523,6 +534,141 @@ test.describe('Phase 30 - Jeu UNO', () => {
 
     await expect(page.locator('#uno-hand')).toContainText('Tour de l\'IA');
     await expect(page.locator('#uno-status')).toContainText('IA');
+  });
+
+  test('UNO - modale règles activables affichée avec defaults', async ({ page }) => {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'UNO' });
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('.modal-settings-section')).toBeVisible();
+    await expect(page.locator('.modal-setting-checkbox[data-setting-key="stackDraw"]')).not.toBeChecked();
+    await expect(page.locator('.modal-setting-checkbox[data-setting-key="allowPlayAfterDraw"]')).toBeChecked();
+    await expect(page.locator('.modal-setting-checkbox[data-setting-key="scoreLosersPoints"]')).not.toBeChecked();
+    await expect(page.locator('.modal-setting-checkbox[data-setting-key="jumpIn"]')).not.toBeChecked();
+    await expect(page.locator('.modal-setting-checkbox[data-setting-key="sevenZero"]')).not.toBeChecked();
+    await expect(page.locator('.modal-setting-checkbox[data-setting-key="wild4Challenge"]')).not.toBeChecked();
+  });
+
+  test('UNO - allowPlayAfterDraw=false force le passage après pioche', async ({ page }) => {
+    await openUno(page, 'solo', { allowPlayAfterDraw: false });
+    await page.locator('#uno-btn-draw').click();
+    const before = await page.evaluate(() => window._unoGame.getState().topCard);
+    const attempted = await page.evaluate(() => {
+      const game = window._unoGame;
+      const player = game.players[game.activeIndex];
+      const playable = player.hand.find((card) => game.isPlayable(card));
+      if (!playable) return false;
+      game.playCardById(playable.id);
+      return true;
+    });
+    expect(typeof attempted).toBe('boolean');
+    const after = await page.evaluate(() => window._unoGame.getState().topCard);
+    expect(after).toBe(before);
+    await expect(page.locator('#uno-status')).toContainText('Passe obligatoire');
+  });
+
+  test('UNO - stackDraw=true cumule les pénalités +2/+4', async ({ page }) => {
+    await openUno(page, 'multi2', { stackDraw: true });
+    const result = await page.evaluate(() => {
+      const game = window._unoGame;
+      game.players[0].hand = [{ id: 'p0d2', color: 'red', value: 'draw2' }, { id: 'p0x', color: 'green', value: '4' }];
+      game.players[1].hand = [{ id: 'p1d2', color: 'blue', value: 'draw2' }, { id: 'p1x', color: 'yellow', value: '6' }];
+      game.discardPile = [{ id: 'top', color: 'red', value: '9' }];
+      game.currentColor = 'red';
+      game.activeIndex = 0;
+      game.pendingDrawStack = 0;
+      game.passOverlayVisible = false;
+      game.passOverlayNode.hidden = true;
+      game.updateUI();
+
+      window._unoGame.playCardById('p0d2');
+      game.passOverlayVisible = false;
+      game.passOverlayNode.hidden = true;
+      window._unoGame.playCardById('p1d2');
+      game.passOverlayVisible = false;
+      game.passOverlayNode.hidden = true;
+      game.resolvePendingDrawForActive(game.players[game.activeIndex]);
+      return {
+        pendingDrawStack: game.pendingDrawStack,
+        player0Hand: game.players[0].hand.length
+      };
+    });
+    expect(result.pendingDrawStack).toBe(0);
+    expect(result.player0Hand).toBeGreaterThanOrEqual(5);
+  });
+
+  test('UNO - scoreLosersPoints=true affiche les points de manche', async ({ page }) => {
+    await openUno(page, 'multi2', { scoreLosersPoints: true });
+    await page.evaluate(() => {
+      const game = window._unoGame;
+      game.players[0].hand = [{ id: 'w1', color: 'red', value: '5' }];
+      game.players[1].hand = [
+        { id: 'l1', color: 'yellow', value: '9' },
+        { id: 'l2', color: 'wild', value: 'wild4' }
+      ];
+      game.discardPile = [{ id: 'd1', color: 'red', value: '0' }];
+      game.currentColor = 'red';
+      game.activeIndex = 0;
+      game.updateUI();
+      game.playCardById('w1');
+    });
+    await expect(page.locator('#game-over-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#game-over-modal')).toContainText('Points manche');
+    await expect(page.locator('#game-over-modal')).toContainText('59');
+  });
+
+  test('UNO - sevenZero=true applique échange de main sur 7', async ({ page }) => {
+    await openUno(page, 'multi3', { sevenZero: true });
+    const before = await page.evaluate(() => window._unoGame.players.map((p) => p.hand.length));
+    await page.evaluate(() => {
+      const game = window._unoGame;
+      game.players[0].hand = [{ id: 's7', color: 'red', value: '7' }, ...game.players[0].hand];
+      game.discardPile = [{ id: 'd7', color: 'red', value: '1' }];
+      game.currentColor = 'red';
+      game.activeIndex = 0;
+      game.updateUI();
+      game.playCardById('s7');
+    });
+    const after = await page.evaluate(() => window._unoGame.players.map((p) => p.hand.length));
+    expect(after[0]).toBe(before[1]);
+  });
+
+  test('UNO - jumpIn=true autorise la coupe immédiate auto', async ({ page }) => {
+    await openUno(page, 'multi3', { jumpIn: true });
+    await page.evaluate(() => {
+      const game = window._unoGame;
+      game.players[0].hand = [{ id: 'p0', color: 'red', value: '5' }, { id: 'p0x', color: 'yellow', value: '2' }];
+      game.players[1].hand = [{ id: 'p1', color: 'red', value: '5' }, ...game.players[1].hand];
+      game.discardPile = [{ id: 'd0', color: 'red', value: '1' }];
+      game.currentColor = 'red';
+      game.activeIndex = 0;
+      game.updateUI();
+      game.playCardById('p0');
+    });
+    const state = await page.evaluate(() => window._unoGame.getState());
+    expect(state.activePlayer).toBe('Joueur 3');
+    const p1Count = await page.evaluate(() => window._unoGame.players[1].hand.length);
+    expect(p1Count).toBe(7);
+  });
+
+  test('UNO - wild4Challenge=true résout une contestation', async ({ page }) => {
+    await openUno(page, 'multi2', { wild4Challenge: true });
+    await page.evaluate(() => {
+      const game = window._unoGame;
+      game.players[0].hand = [
+        { id: 'w4a', color: 'wild', value: 'wild4' },
+        { id: 'extra-red', color: 'red', value: '3' }
+      ];
+      game.players[1].hand = [{ id: 'n1', color: 'yellow', value: '9' }];
+      game.discardPile = [{ id: 'top-red', color: 'red', value: '1' }];
+      game.currentColor = 'red';
+      game.activeIndex = 0;
+      game.updateUI();
+      game.playCardById('w4a', 'blue');
+    });
+    const counts = await page.evaluate(() => window._unoGame.players.map((p) => p.hand.length));
+    expect(counts[0]).toBe(7);
+    expect(counts[1]).toBe(1);
   });
 });
 

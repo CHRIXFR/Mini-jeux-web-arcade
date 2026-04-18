@@ -41,7 +41,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **UI globale optimisée (Phase 33)** : Hero d'accueil clarifié, cartes de jeux harmonisées, shell in-game stabilisé et responsive renforcé.
 - **Extension visuelle globale (Phase 34)** : Rotation aléatoire du thème au retour accueil + fonds 100% CSS gradients (sans dépendance externe).
 - **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
-- **UNO Multi + Solo IA** : UNO classique strict avec passation locale 2/3/4 joueurs et mode solo contre ordinateur.
+- **UNO Multi + Solo IA + Variantes** : Règles strictes par défaut et menu pré-partie activable (`stacking`, `pioche puis passe`, `7-0`, `jump-in`, `contestation +4`, points perdants).
 - **Suite Logique (Forme/Chiffre/Mixte)** : Session courte en 10 questions, difficulté progressive, indice optionnel et score local.
 - **Échecs (Local + IA)** : Mode 2 joueurs local pass-and-play, IA à 3 niveaux, historique des coups et fin de partie standardisée.
 - **Respect de la Vie Privée** : Analytique légère (GoatCounter) sans cookies et stockage local uniquement.
@@ -60,7 +60,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Playwright** — Tests automatisés (non-régression visuelle et fonctionnelle).
 - **Tests dédiés Capitales V2** — Vérification du rendu carte après réponse et de la réinitialisation à la question suivante.
 - **Tests dédiés 421** — Scénarios solo, duel local et tie-break validés en E2E.
-- **Tests dédiés UNO** — Couverture des modes multi local, passation, carte action et tour IA.
+- **Tests dédiés UNO** — Couverture des modes multi local, passation, carte action, tour IA et variantes activables.
 - **Tests dédiés Suite Logique** — Couverture des 3 modes, alternance mixte, scoring, fin anticipée et persistance record.
 - **Suites multi-résolutions** — Validation desktop 1080p/1440p/2160p + mobile Samsung A51 (412x914).
 
