@@ -119,7 +119,12 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
   - Drapeaux chargés via `flagcdn.com`.
   - QCM à 5 choix (1 bonne réponse, 4 distracteurs).
   - Feedback visuel animé sur réponse correcte/incorrecte.
-- Statut : terminé.
+  - Localisation post-réponse via carte SVG intégrée (`games/data/world-map.min.svg`) avec surlignage du pays cible.
+  - Module carte dédié `games/capitales-map.js` chargé avant le jeu (`window.CapitalesMap`).
+  - Label de localisation affiché après validation (`capitale, pays`) et carte conservée jusqu'à "Question suivante".
+  - Données enrichies dans `games/data/capitales.json` avec `latlng: [latitude, longitude]` (pipeline `scripts/fetch-countries.js`).
+  - Optimisation mobile : après validation, les mauvaises réponses sont masquées sur petit écran pour libérer l'espace.
+- Statut : terminé (V2 localisation carte).
 
 ### 5.8 Tetris Glassmorphism
 - Gameplay : gérer la chute des tétrominos, compléter des lignes, survivre à l'accélération.
@@ -235,6 +240,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Layout adaptatif via Grid/Flex.
 - Optimisations dédiées mobile dans `mobile.css`.
 - Ajustements ergonomiques en mode jeu (viewport, header, bouton retour).
+- Compression contextuelle des options dans Capitales (masquage des mauvaises réponses après validation sur mobile).
 
 ### 6.5 Performance et qualité
 - Optimisations d'assets et de chargement.
@@ -298,7 +304,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Valider la stabilité sur mobile.
 
 ## 9. Historique des décisions & roadmap
-### 9.1 Vue chronologique complète (phases 1 à 32)
+### 9.1 Vue chronologique complète (phases 1 à 35)
 1. Phase 1 : Initialisation et design system (terminé).
 2. Phase 2 : Mise en place du socle de progression initial + Sudoku (terminé).
 3. Phase 3 : Développement de Mots Mêlés (terminé).
@@ -333,16 +339,17 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 32. Phase 32 : Ajout du jeu Échecs (terminé) : mode local 2 joueurs + mode IA 3 niveaux, moteur permissif `js-chess-engine` (MIT), échiquier interactif responsive, historique des coups, abandon/annulation locale, hooks E2E et scénarios Playwright dédiés.
 33. Phase 33 : Optimisation UI globale (terminé) : consolidation des tokens UI, refonte du hero et des cartes hub, normalisation topbar/shell in-game, harmonisation responsive desktop/mobile, extension des captures Playwright (hub + topbar jeux représentatifs).
 34. Phase 34 : Extension thèmes globaux (terminé) : ajout de 6 thèmes contrastés, mode global fixe/aléatoire, rotation aléatoire au retour accueil, gradients CSS unifiés et audit de conformité template/modales.
+35. Phase 35 : Capitales V2 (terminé) : ajout d'une carte SVG locale détaillée (surlignage pays après réponse), enrichissement des données avec `latlng`, chargement dédié du module carte, et optimisation mobile (masquage des mauvaises réponses après validation).
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
 - 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31, 32.
 
 #### Phases orientées fonctionnalités transverses / plateforme
-- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34.
+- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34, 35.
 
 #### Phases orientées optimisation / qualité
-- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34.
+- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34, 35.
 
 ## 10. Idées futures (backlog)
 ### 10.1 Idées de nouveaux jeux
@@ -352,7 +359,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 ### 10.2 Idées de fonctionnalités transverses
 - Améliorations de navigation, personnalisation et confort de jeu.
 - Évolutions du hub et des standards de qualité globaux.
-- Ameiloration de la prise en charge mobile.
+- Amélioration de la prise en charge mobile.
 
 ### 10.3 Priorisation
 - Utiliser une matrice Impact / Effort.

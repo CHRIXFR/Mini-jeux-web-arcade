@@ -3138,6 +3138,116 @@ body.in-game [class$="-side"] {
     margin: 10px 0;
 }
 
+.cap-map-root {
+    width: 100%;
+    max-width: 760px;
+    display: none;
+}
+
+.cap-map-root.is-visible {
+    display: block;
+    animation: fadeIn 0.25s ease-out;
+}
+
+.cap-map-card {
+    background: var(--card-bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.65rem 0.75rem 0.7rem;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.light-mode .cap-map-card {
+    background: var(--card-bg);
+}
+
+.cap-map-head {
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    margin-bottom: 0.45rem;
+}
+
+.cap-map-canvas {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: linear-gradient(145deg, #112f54 0%, #0f2747 58%, #0d2039 100%);
+}
+
+.cap-map-world-wrap {
+    position: absolute;
+    inset: 0;
+}
+
+.cap-map-world-loading {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: #cfe7ff;
+    font-size: 0.92rem;
+}
+
+.cap-map-world {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.cap-map-world path {
+    transition: fill 0.22s ease, stroke 0.22s ease, opacity 0.22s ease;
+}
+
+.cap-map-world .cap-map-country {
+    fill: #7ecf96;
+    stroke: #284632;
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.cap-map-world .cap-map-country:not(.cap-map-country-active) {
+    opacity: 0.94;
+}
+
+.cap-map-world .cap-map-country-active {
+    fill: #ffd16b !important;
+    stroke: #543709 !important;
+    stroke-width: 0.8;
+    opacity: 1;
+}
+
+.cap-map-caption {
+    min-height: 1.25rem;
+    margin-top: 0.45rem;
+    font-size: 0.95rem;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.cap-map-label {
+    font-weight: 600;
+    display: none;
+    padding: 0.08rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(5, 18, 33, 0.28);
+    border: 1px solid rgba(148, 198, 245, 0.32);
+}
+
+.light-mode .cap-map-label {
+    background: rgba(255, 255, 255, 0.62);
+    border-color: rgba(69, 126, 182, 0.34);
+}
+
+.cap-map-fallback {
+    color: var(--text-secondary);
+    display: none;
+}
+
 .cap-options-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -3381,9 +3491,37 @@ body:not(.light-mode) .cap-option-btn {
         line-height: 1.25;
     }
 
+    .cap-map-root {
+        max-width: 100%;
+    }
+
+    .cap-map-card {
+        border-radius: 12px;
+        padding: 0.48rem 0.55rem 0.56rem;
+    }
+
+    .cap-map-head {
+        margin-bottom: 0.35rem;
+        font-size: 0.82rem;
+    }
+
+    .cap-map-caption {
+        margin-top: 0.33rem;
+        min-height: 1.1rem;
+        font-size: 0.84rem;
+    }
+
     .cap-options-grid {
         grid-template-columns: 1fr;
         gap: 0.52rem;
+    }
+
+    .cap-options-grid.cap-options-grid-compact-mobile {
+        gap: 0.32rem;
+    }
+
+    .cap-option-btn.cap-option-hidden-mobile {
+        display: none;
     }
 
     .cap-option-btn {
@@ -3463,6 +3601,10 @@ body:not(.light-mode) .cap-option-btn {
 
     .cap-game {
         gap: 0.55rem;
+    }
+
+    .cap-map-card {
+        padding: 0.42rem 0.5rem 0.48rem;
     }
 
     .cap-options-grid {

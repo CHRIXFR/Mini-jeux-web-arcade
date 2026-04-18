@@ -2,1226 +2,2206 @@
   {
     "nom": "Aruba",
     "capitale": "Oranjestad",
-    "iso": "aw"
+    "iso": "aw",
+    "latlng": [
+      12.5,
+      -69.96666666
+    ]
   },
   {
     "nom": "Afghanistan",
     "capitale": "Kabul",
-    "iso": "af"
+    "iso": "af",
+    "latlng": [
+      33,
+      65
+    ]
   },
   {
     "nom": "Angola",
     "capitale": "Luanda",
-    "iso": "ao"
+    "iso": "ao",
+    "latlng": [
+      -12.5,
+      18.5
+    ]
   },
   {
     "nom": "Anguilla",
     "capitale": "The Valley",
-    "iso": "ai"
+    "iso": "ai",
+    "latlng": [
+      18.25,
+      -63.16666666
+    ]
   },
   {
     "nom": "Ahvenanmaa",
     "capitale": "Mariehamn",
-    "iso": "ax"
+    "iso": "ax",
+    "latlng": [
+      60.116667,
+      19.9
+    ]
   },
   {
     "nom": "Albanie",
     "capitale": "Tirana",
-    "iso": "al"
+    "iso": "al",
+    "latlng": [
+      41,
+      20
+    ]
   },
   {
     "nom": "Andorre",
     "capitale": "Andorra la Vella",
-    "iso": "ad"
+    "iso": "ad",
+    "latlng": [
+      42.5,
+      1.5
+    ]
   },
   {
     "nom": "Émirats arabes unis",
     "capitale": "Abu Dhabi",
-    "iso": "ae"
+    "iso": "ae",
+    "latlng": [
+      24,
+      54
+    ]
   },
   {
     "nom": "Argentine",
     "capitale": "Buenos Aires",
-    "iso": "ar"
+    "iso": "ar",
+    "latlng": [
+      -34,
+      -64
+    ]
   },
   {
     "nom": "Arménie",
     "capitale": "Yerevan",
-    "iso": "am"
+    "iso": "am",
+    "latlng": [
+      40,
+      45
+    ]
   },
   {
     "nom": "Samoa américaines",
     "capitale": "Pago Pago",
-    "iso": "as"
+    "iso": "as",
+    "latlng": [
+      -14.33333333,
+      -170
+    ]
   },
   {
     "nom": "Terres australes et antarctiques françaises",
     "capitale": "Port-aux-Français",
-    "iso": "tf"
+    "iso": "tf",
+    "latlng": [
+      -49.25,
+      69.167
+    ]
   },
   {
     "nom": "Antigua-et-Barbuda",
     "capitale": "Saint John's",
-    "iso": "ag"
+    "iso": "ag",
+    "latlng": [
+      17.05,
+      -61.8
+    ]
   },
   {
     "nom": "Australie",
     "capitale": "Canberra",
-    "iso": "au"
+    "iso": "au",
+    "latlng": [
+      -27,
+      133
+    ]
   },
   {
     "nom": "Autriche",
     "capitale": "Vienna",
-    "iso": "at"
+    "iso": "at",
+    "latlng": [
+      47.33333333,
+      13.33333333
+    ]
   },
   {
     "nom": "Azerbaïdjan",
     "capitale": "Baku",
-    "iso": "az"
+    "iso": "az",
+    "latlng": [
+      40.5,
+      47.5
+    ]
   },
   {
     "nom": "Burundi",
     "capitale": "Gitega",
-    "iso": "bi"
+    "iso": "bi",
+    "latlng": [
+      -3.5,
+      30
+    ]
   },
   {
     "nom": "Belgique",
     "capitale": "Brussels",
-    "iso": "be"
+    "iso": "be",
+    "latlng": [
+      50.83333333,
+      4
+    ]
   },
   {
     "nom": "Bénin",
     "capitale": "Porto-Novo",
-    "iso": "bj"
+    "iso": "bj",
+    "latlng": [
+      9.5,
+      2.25
+    ]
   },
   {
     "nom": "Burkina Faso",
     "capitale": "Ouagadougou",
-    "iso": "bf"
+    "iso": "bf",
+    "latlng": [
+      13,
+      -2
+    ]
   },
   {
     "nom": "Bangladesh",
     "capitale": "Dhaka",
-    "iso": "bd"
+    "iso": "bd",
+    "latlng": [
+      24,
+      90
+    ]
   },
   {
     "nom": "Bulgarie",
     "capitale": "Sofia",
-    "iso": "bg"
+    "iso": "bg",
+    "latlng": [
+      43,
+      25
+    ]
   },
   {
     "nom": "Bahreïn",
     "capitale": "Manama",
-    "iso": "bh"
+    "iso": "bh",
+    "latlng": [
+      26,
+      50.55
+    ]
   },
   {
     "nom": "Bahamas",
     "capitale": "Nassau",
-    "iso": "bs"
+    "iso": "bs",
+    "latlng": [
+      24.25,
+      -76
+    ]
   },
   {
     "nom": "Bosnie-Herzégovine",
     "capitale": "Sarajevo",
-    "iso": "ba"
+    "iso": "ba",
+    "latlng": [
+      44,
+      18
+    ]
   },
   {
     "nom": "Saint-Barthélemy",
     "capitale": "Gustavia",
-    "iso": "bl"
+    "iso": "bl",
+    "latlng": [
+      18.5,
+      -63.41666666
+    ]
   },
   {
     "nom": "Sainte-Hélène, Ascension et Tristan da Cunha",
     "capitale": "Jamestown",
-    "iso": "sh"
+    "iso": "sh",
+    "latlng": [
+      -15.95,
+      -5.72
+    ]
   },
   {
     "nom": "Biélorussie",
     "capitale": "Minsk",
-    "iso": "by"
+    "iso": "by",
+    "latlng": [
+      53,
+      28
+    ]
   },
   {
     "nom": "Belize",
     "capitale": "Belmopan",
-    "iso": "bz"
+    "iso": "bz",
+    "latlng": [
+      17.25,
+      -88.75
+    ]
   },
   {
     "nom": "Bermudes",
     "capitale": "Hamilton",
-    "iso": "bm"
+    "iso": "bm",
+    "latlng": [
+      32.33333333,
+      -64.75
+    ]
   },
   {
     "nom": "Bolivie",
     "capitale": "Sucre",
-    "iso": "bo"
+    "iso": "bo",
+    "latlng": [
+      -17,
+      -65
+    ]
   },
   {
     "nom": "Pays-Bas caribéens",
     "capitale": "Kralendijk",
-    "iso": "bq"
+    "iso": "bq",
+    "latlng": [
+      12.18,
+      -68.25
+    ]
   },
   {
     "nom": "Brésil",
     "capitale": "Brasília",
-    "iso": "br"
+    "iso": "br",
+    "latlng": [
+      -10,
+      -55
+    ]
   },
   {
     "nom": "Barbade",
     "capitale": "Bridgetown",
-    "iso": "bb"
+    "iso": "bb",
+    "latlng": [
+      13.16666666,
+      -59.53333333
+    ]
   },
   {
     "nom": "Brunei",
     "capitale": "Bandar Seri Begawan",
-    "iso": "bn"
+    "iso": "bn",
+    "latlng": [
+      4.5,
+      114.66666666
+    ]
   },
   {
     "nom": "Bhoutan",
     "capitale": "Thimphu",
-    "iso": "bt"
+    "iso": "bt",
+    "latlng": [
+      27.5,
+      90.5
+    ]
   },
   {
     "nom": "Botswana",
     "capitale": "Gaborone",
-    "iso": "bw"
+    "iso": "bw",
+    "latlng": [
+      -22,
+      24
+    ]
   },
   {
     "nom": "République centrafricaine",
     "capitale": "Bangui",
-    "iso": "cf"
+    "iso": "cf",
+    "latlng": [
+      7,
+      21
+    ]
   },
   {
     "nom": "Canada",
     "capitale": "Ottawa",
-    "iso": "ca"
+    "iso": "ca",
+    "latlng": [
+      60,
+      -95
+    ]
   },
   {
     "nom": "Îles Cocos",
     "capitale": "West Island",
-    "iso": "cc"
+    "iso": "cc",
+    "latlng": [
+      -12.5,
+      96.83333333
+    ]
   },
   {
     "nom": "Suisse",
     "capitale": "Bern",
-    "iso": "ch"
+    "iso": "ch",
+    "latlng": [
+      47,
+      8
+    ]
   },
   {
     "nom": "Chili",
     "capitale": "Santiago",
-    "iso": "cl"
+    "iso": "cl",
+    "latlng": [
+      -30,
+      -71
+    ]
   },
   {
     "nom": "Chine",
     "capitale": "Beijing",
-    "iso": "cn"
+    "iso": "cn",
+    "latlng": [
+      35,
+      105
+    ]
   },
   {
     "nom": "Côte d'Ivoire",
     "capitale": "Yamoussoukro",
-    "iso": "ci"
+    "iso": "ci",
+    "latlng": [
+      8,
+      -5
+    ]
   },
   {
     "nom": "Cameroun",
     "capitale": "Yaoundé",
-    "iso": "cm"
+    "iso": "cm",
+    "latlng": [
+      6,
+      12
+    ]
   },
   {
     "nom": "Congo (Rép. dém.)",
     "capitale": "Kinshasa",
-    "iso": "cd"
+    "iso": "cd",
+    "latlng": [
+      0,
+      25
+    ]
   },
   {
     "nom": "Congo",
     "capitale": "Brazzaville",
-    "iso": "cg"
+    "iso": "cg",
+    "latlng": [
+      -1,
+      15
+    ]
   },
   {
     "nom": "Îles Cook",
     "capitale": "Avarua",
-    "iso": "ck"
+    "iso": "ck",
+    "latlng": [
+      -21.23333333,
+      -159.76666666
+    ]
   },
   {
     "nom": "Colombie",
     "capitale": "Bogotá",
-    "iso": "co"
+    "iso": "co",
+    "latlng": [
+      4,
+      -72
+    ]
   },
   {
     "nom": "Comores",
     "capitale": "Moroni",
-    "iso": "km"
+    "iso": "km",
+    "latlng": [
+      -12.16666666,
+      44.25
+    ]
   },
   {
     "nom": "Îles du Cap-Vert",
     "capitale": "Praia",
-    "iso": "cv"
+    "iso": "cv",
+    "latlng": [
+      16,
+      -24
+    ]
   },
   {
     "nom": "Costa Rica",
     "capitale": "San José",
-    "iso": "cr"
+    "iso": "cr",
+    "latlng": [
+      10,
+      -84
+    ]
   },
   {
     "nom": "Cuba",
     "capitale": "Havana",
-    "iso": "cu"
+    "iso": "cu",
+    "latlng": [
+      21.5,
+      -80
+    ]
   },
   {
     "nom": "Curaçao",
     "capitale": "Willemstad",
-    "iso": "cw"
+    "iso": "cw",
+    "latlng": [
+      12.116667,
+      -68.933333
+    ]
   },
   {
     "nom": "Île Christmas",
     "capitale": "Flying Fish Cove",
-    "iso": "cx"
+    "iso": "cx",
+    "latlng": [
+      -10.5,
+      105.66666666
+    ]
   },
   {
     "nom": "Îles Caïmans",
     "capitale": "George Town",
-    "iso": "ky"
+    "iso": "ky",
+    "latlng": [
+      19.5,
+      -80.5
+    ]
   },
   {
     "nom": "Chypre",
     "capitale": "Nicosia",
-    "iso": "cy"
+    "iso": "cy",
+    "latlng": [
+      35,
+      33
+    ]
   },
   {
     "nom": "Tchéquie",
     "capitale": "Prague",
-    "iso": "cz"
+    "iso": "cz",
+    "latlng": [
+      49.75,
+      15.5
+    ]
   },
   {
     "nom": "Allemagne",
     "capitale": "Berlin",
-    "iso": "de"
+    "iso": "de",
+    "latlng": [
+      51,
+      9
+    ]
   },
   {
     "nom": "Djibouti",
     "capitale": "Djibouti",
-    "iso": "dj"
+    "iso": "dj",
+    "latlng": [
+      11.5,
+      43
+    ]
   },
   {
     "nom": "Dominique",
     "capitale": "Roseau",
-    "iso": "dm"
+    "iso": "dm",
+    "latlng": [
+      15.41666666,
+      -61.33333333
+    ]
   },
   {
     "nom": "Danemark",
     "capitale": "Copenhagen",
-    "iso": "dk"
+    "iso": "dk",
+    "latlng": [
+      56,
+      10
+    ]
   },
   {
     "nom": "République dominicaine",
     "capitale": "Santo Domingo",
-    "iso": "do"
+    "iso": "do",
+    "latlng": [
+      19,
+      -70.66666666
+    ]
   },
   {
     "nom": "Algérie",
     "capitale": "Algiers",
-    "iso": "dz"
+    "iso": "dz",
+    "latlng": [
+      28,
+      3
+    ]
   },
   {
     "nom": "Équateur",
     "capitale": "Quito",
-    "iso": "ec"
+    "iso": "ec",
+    "latlng": [
+      -2,
+      -77.5
+    ]
   },
   {
     "nom": "Égypte",
     "capitale": "Cairo",
-    "iso": "eg"
+    "iso": "eg",
+    "latlng": [
+      27,
+      30
+    ]
   },
   {
     "nom": "Érythrée",
     "capitale": "Asmara",
-    "iso": "er"
+    "iso": "er",
+    "latlng": [
+      15,
+      39
+    ]
   },
   {
     "nom": "Sahara Occidental",
     "capitale": "El Aaiún",
-    "iso": "eh"
+    "iso": "eh",
+    "latlng": [
+      24.5,
+      -13
+    ]
   },
   {
     "nom": "Espagne",
     "capitale": "Madrid",
-    "iso": "es"
+    "iso": "es",
+    "latlng": [
+      40,
+      -4
+    ]
   },
   {
     "nom": "Estonie",
     "capitale": "Tallinn",
-    "iso": "ee"
+    "iso": "ee",
+    "latlng": [
+      59,
+      26
+    ]
   },
   {
     "nom": "Éthiopie",
     "capitale": "Addis Ababa",
-    "iso": "et"
+    "iso": "et",
+    "latlng": [
+      8,
+      38
+    ]
   },
   {
     "nom": "Finlande",
     "capitale": "Helsinki",
-    "iso": "fi"
+    "iso": "fi",
+    "latlng": [
+      64,
+      26
+    ]
   },
   {
     "nom": "Fidji",
     "capitale": "Suva",
-    "iso": "fj"
+    "iso": "fj",
+    "latlng": [
+      -18,
+      175
+    ]
   },
   {
     "nom": "Îles Malouines",
     "capitale": "Stanley",
-    "iso": "fk"
+    "iso": "fk",
+    "latlng": [
+      -51.75,
+      -59
+    ]
   },
   {
     "nom": "France",
     "capitale": "Paris",
-    "iso": "fr"
+    "iso": "fr",
+    "latlng": [
+      46,
+      2
+    ]
   },
   {
     "nom": "Îles Féroé",
     "capitale": "Tórshavn",
-    "iso": "fo"
+    "iso": "fo",
+    "latlng": [
+      62,
+      -7
+    ]
   },
   {
     "nom": "Micronésie",
     "capitale": "Palikir",
-    "iso": "fm"
+    "iso": "fm",
+    "latlng": [
+      6.91666666,
+      158.25
+    ]
   },
   {
     "nom": "Gabon",
     "capitale": "Libreville",
-    "iso": "ga"
+    "iso": "ga",
+    "latlng": [
+      -1,
+      11.75
+    ]
   },
   {
     "nom": "Royaume-Uni",
     "capitale": "London",
-    "iso": "gb"
+    "iso": "gb",
+    "latlng": [
+      54,
+      -2
+    ]
   },
   {
     "nom": "Géorgie",
     "capitale": "Tbilisi",
-    "iso": "ge"
+    "iso": "ge",
+    "latlng": [
+      42,
+      43.5
+    ]
   },
   {
     "nom": "Guernesey",
     "capitale": "St. Peter Port",
-    "iso": "gg"
+    "iso": "gg",
+    "latlng": [
+      49.46666666,
+      -2.58333333
+    ]
   },
   {
     "nom": "Ghana",
     "capitale": "Accra",
-    "iso": "gh"
+    "iso": "gh",
+    "latlng": [
+      8,
+      -2
+    ]
   },
   {
     "nom": "Gibraltar",
     "capitale": "Gibraltar",
-    "iso": "gi"
+    "iso": "gi",
+    "latlng": [
+      36.13333333,
+      -5.35
+    ]
   },
   {
     "nom": "Guinée",
     "capitale": "Conakry",
-    "iso": "gn"
+    "iso": "gn",
+    "latlng": [
+      11,
+      -10
+    ]
   },
   {
     "nom": "Guadeloupe",
     "capitale": "Basse-Terre",
-    "iso": "gp"
+    "iso": "gp",
+    "latlng": [
+      16.25,
+      -61.583333
+    ]
   },
   {
     "nom": "Gambie",
     "capitale": "Banjul",
-    "iso": "gm"
+    "iso": "gm",
+    "latlng": [
+      13.46666666,
+      -16.56666666
+    ]
   },
   {
     "nom": "Guinée-Bissau",
     "capitale": "Bissau",
-    "iso": "gw"
+    "iso": "gw",
+    "latlng": [
+      12,
+      -15
+    ]
   },
   {
     "nom": "Guinée équatoriale",
     "capitale": "Malabo",
-    "iso": "gq"
+    "iso": "gq",
+    "latlng": [
+      2,
+      10
+    ]
   },
   {
     "nom": "Grèce",
     "capitale": "Athens",
-    "iso": "gr"
+    "iso": "gr",
+    "latlng": [
+      39,
+      22
+    ]
   },
   {
     "nom": "Grenade",
     "capitale": "St. George's",
-    "iso": "gd"
+    "iso": "gd",
+    "latlng": [
+      12.11666666,
+      -61.66666666
+    ]
   },
   {
     "nom": "Groenland",
     "capitale": "Nuuk",
-    "iso": "gl"
+    "iso": "gl",
+    "latlng": [
+      72,
+      -40
+    ]
   },
   {
     "nom": "Guatemala",
     "capitale": "Guatemala City",
-    "iso": "gt"
+    "iso": "gt",
+    "latlng": [
+      15.5,
+      -90.25
+    ]
   },
   {
     "nom": "Guyane",
     "capitale": "Cayenne",
-    "iso": "gf"
+    "iso": "gf",
+    "latlng": [
+      4,
+      -53
+    ]
   },
   {
     "nom": "Guam",
     "capitale": "Hagåtña",
-    "iso": "gu"
+    "iso": "gu",
+    "latlng": [
+      13.46666666,
+      144.78333333
+    ]
   },
   {
     "nom": "Guyana",
     "capitale": "Georgetown",
-    "iso": "gy"
+    "iso": "gy",
+    "latlng": [
+      5,
+      -59
+    ]
   },
   {
     "nom": "Hong Kong",
     "capitale": "City of Victoria",
-    "iso": "hk"
+    "iso": "hk",
+    "latlng": [
+      22.267,
+      114.188
+    ]
   },
   {
     "nom": "Honduras",
     "capitale": "Tegucigalpa",
-    "iso": "hn"
+    "iso": "hn",
+    "latlng": [
+      15,
+      -86.5
+    ]
   },
   {
     "nom": "Croatie",
     "capitale": "Zagreb",
-    "iso": "hr"
+    "iso": "hr",
+    "latlng": [
+      45.16666666,
+      15.5
+    ]
   },
   {
     "nom": "Haïti",
     "capitale": "Port-au-Prince",
-    "iso": "ht"
+    "iso": "ht",
+    "latlng": [
+      19,
+      -72.41666666
+    ]
   },
   {
     "nom": "Hongrie",
     "capitale": "Budapest",
-    "iso": "hu"
+    "iso": "hu",
+    "latlng": [
+      47,
+      20
+    ]
   },
   {
     "nom": "Indonésie",
     "capitale": "Jakarta",
-    "iso": "id"
+    "iso": "id",
+    "latlng": [
+      -5,
+      120
+    ]
   },
   {
     "nom": "Île de Man",
     "capitale": "Douglas",
-    "iso": "im"
+    "iso": "im",
+    "latlng": [
+      54.25,
+      -4.5
+    ]
   },
   {
     "nom": "Inde",
     "capitale": "New Delhi",
-    "iso": "in"
+    "iso": "in",
+    "latlng": [
+      20,
+      77
+    ]
   },
   {
     "nom": "Territoire britannique de l'océan Indien",
     "capitale": "Diego Garcia",
-    "iso": "io"
+    "iso": "io",
+    "latlng": [
+      -6,
+      71.5
+    ]
   },
   {
     "nom": "Irlande",
     "capitale": "Dublin",
-    "iso": "ie"
+    "iso": "ie",
+    "latlng": [
+      53,
+      -8
+    ]
   },
   {
     "nom": "Iran",
     "capitale": "Tehran",
-    "iso": "ir"
+    "iso": "ir",
+    "latlng": [
+      32,
+      53
+    ]
   },
   {
     "nom": "Irak",
     "capitale": "Baghdad",
-    "iso": "iq"
+    "iso": "iq",
+    "latlng": [
+      33,
+      44
+    ]
   },
   {
     "nom": "Islande",
     "capitale": "Reykjavik",
-    "iso": "is"
+    "iso": "is",
+    "latlng": [
+      65,
+      -18
+    ]
   },
   {
     "nom": "Israël",
     "capitale": "Jerusalem",
-    "iso": "il"
+    "iso": "il",
+    "latlng": [
+      31.47,
+      35.13
+    ]
   },
   {
     "nom": "Italie",
     "capitale": "Rome",
-    "iso": "it"
+    "iso": "it",
+    "latlng": [
+      42.83333333,
+      12.83333333
+    ]
   },
   {
     "nom": "Jamaïque",
     "capitale": "Kingston",
-    "iso": "jm"
+    "iso": "jm",
+    "latlng": [
+      18.25,
+      -77.5
+    ]
   },
   {
     "nom": "Jersey",
     "capitale": "Saint Helier",
-    "iso": "je"
+    "iso": "je",
+    "latlng": [
+      49.25,
+      -2.16666666
+    ]
   },
   {
     "nom": "Jordanie",
     "capitale": "Amman",
-    "iso": "jo"
+    "iso": "jo",
+    "latlng": [
+      31,
+      36
+    ]
   },
   {
     "nom": "Japon",
     "capitale": "Tokyo",
-    "iso": "jp"
+    "iso": "jp",
+    "latlng": [
+      36,
+      138
+    ]
   },
   {
     "nom": "Kazakhstan",
     "capitale": "Astana",
-    "iso": "kz"
+    "iso": "kz",
+    "latlng": [
+      48,
+      68
+    ]
   },
   {
     "nom": "Kenya",
     "capitale": "Nairobi",
-    "iso": "ke"
+    "iso": "ke",
+    "latlng": [
+      1,
+      38
+    ]
   },
   {
     "nom": "Kirghizistan",
     "capitale": "Bishkek",
-    "iso": "kg"
+    "iso": "kg",
+    "latlng": [
+      41,
+      75
+    ]
   },
   {
     "nom": "Cambodge",
     "capitale": "Phnom Penh",
-    "iso": "kh"
+    "iso": "kh",
+    "latlng": [
+      13,
+      105
+    ]
   },
   {
     "nom": "Kiribati",
     "capitale": "South Tarawa",
-    "iso": "ki"
+    "iso": "ki",
+    "latlng": [
+      1.41666666,
+      173
+    ]
   },
   {
     "nom": "Saint-Christophe-et-Niévès",
     "capitale": "Basseterre",
-    "iso": "kn"
+    "iso": "kn",
+    "latlng": [
+      17.33333333,
+      -62.75
+    ]
   },
   {
     "nom": "Corée du Sud",
     "capitale": "Seoul",
-    "iso": "kr"
+    "iso": "kr",
+    "latlng": [
+      37,
+      127.5
+    ]
   },
   {
     "nom": "Kosovo",
     "capitale": "Pristina",
-    "iso": "xk"
+    "iso": "xk",
+    "latlng": [
+      42.666667,
+      21.166667
+    ]
   },
   {
     "nom": "Koweït",
     "capitale": "Kuwait City",
-    "iso": "kw"
+    "iso": "kw",
+    "latlng": [
+      29.5,
+      45.75
+    ]
   },
   {
     "nom": "Laos",
     "capitale": "Vientiane",
-    "iso": "la"
+    "iso": "la",
+    "latlng": [
+      18,
+      105
+    ]
   },
   {
     "nom": "Liban",
     "capitale": "Beirut",
-    "iso": "lb"
+    "iso": "lb",
+    "latlng": [
+      33.83333333,
+      35.83333333
+    ]
   },
   {
     "nom": "Liberia",
     "capitale": "Monrovia",
-    "iso": "lr"
+    "iso": "lr",
+    "latlng": [
+      6.5,
+      -9.5
+    ]
   },
   {
     "nom": "Libye",
     "capitale": "Tripoli",
-    "iso": "ly"
+    "iso": "ly",
+    "latlng": [
+      25,
+      17
+    ]
   },
   {
     "nom": "Sainte-Lucie",
     "capitale": "Castries",
-    "iso": "lc"
+    "iso": "lc",
+    "latlng": [
+      13.88333333,
+      -60.96666666
+    ]
   },
   {
     "nom": "Liechtenstein",
     "capitale": "Vaduz",
-    "iso": "li"
+    "iso": "li",
+    "latlng": [
+      47.26666666,
+      9.53333333
+    ]
   },
   {
     "nom": "Sri Lanka",
     "capitale": "Colombo",
-    "iso": "lk"
+    "iso": "lk",
+    "latlng": [
+      7,
+      81
+    ]
   },
   {
     "nom": "Lesotho",
     "capitale": "Maseru",
-    "iso": "ls"
+    "iso": "ls",
+    "latlng": [
+      -29.5,
+      28.5
+    ]
   },
   {
     "nom": "Lituanie",
     "capitale": "Vilnius",
-    "iso": "lt"
+    "iso": "lt",
+    "latlng": [
+      56,
+      24
+    ]
   },
   {
     "nom": "Luxembourg",
     "capitale": "Luxembourg",
-    "iso": "lu"
+    "iso": "lu",
+    "latlng": [
+      49.75,
+      6.16666666
+    ]
   },
   {
     "nom": "Lettonie",
     "capitale": "Riga",
-    "iso": "lv"
+    "iso": "lv",
+    "latlng": [
+      57,
+      25
+    ]
   },
   {
     "nom": "Saint-Martin",
     "capitale": "Marigot",
-    "iso": "mf"
+    "iso": "mf",
+    "latlng": [
+      18.08333333,
+      -63.95
+    ]
   },
   {
     "nom": "Maroc",
     "capitale": "Rabat",
-    "iso": "ma"
+    "iso": "ma",
+    "latlng": [
+      32,
+      -5
+    ]
   },
   {
     "nom": "Monaco",
     "capitale": "Monaco",
-    "iso": "mc"
+    "iso": "mc",
+    "latlng": [
+      43.73333333,
+      7.4
+    ]
   },
   {
     "nom": "Moldavie",
     "capitale": "Chișinău",
-    "iso": "md"
+    "iso": "md",
+    "latlng": [
+      47,
+      29
+    ]
   },
   {
     "nom": "Madagascar",
     "capitale": "Antananarivo",
-    "iso": "mg"
+    "iso": "mg",
+    "latlng": [
+      -20,
+      47
+    ]
   },
   {
     "nom": "Maldives",
     "capitale": "Malé",
-    "iso": "mv"
+    "iso": "mv",
+    "latlng": [
+      3.25,
+      73
+    ]
   },
   {
     "nom": "Mexique",
     "capitale": "Mexico City",
-    "iso": "mx"
+    "iso": "mx",
+    "latlng": [
+      23,
+      -102
+    ]
   },
   {
     "nom": "Îles Marshall",
     "capitale": "Majuro",
-    "iso": "mh"
+    "iso": "mh",
+    "latlng": [
+      9,
+      168
+    ]
   },
   {
     "nom": "Macédoine du Nord",
     "capitale": "Skopje",
-    "iso": "mk"
+    "iso": "mk",
+    "latlng": [
+      41.83333333,
+      22
+    ]
   },
   {
     "nom": "Mali",
     "capitale": "Bamako",
-    "iso": "ml"
+    "iso": "ml",
+    "latlng": [
+      17,
+      -4
+    ]
   },
   {
     "nom": "Malte",
     "capitale": "Valletta",
-    "iso": "mt"
+    "iso": "mt",
+    "latlng": [
+      35.83333333,
+      14.58333333
+    ]
   },
   {
     "nom": "Birmanie",
     "capitale": "Naypyidaw",
-    "iso": "mm"
+    "iso": "mm",
+    "latlng": [
+      22,
+      98
+    ]
   },
   {
     "nom": "Monténégro",
     "capitale": "Podgorica",
-    "iso": "me"
+    "iso": "me",
+    "latlng": [
+      42.5,
+      19.3
+    ]
   },
   {
     "nom": "Mongolie",
     "capitale": "Ulan Bator",
-    "iso": "mn"
+    "iso": "mn",
+    "latlng": [
+      46,
+      105
+    ]
   },
   {
     "nom": "Îles Mariannes du Nord",
     "capitale": "Saipan",
-    "iso": "mp"
+    "iso": "mp",
+    "latlng": [
+      15.2,
+      145.75
+    ]
   },
   {
     "nom": "Mozambique",
     "capitale": "Maputo",
-    "iso": "mz"
+    "iso": "mz",
+    "latlng": [
+      -18.25,
+      35
+    ]
   },
   {
     "nom": "Mauritanie",
     "capitale": "Nouakchott",
-    "iso": "mr"
+    "iso": "mr",
+    "latlng": [
+      20,
+      -12
+    ]
   },
   {
     "nom": "Montserrat",
     "capitale": "Plymouth",
-    "iso": "ms"
+    "iso": "ms",
+    "latlng": [
+      16.75,
+      -62.2
+    ]
   },
   {
     "nom": "Martinique",
     "capitale": "Fort-de-France",
-    "iso": "mq"
+    "iso": "mq",
+    "latlng": [
+      14.666667,
+      -61
+    ]
   },
   {
     "nom": "Île Maurice",
     "capitale": "Port Louis",
-    "iso": "mu"
+    "iso": "mu",
+    "latlng": [
+      -20.28333333,
+      57.55
+    ]
   },
   {
     "nom": "Malawi",
     "capitale": "Lilongwe",
-    "iso": "mw"
+    "iso": "mw",
+    "latlng": [
+      -13.5,
+      34
+    ]
   },
   {
     "nom": "Malaisie",
     "capitale": "Kuala Lumpur",
-    "iso": "my"
+    "iso": "my",
+    "latlng": [
+      2.5,
+      112.5
+    ]
   },
   {
     "nom": "Mayotte",
     "capitale": "Mamoudzou",
-    "iso": "yt"
+    "iso": "yt",
+    "latlng": [
+      -12.83333333,
+      45.16666666
+    ]
   },
   {
     "nom": "Namibie",
     "capitale": "Windhoek",
-    "iso": "na"
+    "iso": "na",
+    "latlng": [
+      -22,
+      17
+    ]
   },
   {
     "nom": "Nouvelle-Calédonie",
     "capitale": "Nouméa",
-    "iso": "nc"
+    "iso": "nc",
+    "latlng": [
+      -21.5,
+      165.5
+    ]
   },
   {
     "nom": "Niger",
     "capitale": "Niamey",
-    "iso": "ne"
+    "iso": "ne",
+    "latlng": [
+      16,
+      8
+    ]
   },
   {
     "nom": "Île Norfolk",
     "capitale": "Kingston",
-    "iso": "nf"
+    "iso": "nf",
+    "latlng": [
+      -29.03333333,
+      167.95
+    ]
   },
   {
     "nom": "Nigéria",
     "capitale": "Abuja",
-    "iso": "ng"
+    "iso": "ng",
+    "latlng": [
+      10,
+      8
+    ]
   },
   {
     "nom": "Nicaragua",
     "capitale": "Managua",
-    "iso": "ni"
+    "iso": "ni",
+    "latlng": [
+      13,
+      -85
+    ]
   },
   {
     "nom": "Niue",
     "capitale": "Alofi",
-    "iso": "nu"
+    "iso": "nu",
+    "latlng": [
+      -19.03333333,
+      -169.86666666
+    ]
   },
   {
     "nom": "Pays-Bas",
     "capitale": "Amsterdam",
-    "iso": "nl"
+    "iso": "nl",
+    "latlng": [
+      52.5,
+      5.75
+    ]
   },
   {
     "nom": "Norvège",
     "capitale": "Oslo",
-    "iso": "no"
+    "iso": "no",
+    "latlng": [
+      62,
+      10
+    ]
   },
   {
     "nom": "Népal",
     "capitale": "Kathmandu",
-    "iso": "np"
+    "iso": "np",
+    "latlng": [
+      28,
+      84
+    ]
   },
   {
     "nom": "Nauru",
     "capitale": "Yaren",
-    "iso": "nr"
+    "iso": "nr",
+    "latlng": [
+      -0.53333333,
+      166.91666666
+    ]
   },
   {
     "nom": "Nouvelle-Zélande",
     "capitale": "Wellington",
-    "iso": "nz"
+    "iso": "nz",
+    "latlng": [
+      -41,
+      174
+    ]
   },
   {
     "nom": "Oman",
     "capitale": "Muscat",
-    "iso": "om"
+    "iso": "om",
+    "latlng": [
+      21,
+      57
+    ]
   },
   {
     "nom": "Pakistan",
     "capitale": "Islamabad",
-    "iso": "pk"
+    "iso": "pk",
+    "latlng": [
+      30,
+      70
+    ]
   },
   {
     "nom": "Panama",
     "capitale": "Panama City",
-    "iso": "pa"
+    "iso": "pa",
+    "latlng": [
+      9,
+      -80
+    ]
   },
   {
     "nom": "Îles Pitcairn",
     "capitale": "Adamstown",
-    "iso": "pn"
+    "iso": "pn",
+    "latlng": [
+      -25.06666666,
+      -130.1
+    ]
   },
   {
     "nom": "Pérou",
     "capitale": "Lima",
-    "iso": "pe"
+    "iso": "pe",
+    "latlng": [
+      -10,
+      -76
+    ]
   },
   {
     "nom": "Philippines",
     "capitale": "Manila",
-    "iso": "ph"
+    "iso": "ph",
+    "latlng": [
+      13,
+      122
+    ]
   },
   {
     "nom": "Palaos (Palau)",
     "capitale": "Ngerulmud",
-    "iso": "pw"
+    "iso": "pw",
+    "latlng": [
+      7.5,
+      134.5
+    ]
   },
   {
     "nom": "Papouasie-Nouvelle-Guinée",
     "capitale": "Port Moresby",
-    "iso": "pg"
+    "iso": "pg",
+    "latlng": [
+      -6,
+      147
+    ]
   },
   {
     "nom": "Pologne",
     "capitale": "Warsaw",
-    "iso": "pl"
+    "iso": "pl",
+    "latlng": [
+      52,
+      20
+    ]
   },
   {
     "nom": "Porto Rico",
     "capitale": "San Juan",
-    "iso": "pr"
+    "iso": "pr",
+    "latlng": [
+      18.25,
+      -66.5
+    ]
   },
   {
     "nom": "Corée du Nord",
     "capitale": "Pyongyang",
-    "iso": "kp"
+    "iso": "kp",
+    "latlng": [
+      40,
+      127
+    ]
   },
   {
     "nom": "Portugal",
     "capitale": "Lisbon",
-    "iso": "pt"
+    "iso": "pt",
+    "latlng": [
+      39.5,
+      -8
+    ]
   },
   {
     "nom": "Paraguay",
     "capitale": "Asunción",
-    "iso": "py"
+    "iso": "py",
+    "latlng": [
+      -23,
+      -58
+    ]
   },
   {
     "nom": "Palestine",
     "capitale": "Ramallah",
-    "iso": "ps"
+    "iso": "ps",
+    "latlng": [
+      31.9,
+      35.2
+    ]
   },
   {
     "nom": "Polynésie française",
     "capitale": "Papeetē",
-    "iso": "pf"
+    "iso": "pf",
+    "latlng": [
+      -15,
+      -140
+    ]
   },
   {
     "nom": "Qatar",
     "capitale": "Doha",
-    "iso": "qa"
+    "iso": "qa",
+    "latlng": [
+      25.5,
+      51.25
+    ]
   },
   {
     "nom": "Réunion",
     "capitale": "Saint-Denis",
-    "iso": "re"
+    "iso": "re",
+    "latlng": [
+      -21.15,
+      55.5
+    ]
   },
   {
     "nom": "Roumanie",
     "capitale": "Bucharest",
-    "iso": "ro"
+    "iso": "ro",
+    "latlng": [
+      46,
+      25
+    ]
   },
   {
     "nom": "Russie",
     "capitale": "Moscow",
-    "iso": "ru"
+    "iso": "ru",
+    "latlng": [
+      60,
+      100
+    ]
   },
   {
     "nom": "Rwanda",
     "capitale": "Kigali",
-    "iso": "rw"
+    "iso": "rw",
+    "latlng": [
+      -2,
+      30
+    ]
   },
   {
     "nom": "Arabie Saoudite",
     "capitale": "Riyadh",
-    "iso": "sa"
+    "iso": "sa",
+    "latlng": [
+      25,
+      45
+    ]
   },
   {
     "nom": "Soudan",
     "capitale": "Khartoum",
-    "iso": "sd"
+    "iso": "sd",
+    "latlng": [
+      15,
+      30
+    ]
   },
   {
     "nom": "Sénégal",
     "capitale": "Dakar",
-    "iso": "sn"
+    "iso": "sn",
+    "latlng": [
+      14,
+      -14
+    ]
   },
   {
     "nom": "Singapour",
     "capitale": "Singapore",
-    "iso": "sg"
+    "iso": "sg",
+    "latlng": [
+      1.36666666,
+      103.8
+    ]
   },
   {
     "nom": "Géorgie du Sud-et-les Îles Sandwich du Sud",
     "capitale": "King Edward Point",
-    "iso": "gs"
+    "iso": "gs",
+    "latlng": [
+      -54.5,
+      -37
+    ]
   },
   {
     "nom": "Svalbard et Jan Mayen",
     "capitale": "Longyearbyen",
-    "iso": "sj"
+    "iso": "sj",
+    "latlng": [
+      78,
+      20
+    ]
   },
   {
     "nom": "Îles Salomon",
     "capitale": "Honiara",
-    "iso": "sb"
+    "iso": "sb",
+    "latlng": [
+      -8,
+      159
+    ]
   },
   {
     "nom": "Sierra Leone",
     "capitale": "Freetown",
-    "iso": "sl"
+    "iso": "sl",
+    "latlng": [
+      8.5,
+      -11.5
+    ]
   },
   {
     "nom": "Salvador",
     "capitale": "San Salvador",
-    "iso": "sv"
+    "iso": "sv",
+    "latlng": [
+      13.83333333,
+      -88.91666666
+    ]
   },
   {
     "nom": "Saint-Marin",
     "capitale": "City of San Marino",
-    "iso": "sm"
+    "iso": "sm",
+    "latlng": [
+      43.76666666,
+      12.41666666
+    ]
   },
   {
     "nom": "Somalie",
     "capitale": "Mogadishu",
-    "iso": "so"
+    "iso": "so",
+    "latlng": [
+      10,
+      49
+    ]
   },
   {
     "nom": "Saint-Pierre-et-Miquelon",
     "capitale": "Saint-Pierre",
-    "iso": "pm"
+    "iso": "pm",
+    "latlng": [
+      46.83333333,
+      -56.33333333
+    ]
   },
   {
     "nom": "Serbie",
     "capitale": "Belgrade",
-    "iso": "rs"
+    "iso": "rs",
+    "latlng": [
+      44,
+      21
+    ]
   },
   {
     "nom": "Soudan du Sud",
     "capitale": "Juba",
-    "iso": "ss"
+    "iso": "ss",
+    "latlng": [
+      7,
+      30
+    ]
   },
   {
     "nom": "São Tomé et Príncipe",
     "capitale": "São Tomé",
-    "iso": "st"
+    "iso": "st",
+    "latlng": [
+      1,
+      7
+    ]
   },
   {
     "nom": "Surinam",
     "capitale": "Paramaribo",
-    "iso": "sr"
+    "iso": "sr",
+    "latlng": [
+      4,
+      -56
+    ]
   },
   {
     "nom": "Slovaquie",
     "capitale": "Bratislava",
-    "iso": "sk"
+    "iso": "sk",
+    "latlng": [
+      48.66666666,
+      19.5
+    ]
   },
   {
     "nom": "Slovénie",
     "capitale": "Ljubljana",
-    "iso": "si"
+    "iso": "si",
+    "latlng": [
+      46.11666666,
+      14.81666666
+    ]
   },
   {
     "nom": "Suède",
     "capitale": "Stockholm",
-    "iso": "se"
+    "iso": "se",
+    "latlng": [
+      62,
+      15
+    ]
   },
   {
     "nom": "Eswatini",
     "capitale": "Lobamba",
-    "iso": "sz"
+    "iso": "sz",
+    "latlng": [
+      -26.5,
+      31.5
+    ]
   },
   {
     "nom": "Saint-Martin",
     "capitale": "Philipsburg",
-    "iso": "sx"
+    "iso": "sx",
+    "latlng": [
+      18.033333,
+      -63.05
+    ]
   },
   {
     "nom": "Seychelles",
     "capitale": "Victoria",
-    "iso": "sc"
+    "iso": "sc",
+    "latlng": [
+      -4.58333333,
+      55.66666666
+    ]
   },
   {
     "nom": "Syrie",
     "capitale": "Damascus",
-    "iso": "sy"
+    "iso": "sy",
+    "latlng": [
+      35,
+      38
+    ]
   },
   {
     "nom": "Îles Turques-et-Caïques",
     "capitale": "Cockburn Town",
-    "iso": "tc"
+    "iso": "tc",
+    "latlng": [
+      21.75,
+      -71.58333333
+    ]
   },
   {
     "nom": "Tchad",
     "capitale": "N'Djamena",
-    "iso": "td"
+    "iso": "td",
+    "latlng": [
+      15,
+      19
+    ]
   },
   {
     "nom": "Togo",
     "capitale": "Lomé",
-    "iso": "tg"
+    "iso": "tg",
+    "latlng": [
+      8,
+      1.16666666
+    ]
   },
   {
     "nom": "Thaïlande",
     "capitale": "Bangkok",
-    "iso": "th"
+    "iso": "th",
+    "latlng": [
+      15,
+      100
+    ]
   },
   {
     "nom": "Tadjikistan",
     "capitale": "Dushanbe",
-    "iso": "tj"
+    "iso": "tj",
+    "latlng": [
+      39,
+      71
+    ]
   },
   {
     "nom": "Tokelau",
     "capitale": "Fakaofo",
-    "iso": "tk"
+    "iso": "tk",
+    "latlng": [
+      -9,
+      -172
+    ]
   },
   {
     "nom": "Turkménistan",
     "capitale": "Ashgabat",
-    "iso": "tm"
+    "iso": "tm",
+    "latlng": [
+      40,
+      60
+    ]
   },
   {
     "nom": "Timor oriental",
     "capitale": "Dili",
-    "iso": "tl"
+    "iso": "tl",
+    "latlng": [
+      -8.83333333,
+      125.91666666
+    ]
   },
   {
     "nom": "Tonga",
     "capitale": "Nuku'alofa",
-    "iso": "to"
+    "iso": "to",
+    "latlng": [
+      -20,
+      -175
+    ]
   },
   {
     "nom": "Trinité-et-Tobago",
     "capitale": "Port of Spain",
-    "iso": "tt"
+    "iso": "tt",
+    "latlng": [
+      11,
+      -61
+    ]
   },
   {
     "nom": "Tunisie",
     "capitale": "Tunis",
-    "iso": "tn"
+    "iso": "tn",
+    "latlng": [
+      34,
+      9
+    ]
   },
   {
     "nom": "Turquie",
     "capitale": "Ankara",
-    "iso": "tr"
+    "iso": "tr",
+    "latlng": [
+      39,
+      35
+    ]
   },
   {
     "nom": "Tuvalu",
     "capitale": "Funafuti",
-    "iso": "tv"
+    "iso": "tv",
+    "latlng": [
+      -8,
+      178
+    ]
   },
   {
     "nom": "Taïwan",
     "capitale": "Taipei",
-    "iso": "tw"
+    "iso": "tw",
+    "latlng": [
+      23.5,
+      121
+    ]
   },
   {
     "nom": "Tanzanie",
     "capitale": "Dodoma",
-    "iso": "tz"
+    "iso": "tz",
+    "latlng": [
+      -6,
+      35
+    ]
   },
   {
     "nom": "Ouganda",
     "capitale": "Kampala",
-    "iso": "ug"
+    "iso": "ug",
+    "latlng": [
+      1,
+      32
+    ]
   },
   {
     "nom": "Ukraine",
     "capitale": "Kyiv",
-    "iso": "ua"
+    "iso": "ua",
+    "latlng": [
+      49,
+      32
+    ]
   },
   {
     "nom": "Uruguay",
     "capitale": "Montevideo",
-    "iso": "uy"
+    "iso": "uy",
+    "latlng": [
+      -33,
+      -56
+    ]
   },
   {
     "nom": "États-Unis",
     "capitale": "Washington D.C.",
-    "iso": "us"
+    "iso": "us",
+    "latlng": [
+      38,
+      -97
+    ]
   },
   {
     "nom": "Ouzbékistan",
     "capitale": "Tashkent",
-    "iso": "uz"
+    "iso": "uz",
+    "latlng": [
+      41,
+      64
+    ]
   },
   {
     "nom": "Cité du Vatican",
     "capitale": "Vatican City",
-    "iso": "va"
+    "iso": "va",
+    "latlng": [
+      41.9,
+      12.45
+    ]
   },
   {
     "nom": "Saint-Vincent-et-les-Grenadines",
     "capitale": "Kingstown",
-    "iso": "vc"
+    "iso": "vc",
+    "latlng": [
+      13.25,
+      -61.2
+    ]
   },
   {
     "nom": "Venezuela",
     "capitale": "Caracas",
-    "iso": "ve"
+    "iso": "ve",
+    "latlng": [
+      8,
+      -66
+    ]
   },
   {
     "nom": "Îles Vierges britanniques",
     "capitale": "Road Town",
-    "iso": "vg"
+    "iso": "vg",
+    "latlng": [
+      18.431383,
+      -64.62305
+    ]
   },
   {
     "nom": "Îles Vierges des États-Unis",
     "capitale": "Charlotte Amalie",
-    "iso": "vi"
+    "iso": "vi",
+    "latlng": [
+      18.35,
+      -64.933333
+    ]
   },
   {
     "nom": "Viêt Nam",
     "capitale": "Hanoi",
-    "iso": "vn"
+    "iso": "vn",
+    "latlng": [
+      16.16666666,
+      107.83333333
+    ]
   },
   {
     "nom": "Vanuatu",
     "capitale": "Port Vila",
-    "iso": "vu"
+    "iso": "vu",
+    "latlng": [
+      -16,
+      167
+    ]
   },
   {
     "nom": "Wallis-et-Futuna",
     "capitale": "Mata-Utu",
-    "iso": "wf"
+    "iso": "wf",
+    "latlng": [
+      -13.3,
+      -176.2
+    ]
   },
   {
     "nom": "Samoa",
     "capitale": "Apia",
-    "iso": "ws"
+    "iso": "ws",
+    "latlng": [
+      -13.58333333,
+      -172.33333333
+    ]
   },
   {
     "nom": "Yémen",
     "capitale": "Sana'a",
-    "iso": "ye"
+    "iso": "ye",
+    "latlng": [
+      15,
+      48
+    ]
   },
   {
     "nom": "Afrique du Sud",
     "capitale": "Pretoria",
-    "iso": "za"
+    "iso": "za",
+    "latlng": [
+      -29,
+      24
+    ]
   },
   {
     "nom": "Zambie",
     "capitale": "Lusaka",
-    "iso": "zm"
+    "iso": "zm",
+    "latlng": [
+      -15,
+      30
+    ]
   },
   {
     "nom": "Zimbabwe",
     "capitale": "Harare",
-    "iso": "zw"
+    "iso": "zw",
+    "latlng": [
+      -20,
+      30
+    ]
   }
 ]

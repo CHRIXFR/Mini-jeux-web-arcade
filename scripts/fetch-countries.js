@@ -14,6 +14,13 @@ if (!fs.existsSync(targetDir)) {
 
 console.log('Téléchargement des données de mledoze/countries...');
 
+function hasValidLatLng(latlng) {
+    return Array.isArray(latlng)
+        && latlng.length === 2
+        && Number.isFinite(latlng[0])
+        && Number.isFinite(latlng[1]);
+}
+
 https.get(url, (res) => {
     let rawData = '';
 
@@ -31,11 +38,12 @@ https.get(url, (res) => {
                 .map(c => ({
                     nom: (c.translations.fra || c.translations.fr).common,
                     capitale: Array.isArray(c.capital) ? c.capital[0] : c.capital,
-                    iso: c.cca2 ? c.cca2.toLowerCase() : ''
+                    iso: c.cca2 ? c.cca2.toLowerCase() : '',
+                    latlng: c.latlng
                 }));
 
             // Filtre final pour s'assurer que tout est bien là
-            const finalCountries = filteredCountries.filter(c => c.nom && c.capitale && c.iso);
+            const finalCountries = filteredCountries.filter(c => c.nom && c.capitale && c.iso && hasValidLatLng(c.latlng));
 
             fs.writeFileSync(targetFile, JSON.stringify(finalCountries, null, 2));
             console.log(`Succès ! Extrait ${finalCountries.length} pays/capitales vers ${targetFile}`);

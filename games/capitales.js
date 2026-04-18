@@ -7,7 +7,8 @@
         score: 0,
         questionsAsked: 0,
         totalQuestions: 10,
-        options: []
+        options: [],
+        mapWidget: null
     };
 
     const DOM = {};
@@ -23,6 +24,7 @@
                         </picture>
                     </div>
                     <div id="cap-question-text" class="cap-question">Quel est ce pays ?</div>
+                    <div id="cap-map-container" class="cap-map-root" aria-live="polite"></div>
                     <div id="cap-options" class="cap-options-grid">
                     </div>
                     <button id="cap-next-btn" class="btn-secondary cap-next" style="display:none;">Question Suivante ➡️</button>
@@ -34,9 +36,13 @@
         DOM.game = document.getElementById('cap-game');
         DOM.flagPic = document.getElementById('cap-flag-pic');
         DOM.questionText = document.getElementById('cap-question-text');
+        DOM.mapContainer = document.getElementById('cap-map-container');
         DOM.optionsContainer = document.getElementById('cap-options');
         DOM.nextBtn = document.getElementById('cap-next-btn');
         DOM.topbar = document.getElementById('cap-topbar');
+        if (window.CapitalesMap && typeof window.CapitalesMap.create === 'function') {
+            STATE.mapWidget = window.CapitalesMap.create(DOM.mapContainer);
+        }
 
         DOM.nextBtn.addEventListener('click', generateQuestion);
         loadData();
@@ -105,6 +111,9 @@
         updateScoreBoard();
 
         DOM.game.style.display = 'flex';
+        if (STATE.mapWidget && typeof STATE.mapWidget.clear === 'function') {
+            STATE.mapWidget.clear();
+        }
 
         generateQuestion();
     }
@@ -118,7 +127,11 @@
 
         DOM.nextBtn.style.display = 'none';
         DOM.optionsContainer.innerHTML = '';
+        DOM.optionsContainer.classList.remove('cap-options-grid-compact-mobile');
         DOM.flagPic.classList.remove('answered');
+        if (STATE.mapWidget && typeof STATE.mapWidget.clear === 'function') {
+            STATE.mapWidget.clear();
+        }
 
         // Sélectionner 5 pays uniques aléatoirement
         const shuffled = [...STATE.countries].sort(() => 0.5 - Math.random());
@@ -163,6 +176,22 @@
         });
     }
 
+    function isCompactMobileView() {
+        return typeof window !== 'undefined'
+            && typeof window.matchMedia === 'function'
+            && window.matchMedia('(max-width: 700px)').matches;
+    }
+
+    function hideWrongAnswersOnMobile(allBtns) {
+        if (!isCompactMobileView()) return;
+        allBtns.forEach((btn) => {
+            if (!btn.classList.contains('correct')) {
+                btn.classList.add('cap-option-hidden-mobile');
+            }
+        });
+        DOM.optionsContainer.classList.add('cap-options-grid-compact-mobile');
+    }
+
     function handleAnswer(selectedOpt, clickedBtn, mode) {
         // Désactiver tous les boutons
         const allBtns = DOM.optionsContainer.querySelectorAll('.cap-option-btn');
@@ -189,7 +218,12 @@
             window.arcade.showToast('❌ Oups !');
         }
 
+        hideWrongAnswersOnMobile(allBtns);
         DOM.nextBtn.style.display = 'block';
+        if (STATE.mapWidget && typeof STATE.mapWidget.show === 'function') {
+            const locationLabel = `${STATE.currentQuestion.capitale}, ${STATE.currentQuestion.nom}`;
+            STATE.mapWidget.show(locationLabel, STATE.currentQuestion.iso);
+        }
     }
 
     function updateScoreBoard() {
@@ -199,6 +233,9 @@
 
     function endGame() {
         DOM.game.style.display = 'none';
+        if (STATE.mapWidget && typeof STATE.mapWidget.clear === 'function') {
+            STATE.mapWidget.clear();
+        }
 
         const modeLabels = { 'pays': 'Pays', 'capitale': 'Capitale', 'mixte': 'Mixte' };
         window.arcade.showGameOverModal({

@@ -306,6 +306,35 @@ test.describe('Phase 27 - Topbar standardisée', () => {
   });
 });
 
+test.describe('Capitales V2 - Carte localisation', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+  });
+
+  test('La carte apparait apres reponse puis se reinitialise', async ({ page }) => {
+    const gameCard = page.locator('.game-card').filter({ hasText: 'Capitales' });
+    await gameCard.click();
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    await page.locator('#modal-btn-start').click();
+    await expect(page.locator('[data-topbar-id="capitales-topbar"]')).toBeVisible({ timeout: 10000 });
+
+    const mapRoot = page.locator('#cap-map-container');
+    await expect(mapRoot).not.toHaveClass(/is-visible/);
+
+    const flagAlt = await page.locator('#cap-flag-pic img').getAttribute('alt');
+    const countryName = (flagAlt || '').replace('Drapeau de ', '').trim();
+    await page.locator('.cap-option-btn', { hasText: countryName }).first().click();
+
+    await expect(mapRoot).toHaveClass(/is-visible/);
+    await expect(page.locator('.cap-map-label')).toContainText(countryName);
+    await expect(page.locator('.cap-map-dot')).toHaveCount(0);
+
+    await page.locator('#cap-next-btn').click();
+    await expect(mapRoot).not.toHaveClass(/is-visible/);
+  });
+});
+
 test.describe('Phase 28 - Jeu 421', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/?test=true&tour=off');

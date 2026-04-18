@@ -15,7 +15,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 | 🃏 **Paires** | Mémoire | Trouvez toutes les paires d'emojis contre la montre |
 | 🧩 **Sudoku** | Réflexion | Le classique avec notes, indices et chronomètre |
 | 💎 **Match-3** | Puzzle | Alignez des gemmes et déclenchez des combos spéciaux |
-| 🌍 **Capitales** | Culture G | Testez vos connaissances sur les drapeaux et les pays |
+| 🌍 **Capitales** | Culture G | Drapeaux, pays et capitales avec localisation sur carte après réponse |
 | 🔡 **Scrabble** | Expert | Affrontez une IA avec l'historique de vos 10 dernières parties |
 | 🧱 **Tetris** | Arcade | L'indémodable avec une esthétique moderne et fluide |
 | 🕵️‍♂️ **Objets Cachés** | Observation | Retrouvez les objets perdus dans des décors générés par IA |
@@ -35,8 +35,10 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub pour vous tenir au courant.
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
+- **Capitales V2 (Carte)** : Affichage d'une carte du monde SVG après validation avec surlignage du pays et libellé capitale/pays.
+- **Capitales mobile optimisé** : Après une réponse, les mauvaises options sont masquées sur petit écran pour laisser plus de place à la carte.
 - **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
-- **UI globale optimisée (Phase 32)** : Hero d'accueil clarifié, cartes de jeux harmonisées, shell in-game stabilisé et responsive renforcé.
+- **UI globale optimisée (Phase 33)** : Hero d'accueil clarifié, cartes de jeux harmonisées, shell in-game stabilisé et responsive renforcé.
 - **Extension visuelle globale (Phase 34)** : Rotation aléatoire du thème au retour accueil + fonds 100% CSS gradients (sans dépendance externe).
 - **Mode Duel Local (421)** : Jouez à deux sur le même PC/mobile en pass-and-play, avec alternance par ronde et tie-break décisif.
 - **UNO Multi + Solo IA** : UNO classique strict avec passation locale 2/3/4 joueurs et mode solo contre ordinateur.
@@ -50,10 +52,13 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Modern CSS** — Design System robuste, Glassmorphism, thèmes adaptatifs et `mobile.css` dédié au responsive.
 - **Driver.js** — Moteur de visite guidée pour l'accueil.
 - **Gradients CSS** — Fonds dynamiques locaux pour un rendu stable offline.
+- **Carte SVG locale (simple-world-map)** — Fond cartographique embarqué (`world-map.min.svg`) sans dépendance cartographique externe.
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.
+- **Dataset pays/capitales enrichi** — Génération via script Node.js avec `latlng` validé pour le mode Capitales.
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
 - **js-chess-engine (MIT)** — Moteur d'échecs permissif (règles + IA) utilisé pour le mode Échecs.
 - **Playwright** — Tests automatisés (non-régression visuelle et fonctionnelle).
+- **Tests dédiés Capitales V2** — Vérification du rendu carte après réponse et de la réinitialisation à la question suivante.
 - **Tests dédiés 421** — Scénarios solo, duel local et tie-break validés en E2E.
 - **Tests dédiés UNO** — Couverture des modes multi local, passation, carte action et tour IA.
 - **Tests dédiés Suite Logique** — Couverture des 3 modes, alternance mixte, scoring, fin anticipée et persistance record.
