@@ -2,6 +2,44 @@
 (function () {
     // Source map: flekschas/simple-world-map (CC BY-SA 3.0)
     const MAP_ASSET_PATH = 'games/data/world-map.min.svg';
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+
+    function isSafeSvgUrl(value) {
+        const normalized = String(value || '').trim().toLowerCase();
+        return normalized && !normalized.startsWith('javascript:') && !normalized.startsWith('data:text/html');
+    }
+
+    function sanitizeSvg(svgText) {
+        const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
+        const parserError = doc.querySelector('parsererror');
+        const svg = doc.documentElement;
+        if (parserError || !svg || svg.namespaceURI !== SVG_NS || svg.tagName.toLowerCase() !== 'svg') {
+            throw new Error('SVG invalide');
+        }
+
+        const blockedTags = 'script, foreignObject, iframe, object, embed, link, meta, style';
+        svg.querySelectorAll(blockedTags).forEach((node) => node.remove());
+
+        svg.querySelectorAll('*').forEach((node) => {
+            Array.from(node.attributes).forEach((attr) => {
+                const name = attr.name.toLowerCase();
+                if (name.startsWith('on')) {
+                    node.removeAttribute(attr.name);
+                    return;
+                }
+                if ((name === 'href' || name.endsWith(':href')) && !isSafeSvgUrl(attr.value)) {
+                    node.removeAttribute(attr.name);
+                }
+            });
+        });
+
+        return document.importNode(svg, true);
+    }
+
+    function normalizeIso(iso) {
+        const isoLower = typeof iso === 'string' ? iso.toLowerCase() : '';
+        return /^[a-z0-9_-]+$/.test(isoLower) ? isoLower : '';
+    }
 
     function create(container) {
         if (!container) return null;
@@ -38,19 +76,21 @@
 
         function clearActiveCountry() {
             if (!worldSvg || !activeIso) return;
-            const activeNodes = worldSvg.querySelectorAll(`#${activeIso}`);
+            const activeNodes = worldSvg.querySelectorAll(`#${CSS.escape(activeIso)}`);
             activeNodes.forEach((node) => node.classList.remove('cap-map-country-active'));
             activeIso = null;
         }
 
         function highlightCountryByIso(iso) {
             if (!worldSvg || !iso) return false;
-            const nodes = worldSvg.querySelectorAll(`#${iso}`);
+            const safeIso = normalizeIso(iso);
+            if (!safeIso) return false;
+            const nodes = worldSvg.querySelectorAll(`#${CSS.escape(safeIso)}`);
             if (!nodes.length) return false;
 
             clearActiveCountry();
             nodes.forEach((node) => node.classList.add('cap-map-country-active'));
-            activeIso = iso;
+            activeIso = safeIso;
             return true;
         }
 
@@ -68,8 +108,7 @@
         function applyShow(placeLabel, iso) {
             setVisible(true);
 
-            const isoLower = typeof iso === 'string' ? iso.toLowerCase() : '';
-            highlightCountryByIso(isoLower);
+            highlightCountryByIso(normalizeIso(iso));
 
             if (label && placeLabel) {
                 label.textContent = placeLabel;
@@ -95,8 +134,7 @@
                 const response = await fetch(MAP_ASSET_PATH);
                 if (!response.ok) throw new Error('Erreur chargement carte');
                 const svgText = await response.text();
-                worldWrap.innerHTML = svgText;
-                worldSvg = worldWrap.querySelector('svg');
+                worldSvg = sanitizeSvg(svgText);
                 if (!worldSvg) throw new Error('SVG invalide');
 
                 worldSvg.classList.add('cap-map-world');
@@ -106,6 +144,7 @@
                 });
 
                 if (loading) loading.remove();
+                worldWrap.replaceChildren(worldSvg);
                 isReady = true;
 
                 if (pendingShow) {

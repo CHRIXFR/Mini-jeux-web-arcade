@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arcade Minimaliste - Jeux Web</title>
     <meta name="description" content="Une collection de mini-jeux élégants et gratuits : Sudoku, Mots Mêlés et plus.">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; img-src 'self' data: https://flagcdn.com; media-src 'self'; connect-src 'self' https://api.github.com https://formspree.io https://mini-arcade.goatcounter.com; form-action https://formspree.io; upgrade-insecure-requests">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mobile.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +24,17 @@
             endpoint: 'https://mini-arcade.goatcounter.com/count'
         };
     </script>
-    <script data-goatcounter="https://mini-arcade.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://mini-arcade.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
     <!-- Driver.js pour le Tour Guidé -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
-    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- SortableJS pour le Drag & Drop des jeux (Favoris) -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="dark-mode">
@@ -217,15 +222,26 @@
                         day: '2-digit', month: '2-digit', year: 'numeric'
                     });
 
-                    // Création de l'élément de liste
                     const li = document.createElement('li');
-                    li.innerHTML = `<strong>${formattedDate}</strong> : ${cleanMessage}`;
+                    const strong = document.createElement('strong');
+                    strong.textContent = formattedDate;
+                    li.append(strong, document.createTextNode(` : ${cleanMessage}`));
                     listContent.appendChild(li);
                 });
 
             } catch (error) {
                 console.error('Erreur lors du chargement du changelog:', error);
                 listContent.innerHTML = '<li>Impossible de charger les nouveautés pour le moment. ⚠️</li>';
+            }
+        }
+
+        function safeJsonParse(rawValue, fallback = null) {
+            if (!rawValue) return fallback;
+            try {
+                return JSON.parse(rawValue);
+            } catch (error) {
+                console.warn('Donnée locale ignorée car JSON invalide:', error);
+                return fallback;
             }
         }
 
@@ -553,7 +569,7 @@
 
                     // Récupérer le score depuis localstorage
                     const storageKey = `arcade_hs_${game.id}`;
-                    const hsData = JSON.parse(localStorage.getItem(storageKey));
+                    const hsData = safeJsonParse(localStorage.getItem(storageKey), null);
                     let hsHtml = '';
                     if (hsData) {
                         const val = hsData.type === 'time' ? window.arcade.formatTime(hsData.score) : hsData.score;
