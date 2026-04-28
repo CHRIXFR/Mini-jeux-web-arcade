@@ -335,6 +335,106 @@ test.describe('Capitales V2 - Carte localisation', () => {
   });
 });
 
+test.describe('Phase 36 - Revue sécurité et durcissement', () => {
+  test('Changelog - les messages GitHub externes sont affiches comme texte', async ({ page }) => {
+    await page.route('https://api.github.com/repos/CHRIXFR/Mini-jeux-web-arcade/commits?sha=main&per_page=30', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          {
+            commit: {
+              message: 'News: <img src=x onerror="window.__changelogXss = true"> Patch securite',
+              author: { date: '2026-04-20T12:00:00Z' }
+            }
+          }
+        ])
+      });
+    });
+
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+
+    const list = page.locator('#changelog-list-content');
+    await expect(list).toContainText('<img src=x onerror="window.__changelogXss = true"> Patch securite');
+    await expect(list.locator('img')).toHaveCount(0);
+
+    const executed = await page.evaluate(() => Boolean(window.__changelogXss));
+    expect(executed).toBe(false);
+  });
+
+  test('Accueil - un record localStorage corrompu ne bloque pas le rendu', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('arcade_hs_hangman', '{json-invalide');
+    });
+
+    await page.goto('/?test=true&tour=off');
+    await expect(page.locator('.games-grid')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('.game-card').filter({ hasText: 'Le Pendu' })).toBeVisible();
+  });
+
+  test('Modale de lancement - un meilleur score corrompu est ignore', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('arcade_hs_Capitales', '{json-invalide');
+    });
+
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+    await page.locator('.game-card').filter({ hasText: 'Capitales' }).click();
+
+    await expect(page.locator('#game-start-modal')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#modal-btn-start')).toBeVisible();
+  });
+
+  test('Capitales map - le SVG local est nettoye avant insertion DOM', async ({ page }) => {
+    await page.route('**/games/data/world-map.min.svg', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'image/svg+xml',
+        body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><script>window.__mapXss = true</script><path id="fr" onclick="window.__mapClick = true" href="javascript:alert(1)" d="M0 0h10v10H0z"/></svg>'
+      });
+    });
+
+    await page.goto('/?test=true&tour=off');
+    await page.waitForSelector('.games-grid', { state: 'visible' });
+    await page.evaluate(async () => {
+      const host = document.createElement('div');
+      host.id = 'security-map-host';
+      document.body.appendChild(host);
+      const map = window.CapitalesMap.create(host);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      map.show('France - Paris', 'fr');
+    });
+
+    const host = page.locator('#security-map-host');
+    await expect(host.locator('svg')).toHaveCount(1);
+    await expect(host.locator('script')).toHaveCount(0);
+
+    const unsafeAttributes = await host.locator('svg').evaluate((svg) => {
+      return Array.from(svg.querySelectorAll('*')).flatMap((node) =>
+        Array.from(node.attributes)
+          .filter((attr) => attr.name.toLowerCase().startsWith('on') || attr.value.toLowerCase().includes('javascript:'))
+          .map((attr) => `${node.tagName}:${attr.name}`)
+      );
+    });
+    expect(unsafeAttributes).toEqual([]);
+
+    const executed = await page.evaluate(() => Boolean(window.__mapXss || window.__mapClick));
+    expect(executed).toBe(false);
+  });
+
+  test('Serveur statique Playwright - les pages HTML exposent les headers de securite attendus', async ({ page }) => {
+    const response = await page.goto('/?test=true&tour=off');
+    expect(response).not.toBeNull();
+    const headers = response.headers();
+
+    expect(headers['x-content-type-options']).toBe('nosniff');
+    expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
+    expect(headers['content-security-policy']).toContain("default-src 'self'");
+    expect(headers['content-security-policy']).toContain('https://api.github.com');
+  });
+});
+
 test.describe('Phase 28 - Jeu 421', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/?test=true&tour=off');

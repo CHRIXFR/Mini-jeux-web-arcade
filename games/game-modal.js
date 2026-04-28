@@ -6,6 +6,16 @@
 (function () {
     if (!window.arcade) window.arcade = {};
 
+    function safeJsonParse(rawValue, fallback = null) {
+        if (!rawValue) return fallback;
+        try {
+            return JSON.parse(rawValue);
+        } catch (error) {
+            console.warn('Donnée locale ignorée car JSON invalide:', error);
+            return fallback;
+        }
+    }
+
     function ensureGameTopbarStyles() {
         if (document.getElementById('arcade-game-topbar-styles')) return;
         const style = document.createElement('style');
@@ -274,15 +284,17 @@
         let bestScoreHTML = '';
         const savedScoreRaw = localStorage.getItem(`arcade_hs_${config.title}`);
         if (savedScoreRaw) {
-            const savedData = JSON.parse(savedScoreRaw);
-            const scoreLabel = savedData.type === 'time' ? 'Meilleur Temps' : 'Meilleur Score';
-            const scoreValue = savedData.type === 'time' ? formatTime(savedData.score) : savedData.score;
-            bestScoreHTML = `
-                 <div class="modal-best-score" style="margin-top: 1rem; padding: 0.5rem; background: var(--card-bg-alt); border-radius: var(--radius); text-align: center; border: 1px solid var(--border);">
-                    <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">🏆 ${scoreLabel}</span>
-                    <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">${scoreValue}</div>
-                </div>
-            `;
+            const savedData = safeJsonParse(savedScoreRaw, null);
+            if (savedData) {
+                const scoreLabel = savedData.type === 'time' ? 'Meilleur Temps' : 'Meilleur Score';
+                const scoreValue = savedData.type === 'time' ? formatTime(savedData.score) : savedData.score;
+                bestScoreHTML = `
+                    <div class="modal-best-score" style="margin-top: 1rem; padding: 0.5rem; background: var(--card-bg-alt); border-radius: var(--radius); text-align: center; border: 1px solid var(--border);">
+                        <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">🏆 ${scoreLabel}</span>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">${scoreValue}</div>
+                    </div>
+                `;
+            }
         }
 
 
@@ -379,7 +391,7 @@
         if (config.score !== undefined && config.title) {
             const storageKey = `arcade_hs_${config.title}`;
             const savedScoreRaw = localStorage.getItem(storageKey);
-            let savedData = savedScoreRaw ? JSON.parse(savedScoreRaw) : null;
+            let savedData = safeJsonParse(savedScoreRaw, null);
 
             if (!savedData) {
                 // Premier score enregistré
