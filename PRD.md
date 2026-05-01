@@ -116,7 +116,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
   - Nommer la capitale.
   - Mode mixte aléatoire.
 - Fonctionnalités :
-  - Drapeaux chargés via `flagcdn.com`.
+  - Drapeaux SVG embarqués depuis `images/flags/4x3`, générés ponctuellement depuis `flag-icons`.
   - QCM à 5 choix (1 bonne réponse, 4 distracteurs).
   - Feedback visuel animé sur réponse correcte/incorrecte.
   - Localisation post-réponse via carte SVG intégrée (`games/data/world-map.min.svg`) avec surlignage du pays cible.
@@ -228,7 +228,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 
 ### 6.2 Audio global
 - Effets sonores contextuels dans plusieurs jeux.
-- Lecture de musiques de fond (selon le jeu et le contexte).
+- Lecture de musiques de fond MP3 (selon le jeu et le contexte) avec démarrage direct depuis l'action utilisateur et cache en arrière-plan.
 
 ### 6.3 Modale Changelog & Suggestions
 - Modale accessible via avatar flottant.
@@ -243,7 +243,13 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Ajustements ergonomiques en mode jeu (viewport, header, bouton retour).
 - Compression contextuelle des options dans Capitales (masquage des mauvaises réponses après validation sur mobile).
 
-### 6.5 Performance et qualité
+### 6.5 PWA & Android familial
+- `manifest.webmanifest` et `service-worker.js` préparent un socle offline-first après une première ouverture connectée.
+- `install.html` sert de page QR pour l'installation familiale Android hors Google Play.
+- APK Android minimal en WebView (`android/`) ciblant GitHub Pages, avec gestion des insets système et fallback hors ligne.
+- APK signé familial versionné dans `dist/android/arcade-minimaliste.apk`.
+
+### 6.6 Performance et qualité
 - Optimisations d'assets et de chargement.
 - Revue régulière de la qualité perçue et des performances Lighthouse.
 
@@ -305,7 +311,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 - Valider la stabilité sur mobile.
 
 ## 9. Historique des décisions & roadmap
-### 9.1 Vue chronologique complète (phases 1 à 36)
+### 9.1 Vue chronologique complète (phases 1 à 38)
 1. Phase 1 : Initialisation et design system (terminé).
 2. Phase 2 : Mise en place du socle de progression initial + Sudoku (terminé).
 3. Phase 3 : Développement de Mots Mêlés (terminé).
@@ -318,7 +324,7 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 10. Phase 10 : Optimisation responsive (PC 1920x1080 / mobile) + automatisation Playwright (terminé).
 11. Phase 11 : Améliorations Scrabble v2 (Aide, FR) + Lighthouse (terminé).
 12. Phase 12 : Formulaire de suggestions intégré à la modale Changelog via Formspree (terminé).
-13. Phase 13 : Création du Jeu des Capitales avec 3 modes + `flagcdn` (terminé).
+13. Phase 13 : Création du Jeu des Capitales avec 3 modes + drapeaux locaux vendorizés (terminé).
 14. Phase 14 : Optimisation avatar flottant (GIF vers MP4/JPEG) (terminé).
 15. Phase 15 : Debug et amélioration Scrabble (fuite de lettres, compteur, placement IA, JSON dictionnaire) (terminé).
 16. Phase 16 : Optimisation architecture CSS (découpage + minification) (terminé).
@@ -342,16 +348,18 @@ Le produit doit conserver une expérience "app-like", une identité visuelle for
 34. Phase 34 : Extension thèmes globaux (terminé) : ajout de 6 thèmes contrastés, mode global fixe/aléatoire, rotation aléatoire au retour accueil, gradients CSS unifiés et audit de conformité template/modales.
 35. Phase 35 : UNO règles activables (terminé) : menu de variantes pré-partie (stacking, jeu après pioche, points perdants, jump-in, 7-0, contestation +4), moteur UNO adapté solo+multi, hooks tests enrichis et couverture Playwright dédiée.
 36. Phase 36 : Capitales V2 (terminé) : ajout d'une carte SVG locale détaillée (surlignage pays après réponse), enrichissement des données avec `latlng`, chargement dédié du module carte, et optimisation mobile (masquage des mauvaises réponses après validation).
+37. Phase 37 : PWA offline-first + Android familial (terminé) : service worker, manifeste PWA, drapeaux locaux `flag-icons`, page QR d'installation, APK WebView signé et tests offline/installation.
+38. Phase 38 : Stabilisation audio BGM mobile (terminé) : lecture MP3 directe au geste utilisateur, cache audio en arrière-plan et régression Playwright dédiée.
 
 ### 9.2 Lecture par type de décision
 #### Phases orientées ajout de jeux
 - 3, 5, 6, 7, 8, 9, 13, 18, 22, 23, 24, 25, 28, 29, 30, 31, 32.
 
 #### Phases orientées fonctionnalités transverses / plateforme
-- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34, 35, 36.
+- 1, 2, 4, 10, 12, 14, 16, 17, 19, 20, 21, 26, 33, 34, 35, 36, 37, 38.
 
 #### Phases orientées optimisation / qualité
-- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34, 35, 36.
+- 10, 11, 15, 16, 20, 25, 26, 27, 33, 34, 35, 36, 37, 38.
 
 ## 10. Idées futures (backlog)
 ### 10.1 Idées de nouveaux jeux

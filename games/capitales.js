@@ -12,6 +12,7 @@
     };
 
     const DOM = {};
+    const FLAG_BASE_PATH = 'images/flags/4x3';
 
     function initCapitales(mountPoint) {
         mountPoint.innerHTML = `
@@ -153,12 +154,7 @@
     function renderQuestion(mode) {
         const country = STATE.currentQuestion;
 
-        // Mettre à jour le drapeau
-        DOM.flagPic.innerHTML = `
-            <source type="image/webp" srcset="https://flagcdn.com/h120/${country.iso}.webp, https://flagcdn.com/h240/${country.iso}.webp 2x">
-            <source type="image/png" srcset="https://flagcdn.com/h120/${country.iso}.png, https://flagcdn.com/h240/${country.iso}.png 2x">
-            <img src="https://flagcdn.com/h120/${country.iso}.png" height="120" alt="Drapeau de ${country.nom}" class="cap-flag-img">
-        `;
+        renderFlag(country);
 
         if (mode === 'pays') {
             DOM.questionText.textContent = "À quel pays appartient ce drapeau ?";
@@ -174,6 +170,28 @@
             btn.onclick = () => handleAnswer(opt, btn, mode);
             DOM.optionsContainer.appendChild(btn);
         });
+    }
+
+    function renderFlag(country) {
+        const iso = String(country.iso || '').toLowerCase();
+        const flagPath = `${FLAG_BASE_PATH}/${iso}.svg`;
+        const img = document.createElement('img');
+        img.src = flagPath;
+        img.height = 120;
+        img.alt = `Drapeau de ${country.nom}`;
+        img.className = 'cap-flag-img';
+        img.loading = 'eager';
+        img.decoding = 'async';
+        img.onerror = () => {
+            const fallback = document.createElement('span');
+            fallback.className = 'cap-flag-fallback';
+            fallback.setAttribute('role', 'img');
+            fallback.setAttribute('aria-label', `Drapeau indisponible pour ${country.nom}`);
+            fallback.textContent = iso.toUpperCase();
+            DOM.flagPic.replaceChildren(fallback);
+        };
+
+        DOM.flagPic.replaceChildren(img);
     }
 
     function isCompactMobileView() {

@@ -3167,6 +3167,22 @@ body.in-game [class$="-side"] {
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.cap-flag-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: min(180px, 70vw);
+    aspect-ratio: 4 / 3;
+    margin: 0 auto;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
 .cap-flag-img:hover {
     transform: scale(1.05);
 }

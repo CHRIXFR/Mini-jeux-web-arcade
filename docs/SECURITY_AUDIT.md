@@ -67,7 +67,7 @@ Aucun secret applicatif n'a ete trouve dans le depot. Les risques principaux eta
 
 - Centraliser `safeJsonParse` dans un utilitaire commun pour eviter les variantes locales.
 - Rendre robustes les lectures historiques restantes, notamment `arcade_history_scrabble`.
-- Documenter dans le README les domaines externes autorises: GitHub API, Formspree, GoatCounter, jsDelivr, Google Fonts, FlagCDN.
+- Documenter dans le README les domaines externes autorises: GitHub API, Formspree, GoatCounter, jsDelivr et Google Fonts.
 - Remplacer les handlers HTML inline a long terme pour permettre une CSP sans `'unsafe-inline'`.
 
 ### Mineur

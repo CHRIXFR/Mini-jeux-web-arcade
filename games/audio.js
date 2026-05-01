@@ -112,47 +112,45 @@ window.arcade.audio = {
         }
     },
 
-    /**
-     * Charge un MP3 depuis le Cache API si disponible, sinon depuis le réseau.
-     * Définit le src du bgmPlayer avec une Blob URL pour contourner les restrictions CORS du cache.
-     * @param {string} url
-     */
-    loadAndCache: async function (url) {
-        if (!this.bgmPlayer) return;
-
+    cacheTrack: async function (url) {
+        if (!('caches' in window)) return;
         try {
-            let response;
-            if ('caches' in window) {
-                const cache = await caches.open(this.CACHE_NAME);
-                response = await cache.match(url);
-                if (!response) {
-                    response = await fetch(url);
-                    if (response && response.ok) {
-                        // Met en cache pour la prochaine fois
-                        const cloned = response.clone();
-                        cache.put(url, cloned);
-                    }
-                }
-            } else {
-                response = await fetch(url);
-            }
-
+            const cache = await caches.open(this.CACHE_NAME);
+            const cached = await cache.match(url);
+            if (cached) return;
+            const response = await fetch(url);
             if (response && response.ok) {
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                // Libère l'ancienne Blob URL pour éviter les fuites mémoire
-                if (this.bgmPlayer._currentBlobUrl) {
-                    URL.revokeObjectURL(this.bgmPlayer._currentBlobUrl);
-                }
-                this.bgmPlayer._currentBlobUrl = blobUrl;
-                this.bgmPlayer.src = blobUrl;
-                this.bgmPlayer.play().catch(e => console.warn('Lecture bloquée:', e));
+                await cache.put(url, response);
             }
         } catch (e) {
-            // Fallback direct si erreur de cache
-            this.bgmPlayer.src = url;
-            this.bgmPlayer.play().catch(err => console.warn('Lecture bloquée:', err));
+            // Cache best-effort: la lecture directe reste prioritaire.
         }
+    },
+
+    ensureBgmPlayer: function () {
+        if (this.bgmPlayer) return;
+
+        this.bgmPlayer = new Audio();
+        this.bgmPlayer.volume = 0.3;
+        this.bgmPlayer.preload = 'auto';
+        this.bgmPlayer.loop = false;
+
+        this.bgmPlayer.addEventListener('ended', () => {
+            this.nextTrack();
+        });
+    },
+
+    startTrack: function (url) {
+        this.ensureBgmPlayer();
+        if (!this.bgmPlayer || this.isMuted || this.isBgmSuspended) return;
+
+        if (this.bgmPlayer.src !== url && !this.bgmPlayer.src.endsWith(url)) {
+            this.bgmPlayer.src = url;
+            this.bgmPlayer.currentTime = 0;
+        }
+
+        this.bgmPlayer.play().catch(e => console.warn('Lecture musique bloquée:', e));
+        this.cacheTrack(url);
     },
 
     // ==========================================
@@ -162,14 +160,7 @@ window.arcade.audio = {
     playMusic: function () {
         if (this.isMuted) return;
 
-        if (!this.bgmPlayer) {
-            this.bgmPlayer = new Audio();
-            this.bgmPlayer.volume = 0.3;
-
-            this.bgmPlayer.addEventListener('ended', () => {
-                this.nextTrack();
-            });
-        }
+        this.ensureBgmPlayer();
 
         // Si déjà en pause sur la même piste, on reprend
         if (this.bgmPlayer.src && this.bgmPlayer.paused && this.bgmPlayer.currentTime > 0) {
@@ -191,10 +182,6 @@ window.arcade.audio = {
         if (this.bgmPlayer) {
             this.bgmPlayer.pause();
             this.bgmPlayer.currentTime = 0;
-            if (this.bgmPlayer._currentBlobUrl) {
-                URL.revokeObjectURL(this.bgmPlayer._currentBlobUrl);
-                this.bgmPlayer._currentBlobUrl = null;
-            }
             this.bgmPlayer.src = '';
         }
         this.currentTrackIndex = -1;
@@ -213,7 +200,7 @@ window.arcade.audio = {
         } while (nextIndex === this.currentTrackIndex && tracks.length > 1);
 
         this.currentTrackIndex = nextIndex;
-        this.loadAndCache(tracks[this.currentTrackIndex]);
+        this.startTrack(tracks[this.currentTrackIndex]);
     },
     isBgmSuspended: false,
 

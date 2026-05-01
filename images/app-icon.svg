@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Arcade Minimaliste">
+  <rect width="512" height="512" rx="112" fill="#111827"/>
+  <circle cx="165" cy="178" r="42" fill="#22d3ee"/>
+  <circle cx="347" cy="178" r="42" fill="#f97316"/>
+  <rect x="112" y="254" width="288" height="104" rx="52" fill="#f8fafc"/>
+  <rect x="152" y="292" width="80" height="24" rx="12" fill="#111827"/>
+  <rect x="180" y="264" width="24" height="80" rx="12" fill="#111827"/>
+  <circle cx="318" cy="306" r="18" fill="#111827"/>
+  <circle cx="364" cy="306" r="18" fill="#111827"/>
+</svg>

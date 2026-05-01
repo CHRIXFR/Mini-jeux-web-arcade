@@ -35,7 +35,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Changelog Dynamique** : Les nouveautés sont récupérées en temps réel via l'API GitHub pour vous tenir au courant.
 - **Audio Immersif** : Synthétiseur intégré (Web Audio API) et playlists thématiques.
 - **Optimisé Mobile** : Interface adaptive avec header masqué en jeu, bouton retour compact et viewport maximisé.
-- **Capitales V2 (Carte)** : Affichage d'une carte du monde SVG après validation avec surlignage du pays et libellé capitale/pays.
+- **Capitales V2 (Carte + drapeaux locaux)** : Affichage d'une carte du monde SVG après validation avec surlignage du pays, libellé capitale/pays et drapeaux SVG embarqués.
 - **Capitales mobile optimisé** : Après une réponse, les mauvaises options sont masquées sur petit écran pour laisser plus de place à la carte.
 - **Topbar standardisée en jeu** : Tous les jeux partagent une barre commune (`icône + titre + difficulté + score/stat` selon le jeu).
 - **UI globale optimisée (Phase 33)** : Hero d'accueil clarifié, cartes de jeux harmonisées, shell in-game stabilisé et responsive renforcé.
@@ -53,6 +53,7 @@ Une collection de mini-jeux classiques, élégants et entièrement gratuits — 
 - **Driver.js** — Moteur de visite guidée pour l'accueil.
 - **Gradients CSS** — Fonds dynamiques locaux pour un rendu stable offline.
 - **Carte SVG locale (simple-world-map)** — Fond cartographique embarqué (`world-map.min.svg`) sans dépendance cartographique externe.
+- **Drapeaux SVG locaux** — Sous-ensemble `flag-icons` vendorizé via `npm run sync:flags`, sans appel FlagCDN au runtime.
 - **Dictionnaire ODS** — Intégré au format JSON pour le Scrabble, le Pendu et les Mots Mêlés.
 - **Dataset pays/capitales enrichi** — Génération via script Node.js avec `latlng` validé pour le mode Capitales.
 - **Web Audio API** — Synthèse sonore et gestion audio haute performance.
@@ -72,6 +73,13 @@ cd Mini-jeux-web-arcade
 # Un serveur local est nécessaire pour le chargement des dictionnaires et fichiers JSON
 npx serve .
 ```
+
+## Assets offline et installation Android familiale
+
+- `npm run sync:flags` copie le sous-ensemble de drapeaux `flag-icons` utilisé par Capitales dans `images/flags/4x3` et met à jour `images/flags/flags-manifest.json`.
+- `install.html` sert de page QR pour télécharger l'APK familial versionné dans `dist/android/arcade-minimaliste.apk`, sans passer par Google Play.
+- `images/install-qr.png` pointe vers `https://chrixfr.github.io/Mini-jeux-web-arcade/install.html` pour tester l'installation depuis un autre mobile.
+- `service-worker.js` prépare le cache du cœur jouable et des drapeaux locaux après une première ouverture connectée.
 
 ## Licence
 

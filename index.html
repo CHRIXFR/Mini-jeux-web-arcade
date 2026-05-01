@@ -7,9 +7,11 @@
     <title>Arcade Minimaliste - Jeux Web</title>
     <meta name="description" content="Une collection de mini-jeux élégants et gratuits : Sudoku, Mots Mêlés et plus.">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; img-src 'self' data: https://flagcdn.com; media-src 'self'; connect-src 'self' https://api.github.com https://formspree.io https://mini-arcade.goatcounter.com; form-action https://formspree.io; upgrade-insecure-requests">
+        content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; connect-src 'self' https://api.github.com https://formspree.io https://mini-arcade.goatcounter.com; form-action https://formspree.io; upgrade-insecure-requests">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mobile.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#111827">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon"
@@ -825,6 +827,11 @@
             window.arcade.applyTheme();
             window.arcade.renderHome();
             window.arcade.checkFirstVisit();
+            if ('serviceWorker' in navigator && !window.arcade.isTestLikeEnvironment()) {
+                navigator.serviceWorker.register('service-worker.js').catch((error) => {
+                    console.warn('Service worker indisponible:', error);
+                });
+            }
         };
     </script>
     <!-- Système de modales standardisé -->

@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test:e2e": "playwright test",
-    "test:resolutions": "playwright test tests/resolutions.spec.js"
+    "test:resolutions": "playwright test tests/resolutions.spec.js",
+    "sync:flags": "node scripts/sync-flags.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   "homepage": "https://github.com/CHRIXFR/Mini-jeux-web-arcade#readme",
   "devDependencies": {
     "@playwright/test": "^1.59.1",
-    "@types/node": "^25.6.0"
+    "@types/node": "^25.6.0",
+    "flag-icons": "7.5.0"
   },
   "dependencies": {
     "js-chess-engine": "^0.5.1",

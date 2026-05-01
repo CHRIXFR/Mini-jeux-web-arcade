@@ -1,0 +1,22 @@
+{
+  "name": "Arcade Minimaliste",
+  "short_name": "Arcade",
+  "description": "Une collection de mini-jeux classiques jouables en ligne et hors ligne apres preparation du cache.",
+  "lang": "fr",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "images/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "prefer_related_applications": false
+}

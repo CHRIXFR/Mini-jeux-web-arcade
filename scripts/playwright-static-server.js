@@ -17,8 +17,8 @@ const SECURITY_HEADERS = {
         "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://gc.zgo.at",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
         "font-src https://fonts.gstatic.com",
-        "img-src 'self' data: https://flagcdn.com",
-        "media-src 'self'",
+        "img-src 'self' data:",
+        "media-src 'self' blob:",
         "connect-src 'self' https://api.github.com https://formspree.io https://mini-arcade.goatcounter.com",
         "form-action https://formspree.io",
         'upgrade-insecure-requests'
@@ -30,6 +30,7 @@ const MIME = {
     '.js': 'application/javascript; charset=utf-8',
     '.css': 'text/css; charset=utf-8',
     '.json': 'application/json; charset=utf-8',
+    '.webmanifest': 'application/manifest+json; charset=utf-8',
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',

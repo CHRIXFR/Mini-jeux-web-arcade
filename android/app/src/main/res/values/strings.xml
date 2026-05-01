@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arcade Minimaliste</string>
+    <string name="arcade_url">https://chrixfr.github.io/Mini-jeux-web-arcade/</string>
+</resources>

@@ -13,6 +13,7 @@ ehthumbs_vista.db
 
 # IDE files
 .vscode/
+.idea/
 .agents/docs/plans
 
 # Note: .agents/workflows is not ignored as it's meant to be shared with contributors.
@@ -25,6 +26,12 @@ blob-report/
 
 # Lighthouse
 lighthouse-report.html
+
+# Android signing secrets
+android/signing/
+android/.gradle/
+android/build/
+android/app/build/
 
 # Playwright
 /playwright-report/
